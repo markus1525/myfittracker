@@ -41,7 +41,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .mpill{background:rgba(255,255,255,.07);border-radius:20px;padding:3px 9px;font-size:11px}
 .ex-item{display:flex;align-items:center;gap:8px;padding:9px 0;border-bottom:1px solid var(--bdr)}
 .ex-item:last-child{border-bottom:none}
-.ex-chk{width:25px;height:25px;border:2px solid var(--mut);border-radius:6px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;background:rgba(255,255,255,.02);color:var(--mut);font-size:13px}
+.ex-chk{width:25px;height:25px;border:2px solid var(--bdr);border-radius:6px;cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s;background:none;color:transparent;font-size:13px}
 .ex-chk.done{background:var(--grn);border-color:var(--grn);color:white}
 .ex-inf{flex:1;min-width:0}
 .ex-nm{font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
@@ -458,12 +458,11 @@ function resetTimer(){clearInterval(tInt);tRun=false;tSec=tOrig;document.getElem
 
 // ═══ RENDER EXERCISE ROW ═══
 function tagCls(t){return'tag-'+t}
-function renderEx(ex,key,showDel,delCb,idPrefix=''){
+function renderEx(ex,key,showDel,delCb){
   const k=getDK(),done=S.days[k]?.ex?.[key]||false,hasInfo=!!EX_DB[ex.name];
   const safeKey=key.replace(/'/g,"\\'");
-  const btnId=`chk_${idPrefix}${key}`;
   return`<div class="ex-item" id="exrow_${key}">
-    <button class="ex-chk${done?' done':''}" onclick="toggleEx('${safeKey}','${btnId}')" id="${btnId}">✓</button>
+    <button class="ex-chk${done?' done':''}" onclick="toggleEx('${safeKey}')" id="chk_${key}">${done?'✓':''}</button>
     <div class="ex-inf"><div class="ex-nm">${ex.name}</div><div class="ex-dt">${ex.detail}</div></div>
     <span class="ex-tag ${tagCls(ex.tag)}">${ex.tag.toUpperCase()}</span>
     ${hasInfo?`<button class="icon-btn info-btn" data-ex="${ex.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" onclick="showExInfo(this.dataset.ex)">ℹ️</button>`:''}
@@ -471,58 +470,36 @@ function renderEx(ex,key,showDel,delCb,idPrefix=''){
   </div>`;
 }
 
-function syncExBtn(id,done){
-  const btn=document.getElementById(id);
-  if(btn){btn.classList.toggle('done',done);btn.textContent='✓';}
-}
-function toggleEx(key,btnId){
+function toggleEx(key){
   const k=getDK();
   if(!S.days[k].ex)S.days[k].ex={};
   const was=S.days[k].ex[key];
-  const done=!was;
-  S.days[k].ex[key]=done;
+  S.days[k].ex[key]=!was;
   S.totalEx=Math.max(0,(S.totalEx||0)+(was?-1:1));
   saveState();
-  const baseId='chk_'+key;
-  const schedId='chk_sched_'+getDay()+'_'+key;
-  if(btnId)syncExBtn(btnId,done);
-  syncExBtn(baseId,done);
-  if(btnId!==schedId)syncExBtn(schedId,done);
+  const btn=document.getElementById('chk_'+key);
+  if(btn){btn.classList.toggle('done',!was);btn.textContent=!was?'✓':'';}
   updWorkoutProgress();
   checkDone();
 }
 
-function getPlanKeys(plan){
-  const warm=(plan.warmup||[]).map((_,i)=>`warm_${i}`);
-  const main=(plan.exercises||[]).map((_,i)=>`main_${i}`);
-  const cool=(plan.cooldown||[]).map((_,i)=>`cool_${i}`);
-  return [...warm,...main,...cool];
-}
-function countPlanDone(k,plan){
-  const ex=S.days[k]?.ex||{};
-  const keys=getPlanKeys(plan);
-  return keys.filter(key=>ex[key]).length;
-}
 function updWorkoutProgress(){
   const dn=getDay(),plan=getPlan(dn);
   if(!plan||plan.isRest)return;
-  const allKeys=getPlanKeys(plan);
-  const done=countPlanDone(getDK(),plan);
-  const pct=allKeys.length?Math.round(done/allKeys.length*100):0;
+  const all=[...(plan.warmup||[]),...(plan.exercises||[]),...(plan.cooldown||[])];
+  const done=Object.values(S.days[getDK()]?.ex||{}).filter(Boolean).length;
+  const pct=all.length?Math.round(done/all.length*100):0;
   const f=document.getElementById('wPrgFill'),l=document.getElementById('wPrgLbl');
-  const fs=document.getElementById('wPrgFillSched'),ls=document.getElementById('wPrgLblSched');
   if(f)f.style.width=pct+'%';
-  if(l)l.textContent=done+' / '+allKeys.length+' exercises';
-  if(fs)fs.style.width=pct+'%';
-  if(ls)ls.textContent=done+' / '+allKeys.length+' exercises';
+  if(l)l.textContent=done+' / '+all.length+' exercises';
 }
 
 function checkDone(){
   const k=getDK(),dn=getDay(),plan=getPlan(dn);
   if(!plan||plan.isRest)return;
-  const allKeys=getPlanKeys(plan);
-  const done=countPlanDone(k,plan);
-  if(done>=allKeys.length&&!S.days[k].done){
+  const all=[...(plan.warmup||[]),...(plan.exercises||[]),...(plan.cooldown||[])];
+  const done=Object.keys(S.days[k]?.ex||{}).filter(key=>S.days[k].ex[key]).length;
+  if(done>=all.length&&!S.days[k].done){
     S.days[k].done=true;updStreak();saveState();
     document.getElementById('doneBanner').classList.add('show');
   }
@@ -663,26 +640,17 @@ function renderSchedContent(){
   const pillLbl={supp:'SUPPLEMENT',gym:'GYM',meal:'MEAL',sleep:'SLEEP',protein:'PROTEIN'};
   let h='';
   if(plan){
-    h+=`<div class="card" style="border-color:${isGym?(plan.color||'var(--acc)'):'var(--grn)'}44"><div class="card-hdr"><div><div class="ct">${plan.name}</div><div class="cs">${plan.focus}</div></div>${isGym?`<span class="mpill" style="background:rgba(240,165,0,.1);color:var(--acc)">${plan.duration||'60 mins'}</span>`:''}</div>`;
+    h+=`<div class="card" style="border-color:${isGym?(plan.color||'var(--acc)'):'var(--grn)'}44">
+      <div class="card-hdr"><div><div class="ct">${plan.name}</div><div class="cs">${plan.focus}</div></div>${isGym?`<span class="mpill" style="background:rgba(240,165,0,.1);color:var(--acc)">${plan.duration||'60 mins'}</span>`:''}</div>`;
     if(isGym){
-      if(schedDay===getDay()){
-        h+=`<div class="prg-wrap" style="margin-bottom:12px"><div class="prg-lbl"><span>Completion</span><span id="wPrgLblSched">0 / 0</span></div><div class="prg-bar"><div class="prg-fill" id="wPrgFillSched" style="width:0%"></div></div></div>
-        <span class="phase ph-warm">🔥 WARM UP</span>`;
-        (plan.warmup||[]).forEach((ex,i)=>h+=renderEx(ex,`warm_${i}`,false,null,`sched_${schedDay}_`));
-        h+=`<span class="phase ph-main" style="margin-top:10px">💪 MAIN WORKOUT</span>`;
-        (plan.exercises||[]).forEach((ex,i)=>h+=renderEx(ex,`main_${i}`,false,null,`sched_${schedDay}_`));
-        h+=`<span class="phase ph-cool" style="margin-top:10px">❄️ COOL DOWN</span>`;
-        (plan.cooldown||[]).forEach((ex,i)=>h+=renderEx(ex,`cool_${i}`,false,null,`sched_${schedDay}_`));
-      } else {
-        [...(plan.warmup||[]),...(plan.exercises||[]),...(plan.cooldown||[])].forEach(ex=>{
-          const hasInfo=!!EX_DB[ex.name];
-          h+=`<div class="ex-item" style="padding:7px 0">
-            <div class="ex-inf"><div class="ex-nm" style="font-size:12px">${ex.name}</div><div class="ex-dt">${ex.detail}</div></div>
-            <span class="ex-tag ${tagCls(ex.tag)}">${ex.tag.toUpperCase()}</span>
-            ${hasInfo?`<button class="icon-btn info-btn" style="width:26px;height:26px;font-size:12px" data-ex="${ex.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" onclick="showExInfo(this.dataset.ex)">ℹ️</button>`:''}
-          </div>`;
-        });
-      }
+      [...(plan.warmup||[]),...(plan.exercises||[]),...(plan.cooldown||[])].forEach(ex=>{
+        const hasInfo=!!EX_DB[ex.name];
+        h+=`<div class="ex-item" style="padding:7px 0">
+          <div class="ex-inf"><div class="ex-nm" style="font-size:12px">${ex.name}</div><div class="ex-dt">${ex.detail}</div></div>
+          <span class="ex-tag ${tagCls(ex.tag)}">${ex.tag.toUpperCase()}</span>
+          ${hasInfo?`<button class="icon-btn info-btn" style="width:26px;height:26px;font-size:12px" data-ex="${ex.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" onclick="showExInfo(this.dataset.ex)">ℹ️</button>`:''}
+        </div>`;
+      });
     } else {
       h+=`<div style="text-align:center;padding:10px"><span style="font-size:30px">😴</span><div style="font-size:12px;color:var(--mut);margin-top:6px">Rest, recover, core & face exercises</div></div>`;
     }
@@ -692,7 +660,6 @@ function renderSchedContent(){
   sched.forEach(it=>h+=`<div class="sched-row"><div class="sched-time">${it.time}</div><div class="sched-act">${it.act}</div><span class="sched-pill pill-${it.pill}">${pillLbl[it.pill]}</span></div>`);
   h+='</div>';
   document.getElementById('schedContent').innerHTML=h;
-  if(schedDay===getDay())setTimeout(updWorkoutProgress,50);
 }
 
 // ═══ EDIT DAY (add/remove/edit exercises) ═══
