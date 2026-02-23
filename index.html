@@ -109,7 +109,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .water-grid{display:flex;gap:6px;flex-wrap:wrap;margin-top:7px}
 .wcup{width:33px;height:33px;border-radius:8px;border:2px solid var(--bdr);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;transition:all .2s;background:none}
 .wcup.filled{background:rgba(59,130,246,.2);border-color:var(--blu)}
-.alert{border-radius:10px;padding:8px 11px;font-size:12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:6px}
+.alert{border-radius:10px;padding:8px 11px;font-size:12px;margin-bottom:8px;display:flex;align-items:center;gap:6px;line-height:1.4}
 .alert-warn{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.2);color:#fcd34d}
 .alert-info{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#93c5fd}
 .face-item{padding:8px 0;border-bottom:1px solid var(--bdr)}
@@ -191,6 +191,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 #settingsBody.collapsed{max-height:0;opacity:0;pointer-events:none}
 .unit-btn{background:none;border:none;padding:3px 8px;font-size:10px;font-weight:700;color:var(--mut);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
 .unit-btn.active{background:var(--acc);color:#000;border-radius:6px}
+.picker-tag-btn{padding:5px 12px;border-radius:20px;border:1px solid var(--bdr);background:var(--card);color:var(--mut);font-size:11px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;flex-shrink:0}
+.picker-tag-btn.active{background:var(--acc);border-color:var(--acc);color:#000}
+.picker-ex-card{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:11px;border:1px solid var(--bdr);background:rgba(255,255,255,.03);cursor:pointer;transition:all .2s;margin-bottom:6px}
+.picker-ex-card:active,.picker-ex-card:hover{background:rgba(240,165,0,.07);border-color:rgba(240,165,0,.3)}
+.picker-ex-card.added{background:rgba(34,197,94,.07);border-color:rgba(34,197,94,.3)}
+.picker-ex-icon{width:36px;height:36px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.edit-ex-new{display:flex;align-items:center;gap:8px;padding:8px 10px;background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:10px;margin-bottom:6px}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.5)}50%{box-shadow:0 0 0 8px rgba(240,165,0,0)}}
@@ -301,6 +308,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div id="bmiCard" class="card" style="display:none">
     <div class="ct" style="margin-bottom:9px">📊 YOUR BMI</div>
     <div id="bmiDisplay"></div>
+  </div>
+  <div id="macroCard" class="card" style="display:none">
+    <div class="ct" style="margin-bottom:9px">🔥 CALORIE TARGETS</div>
+    <div id="macroDisplay"></div>
   </div>
   <div class="card">
     <div class="ct" style="margin-bottom:11px">✏️ MY INFO</div>
@@ -438,7 +449,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </a>
     <div style="font-size:10px;color:var(--bdr);margin-top:6px">github.com/markus1525</div>
   </div>
-
 </div>
 
 <!-- NAV -->
@@ -466,6 +476,18 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="modal-drag"></div>
     <div class="modal-top"><div style="font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--acc)" id="editDayTitle">✏️ EDIT DAY</div><button class="modal-close" style="margin-left:auto" onclick="closeEditDay()">✕</button></div>
     <div class="modal-body" id="editDayBody"></div>
+    <!-- EXERCISE PICKER PANEL (inside same modal sheet) -->
+    <div id="exPickerPanel" style="display:none">
+      <div style="position:sticky;top:0;background:#1a1a24;z-index:5;padding:10px 13px 8px;border-bottom:1px solid var(--bdr)">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <button onclick="closeExPicker()" style="background:var(--bdr);border:none;border-radius:8px;padding:6px 10px;color:var(--txt);font-size:13px;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:700">← Back</button>
+          <div id="pickerSectionLabel" style="font-size:12px;color:var(--acc);font-weight:700;flex:1"></div>
+        </div>
+        <input id="exSearchInput" class="form-input" placeholder="🔍 Search exercises..." oninput="renderExPickerList()" style="margin-bottom:8px">
+        <div id="tagFilterRow" style="display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none"></div>
+      </div>
+      <div id="exPickerList" style="padding:10px 13px 24px"></div>
+    </div>
   </div>
 </div>
 
@@ -598,7 +620,144 @@ const EX_DB={
   'Leg Raises':{icon:'🦵',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/44.gif',muscles:['Lower Abs','Hip Flexors'],setup:'Lie flat, hands under lower back for support',steps:['Hands palm-down under lower back','Legs straight or very slightly bent','Raise legs to ceiling (90°)','Hold 1 second at top','Lower SLOWLY — stop just BEFORE heels touch floor'],avoid:['Lower back arching — use hands as support','Dropping legs fast','Bending knees too much'],ytId:'JB2oyawG9KI'},
   'Dumbbell Lunges':{icon:'🚶',color:'#4ade80',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/136.gif',muscles:['Quads','Glutes','Hamstrings','Balance'],setup:'Stand tall with dumbbells at sides',steps:['Feet together, dumbbells at sides','Take a LONG step forward','Lower back knee toward floor — stop before touching','Both knees at ~90°','Push off front foot powerfully — alternate legs'],avoid:['Front knee past toes','Leaning torso too far forward','Back knee slamming into floor'],ytId:'9gglI77Kzq8'},
   'Cable Seated Row':{icon:'🚣',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/21.gif',muscles:['Middle Back','Lats','Biceps'],setup:'Feet on pads, slight bend in knees',steps:['Slight lean forward to start','Grip V-bar (neutral grip)','Pull toward lower abdomen/navel','Squeeze shoulder blades — pinch a pencil','Slowly return — feel the back stretch'],avoid:['Rounding back — stay flat','Leaning back too far','Using only biceps to pull'],ytId:'lJoozxC0Rns'}
+,
+  'Leg Curl Machine':{icon:'🦿',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/105.gif',muscles:['Hamstrings','Calves'],setup:'Adjust pad to just above ankles, lie face down',steps:['Lie face down, pad just above ankles','Grip handles for stability','Curl legs up toward glutes — full range','Squeeze hamstrings hard at top — 1 sec','Lower slowly 3 seconds — resist gravity'],avoid:['Hips lifting off pad — reduces hamstring work','Using momentum to swing up','Stopping short — go full range'],ytId:'1Tq3QdYUuHs'},
+  'Leg Extension Machine':{icon:'🦵',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/106.gif',muscles:['Quadriceps'],setup:'Adjust so knees align with machine pivot point',steps:['Sit upright, back against pad','Pad rests on lower shin, just above ankle','Extend legs until straight — squeeze quads','Hold 1 second at top','Lower slowly — do not drop the weight'],avoid:['Using too much weight — knee injury risk','Lifting hips off seat','Locking knees aggressively at top'],ytId:'YyvSfVjQeL0'},
+  'Hip Thrust Machine':{icon:'🍑',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1223.gif',muscles:['Glutes','Hamstrings','Hip Flexors'],setup:'Sit with upper back on pad, bar across hips',steps:['Upper back against pad, bar over hip crease','Feet flat, shoulder-width apart','Drive hips UP by squeezing glutes hard','At top: body forms straight line shoulder to knee','Lower hips slowly — do not let them touch floor'],avoid:['Arching lower back instead of using glutes','Feet too far forward — reduces glute activation','Rushing down — slow eccentric builds more muscle'],ytId:'LM8XHLYJoYs'},
+  'Hip Abduction Machine':{icon:'🦋',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/251.gif',muscles:['Outer Glutes','Hip Abductors','Inner Thighs'],setup:'Sit with knees against pads, spine tall',steps:['Sit upright, feet on foot rests','Push knees OUT against pads — wide as possible','Hold 1 second at maximum range','Return slowly — resist the weight','Keep upper body still — only hips move'],avoid:['Leaning forward to gain momentum','Going too fast — this is not a cardio exercise','Too heavy — you will rock your body'],ytId:'wol-rbwS7gQ'},
+  'Glute Bridge':{icon:'🌉',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/581.gif',muscles:['Glutes','Hamstrings','Lower Back'],setup:'Lie on back, knees bent, feet flat, hip-width apart',steps:['Lie on back, arms at sides for stability','Feet hip-width, knees bent at 90°','Press through HEELS and squeeze glutes','Drive hips up until body is straight hip to shoulder','Hold 2 seconds — really squeeze glutes at top','Lower slowly — stop just before hips touch floor'],avoid:['Arching lower back at top','Feet too close — targets hamstrings not glutes','Rushing — slow controlled movement'],ytId:'OUgsJ8-Vi0E'},
+  'Push-Up':{icon:'⬆️',color:'#f87171',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/7.gif',muscles:['Chest','Triceps','Shoulders','Core'],setup:'Hands slightly wider than shoulders, toes on floor',steps:['Hands wider than shoulder-width','Straight body from head to heels — NO sagging hips','Lower chest to just above floor','Elbows at ~45° from body','Press up powerfully — exhale on the way up'],avoid:['Hips sagging — weak core position','Elbows flaring 90° — shoulder injury risk','Head dropping forward','Not going full range of motion'],ytId:'_l3ySVKYVJ8'},
+  'Pec Deck Fly Machine':{icon:'🦅',color:'#f87171',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/41.gif',muscles:['Chest','Front Shoulders'],setup:'Adjust seat so arms are parallel to floor',steps:['Sit upright, back flat against pad','Grip handles, elbows slightly bent','Bring arms together in front of chest — smooth arc','Squeeze chest HARD for 1 second in the middle','Slowly open arms back — feel the chest stretch'],avoid:['Slamming weights — no control','Arms going too far back — tears pec tendons','Leaning forward off the pad'],ytId:'5OaB_-UD8e4'},
+  'Arnold Press':{icon:'💫',color:'#fbbf24',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/302.gif',muscles:['All 3 Deltoid Heads','Triceps'],setup:'Sit at 90°. Dumbbells at chin, palms FACING you',steps:['Start with dumbbells at chin, palms facing face','As you press up, ROTATE palms forward','Finish with palms forward, arms extended overhead','Lower in reverse — rotate palms back toward you','Slow controlled rotation — do not rush'],avoid:['Too heavy — ruins rotation','Arching lower back','Locking elbows at top'],ytId:'3ml7BH7mNwQ'},
+  'Tricep Bench Dips':{icon:'🪑',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/77.gif',muscles:['Triceps','Chest','Front Shoulders'],setup:'Hands on bench behind you, legs straight out',steps:['Grip bench edge behind you, fingers forward','Slide off bench, legs extended or bent','Lower body by bending elbows — go to 90°','Keep back CLOSE to the bench throughout','Press up through palms — squeeze triceps'],avoid:['Dipping too low — shoulder joint stress','Letting shoulders shrug up','Moving hips forward away from bench'],ytId:'0326dy_-CzM'},
+  'Russian Twist':{icon:'🔄',color:'#c084fc',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/607.gif',muscles:['Obliques','Abs','Core'],setup:'Sit, knees bent, lean back 45°, feet off floor',steps:['Sit with knees bent at 90°, feet slightly off floor','Lean back 45° — hold position with core tight','Clasp hands together or hold dumbbell/plate','Rotate torso side to side — touch floor each side','Keep feet off floor throughout'],avoid:['Feet touching floor — reduces core work','Rotating with arms only — use your torso','Rushing — slow intentional twist each side'],ytId:'wkD8rjkodUI'},
+  'Mountain Climbers':{icon:'🧗',color:'#c084fc',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/572.gif',muscles:['Core','Hip Flexors','Shoulders','Cardio'],setup:'High plank position, wrists under shoulders',steps:['Start in high push-up position','Wrists directly under shoulders, body straight','Drive one knee toward chest quickly','Immediately switch legs — running motion','Keep hips LOW and level — do not bounce'],avoid:['Hips popping up into the air','Looking up — neck strain','Slowing feet — keep controlled pace'],ytId:'nmwgirgXLYM'},
+  'Side Plank':{icon:'↔️',color:'#c084fc',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/200.gif',muscles:['Obliques','Core','Shoulder Stability'],setup:'Lie on side, elbow under shoulder, feet stacked',steps:['Lie on side, forearm on floor, elbow under shoulder','Stack feet or stagger for balance','Raise hips off floor — straight line head to feet','Free hand on hip or extended to ceiling','Breathe steadily and hold'],avoid:['Hips sagging to the floor','Leaning forward or backward','Holding breath throughout'],ytId:'K_E8D1g-gPE'},
+  'Rowing Machine':{icon:'🚣',color:'#fb7185',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1040.gif',muscles:['Full Body','Back','Legs','Arms','Cardio'],setup:'Feet in straps, grip handle, sit tall',steps:['Start with shins vertical, arms extended, lean forward slightly','PUSH with legs first — this generates 60% of power','As legs extend, lean back slightly and pull handle to lower chest','Straighten arms, lean forward, bend knees — return to start','Smooth rhythm: Legs → Back → Arms on pull'],avoid:['Pulling with arms before legs extend','Rounding lower back','Going too fast — lose form'],ytId:'H0r_QGF8pTw'},
+  'Cable Straight Arm Pulldown':{icon:'⬇️',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/226.gif',muscles:['Lats','Teres Major','Core'],setup:'High cable with bar or rope, step back, hinge forward',steps:['Stand back from machine, hinge at hips slightly','Arms straight — slight bend in elbows — keep them STRAIGHT','Pull bar down in a wide arc to thighs','Squeeze lats HARD at bottom — 1 second','Slowly raise arms back, feel the lat stretch'],avoid:['Bending elbows — turns it into a row','Standing too upright','Not fully extending back up — lose lat stretch'],ytId:'C6vIVdLeTrM'},
+  'Concentration Curl':{icon:'🎯',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/87.gif',muscles:['Biceps Peak','Brachialis'],setup:'Sit on bench, elbow braced against inner thigh',steps:['Sit on bench, lean forward slightly','Rest elbow of curling arm against inner thigh','Dumbbell hangs at full extension','Curl slowly toward your shoulder','Squeeze HARD at top — lower slowly 3 seconds'],avoid:['Swinging arm away from thigh','Leaning torso as you curl','Too heavy — ruins isolation'],ytId:'lm9TrI1RR-s'},
+  'Stair Climber':{icon:'🪜',color:'#fb7185',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1050.gif',muscles:['Glutes','Quads','Calves','Cardio'],setup:'Step on machine, hold rails lightly for balance only',steps:['Stand upright — do NOT lean on handrails','Step at comfortable pace, full foot on each step','Drive through heel to engage glutes more','Keep steady rhythm — no skipping steps','Breathe steadily throughout'],avoid:['Leaning heavily on rails — cuts calorie burn by 30%','Taking huge steps — loses form','Looking down — poor posture'],ytId:'uuODKiQq1QE'},
+  'Jump Rope':{icon:'🪢',color:'#fb7185',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/546.gif',muscles:['Calves','Cardio','Shoulders','Core'],setup:'Handle grips in each hand, rope behind feet',steps:['Feet hip-width, slight bend in knees','Swing rope with WRISTS — not full arm rotation','Land softly on balls of feet — not flat-footed','Keep jumps low — just enough clearance','Core tight, chest up, look forward'],avoid:['Jumping too high — wastes energy','Using full arm swings','Tensing shoulders up to ears'],ytId:'u3zgHI8QnqE'},
+  'HIIT Treadmill Sprint':{icon:'⚡',color:'#fb7185',diff:'hard',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1090.gif',muscles:['Full Body','Legs','Cardio','Core'],setup:'Set sprint speed 10–14 km/h, recovery 5–6 km/h',steps:['Warm up 2 mins at easy pace first','Sprint at max effort for 30 seconds','Step to sides or reduce speed for 30s recovery','Repeat 6–10 rounds','Cool down 2 mins slow walk after'],avoid:['Skipping warm-up — injury risk','Jumping on/off moving belt','Holding rails during sprint — defeats purpose'],ytId:'FDy10xvGcV0'},
+  'Battle Ropes':{icon:'🌊',color:'#fb7185',diff:'hard',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1100.gif',muscles:['Shoulders','Arms','Core','Cardio'],setup:'Anchor rope at hip height, stand with feet shoulder-width',steps:['Grab one end of rope in each hand','Bend knees slightly, hinge forward at hips slightly','Alternate arms up and down rapidly — create waves','Keep core BRACED throughout','Breathe — do not hold breath'],avoid:['Standing too upright — reduce power','Letting rope go slack — no waves','Using only arms — engage whole body'],ytId:'2FRMQkpUqyA'},
+  'Incline Dumbbell Press':{icon:'📐',color:'#f87171',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/56.gif',muscles:['Upper Chest','Front Shoulders','Triceps'],setup:'Bench at 30–45°. Dumbbells at shoulder height',steps:['Sit on incline bench, back flat against pad','Hold dumbbells at shoulder level, palms forward','Press up and slightly inward — meet at top','Lower slowly until elbows at 90°','Keep shoulder blades pinched throughout'],avoid:['Bench too steep (>45°) — becomes shoulder press','Bouncing dumbbells off chest','Arching lower back off bench'],ytId:'8iPEnn-ltC8'},
+  'Cable Crossover':{icon:'✂️',color:'#f87171',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/20.gif',muscles:['Inner Chest','Lower Chest','Front Shoulders'],setup:'Set both pulleys HIGH. Stand centered between cables',steps:['Step one foot forward for stability','Slight forward lean from hips','Keep elbows slightly bent throughout — NEVER lock','Bring handles DOWN and together in sweeping arc','Squeeze chest hard where hands meet — 1 second'],avoid:['Straightening elbows','Pulling with biceps instead of chest','Standing too upright — reduces chest activation'],ytId:'taI4XduLpTk'},
+  'Machine Shoulder Press':{icon:'🤖',color:'#fbbf24',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/169.gif',muscles:['Shoulders','Triceps','Upper Traps'],setup:'Adjust seat so handles align with top of shoulders',steps:['Sit upright, back flat against pad','Grip handles at shoulder height','Press up until arms nearly straight — not locked','Lower slowly 2–3 seconds — full range','Keep core tight throughout'],avoid:['Arching lower back off pad','Locking elbows at top','Using momentum to push'],ytId:'qEwKCR5JCog'},
+  'Dumbbell Front Raise':{icon:'☝️',color:'#fbbf24',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/46.gif',muscles:['Front Deltoids','Shoulders'],setup:'Stand tall, dumbbells at thighs, palms facing you',steps:['Hold dumbbells at thighs, palms down','Keep slight bend in elbows throughout','Raise ONE arm (or both) forward to shoulder height','Hold 1 second at top — feel front delt squeeze','Lower slowly 2–3 seconds'],avoid:['Swinging body to lift','Going above shoulder height','Raising both arms with momentum'],ytId:'sOgm2_wBhiA'},
+  'Rear Delt Fly Machine':{icon:'🔙',color:'#fbbf24',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/189.gif',muscles:['Rear Deltoids','Upper Back','Rhomboids'],setup:'Sit facing pad, adjust handles to shoulder height',steps:['Sit facing the pad, chest lightly against it','Grip handles, elbows slightly bent','Pull handles BACK in wide arc — squeezing shoulder blades','Hold 1 second at maximum contraction','Slowly return — resist the weight forward'],avoid:['Pulling elbows behind body — wrong angle','Too heavy — shrugging instead of rear delt','Returning too fast — no eccentric'],ytId:'0GSu6QzwIAk'},
+  'Upright Row Dumbbell':{icon:'⬆️',color:'#fbbf24',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/172.gif',muscles:['Side Deltoids','Upper Traps','Biceps'],setup:'Stand tall, dumbbells in front of thighs, palms toward you',steps:['Hold dumbbells against thighs, palms facing you','Pull dumbbells UP close to body, lead with ELBOWS','Elbows should be ABOVE wrists at all times','Raise until elbows reach shoulder height','Lower slowly — 3 seconds down'],avoid:['Raising dumbbells above shoulders — impingement risk','Pulling too wide — reduces trap activation','Using momentum — swinging body'],ytId:'VmB1G1K-t-Q'},
+  'Assisted Pull-Up Machine':{icon:'🧗',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/31.gif',muscles:['Lats','Biceps','Core','Rear Delts'],setup:'Set assistance weight — higher = easier. Kneel on pad',steps:['Grip bar wider than shoulder-width','Let yourself hang, shoulders slightly engaged','Pull down until chin clears the bar','Lead with chest — not chin jutting forward','Lower slowly — take 3 seconds to go back down'],avoid:['Kipping or using momentum','Chin jutting forward','Dropping too fast on the way down'],ytId:'_kGG3hgRoWU'},
+  'Back Extension Machine':{icon:'🔄',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/258.gif',muscles:['Lower Back','Glutes','Hamstrings'],setup:'Adjust pad so hips are at edge, ankles hooked',steps:['Cross arms on chest or hold a weight plate','Start position: body bent forward at 90°','Raise torso by contracting LOWER BACK','Go until body is straight — do not hyperextend','Lower slowly back to 90° — feel the stretch'],avoid:['Hyperextending past straight — spine injury','Using momentum to bounce','Feet not secured — machine tips'],ytId:'ph3pMRoSEkU'},
+  'Reverse Grip Lat Pulldown':{icon:'🔃',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/233.gif',muscles:['Lower Lats','Biceps','Middle Back'],setup:'Underhand grip (palms face you), shoulder-width',steps:['Grip bar underhand at shoulder-width','Lean back slightly, chest up and out','Pull bar to UPPER CHEST, lead with elbows down and back','Squeeze lats and biceps at bottom','Slowly let bar rise — full stretch at top'],avoid:['Wide grip on underhand — defeats purpose','Pulling behind neck','Not leaning back enough — less lat activation'],ytId:'b-ztBZaVFfI'},
+  'Chest Supported Dumbbell Row':{icon:'🤸',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/404.gif',muscles:['Middle Back','Lats','Rear Delts','Biceps'],setup:'Incline bench at 30–45°. Lie face down, chest on pad',steps:['Lie chest-down on incline bench','Let dumbbells hang fully extended below','Pull dumbbells up, leading with elbows — flare out slightly','Squeeze shoulder blades together at top — 1 second','Lower slowly to full extension'],avoid:['Using body momentum — chest stays on pad','Pulling to shoulders instead of ribs','Rushing — slow eccentric is where gains happen'],ytId:'R9_pkSOwUGM'},
+  'Preacher Curl Machine':{icon:'🙏',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/93.gif',muscles:['Biceps','Brachialis'],setup:'Adjust seat so armpits rest on top of preacher pad',steps:['Sit with upper arms resting fully on pad','Grip handles with underhand grip','Curl up until forearms vertical — do NOT go past','Squeeze biceps hard for 1 second','Lower VERY slowly — this is the key part'],avoid:['Lifting shoulders off pad — cheating','Letting arms drop too fast — injury risk at bottom','Going past vertical — takes tension off biceps'],ytId:'fIWP-FRFNU0'},
+  'EZ Bar Curl':{icon:'〰️',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/285.gif',muscles:['Biceps','Brachialis','Brachioradialis'],setup:'Hold EZ bar at angled grip, feet shoulder-width',steps:['Stand tall, elbows tucked to sides','Grip angled part of EZ bar — easier on wrists','Curl bar up to shoulder level — exhale','Squeeze biceps hard at top — 1 second','Lower slowly 2–3 seconds — full extension'],avoid:['Swinging body backward','Elbows drifting forward and up','Dropping bar fast — control is key'],ytId:'ykJmrZ5v0Gg'},
+  'Dumbbell Skull Crusher':{icon:'💀',color:'#2dd4bf',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/249.gif',muscles:['Triceps Long Head','Triceps Lateral Head'],setup:'Lie flat, hold dumbbells directly over shoulders',steps:['Lie on bench, dumbbells above chest, palms facing in','Keep upper arms VERTICAL and STILL throughout','Lower dumbbells toward TEMPLES by bending elbows','Stop just before dumbbells touch temples','Press back up by extending elbows — squeeze triceps'],avoid:['Flaring elbows outward','Moving upper arms — only forearms move','Too heavy — loss of control near face'],ytId:'d_KZxkY_0cM'},
+  'Overhead Cable Tricep Extension':{icon:'🔼',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/220.gif',muscles:['Triceps Long Head','All Tricep Heads'],setup:'Attach rope to LOW cable, face away from machine',steps:['Face away from cable machine, rope behind head','Hinge forward slightly from hips for stability','Elbows framing your head — elbows stay PUT','Extend arms forward and up — squeeze triceps at top','Return slowly — feel the tricep stretch fully'],avoid:['Elbows flaring wide','Leaning too far forward — loses isolation','Not achieving full extension'],ytId:'_gsUck-7f3Y'},
+  'Dumbbell Hip Thrust':{icon:'🌉',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1200.gif',muscles:['Glutes','Hamstrings'],setup:'Upper back on bench, dumbbell on hip crease, feet flat',steps:['Sit with upper back against bench edge','Place dumbbell across hip crease, hold it in place','Feet shoulder-width, flat on floor','Drive hips UP by squeezing glutes — body forms straight line','Hold 2 seconds at top, squeeze hard','Lower hips slowly — stop just before floor'],avoid:['Pushing through lower back instead of glutes','Feet too far — more hamstrings less glutes','Not pausing at top — glute squeeze is the goal'],ytId:'mvBTGx5to_E'},
+  'Sumo Dumbbell Squat':{icon:'🤼',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/128.gif',muscles:['Inner Thighs','Glutes','Quads'],setup:'Feet wide, toes pointed 45° out, dumbbell hanging between legs',steps:['Stand with feet wider than shoulder-width, toes out 45°','Hold one dumbbell vertically between both hands','Squat straight DOWN — chest tall throughout','Inner thighs engaged as you descend','Drive through heels — squeeze glutes at top'],avoid:['Knees caving inward — push knees OUT over toes','Chest falling forward','Not going deep enough'],ytId:'qJwqtJ4-LSE'},
+  'Calf Raise Machine':{icon:'🦶',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/397.gif',muscles:['Gastrocnemius','Soleus','Calves'],setup:'Shoulder pads resting on shoulders, balls of feet on platform',steps:['Stand with balls of feet on edge — heels hanging off','Lower heels as far as possible — full stretch','Rise up on toes as HIGH as possible — full contraction','Hold at the top for 1 second — squeeze calves','Lower slowly — do not rush the descent'],avoid:['Not using full range of motion','Bouncing at bottom — injury risk','Going too fast — calves need slow tempo'],ytId:'3rn-Ubvj5-Y'},
+  'Step-Up with Dumbbells':{icon:'🪜',color:'#4ade80',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/137.gif',muscles:['Quads','Glutes','Hamstrings','Balance'],setup:'Stand facing a bench or box (knee height), dumbbells at sides',steps:['Stand facing bench, dumbbell in each hand','Step UP with one foot, place fully on bench','Drive through FRONT heel to stand on bench','Bring trailing leg up to stand fully','Step back down with control — alternate lead leg'],avoid:['Pushing off back foot — defeats the exercise','Knee of stepping leg caving in','Box too high — strains knee beyond safe range'],ytId:'dQqApCGd5Xo'},
+  'Bulgarian Split Squat':{icon:'🏋️',color:'#4ade80',diff:'hard',img:'https://cdn.jefit.com/assets/img/exercises/gifs/291.gif',muscles:['Quads','Glutes','Hip Flexors','Balance'],setup:'Rear foot elevated on bench, front foot 2 steps ahead',steps:['Place rear foot on bench, laces down','Front foot far enough that front knee stays over ankle','Lower down by bending FRONT knee — control the descent','Back knee drops toward floor — stop before touching','Drive through FRONT heel to rise back up'],avoid:['Front knee going past toes — add more distance','Leaning torso too far forward','Rear foot on toes — use laces-down position'],ytId:'2C-uNgdwi2Q'},
+  'Smith Machine Squat':{icon:'🏗️',color:'#4ade80',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/32.gif',muscles:['Quads','Glutes','Hamstrings','Core'],setup:'Feet slightly in front of bar, shoulder-width, toes slightly out',steps:['Un-rack bar by rotating it forward','Feet slightly in front of bar — NOT directly under','Brace core hard before descending','Squat to parallel — thighs parallel to floor','Drive through heels powerfully — re-rack by rotating back'],avoid:['Feet directly under bar — too vertical angle','Letting knees cave inward','Shallow squats — go to parallel'],ytId:'qpdOFDjBPjY'},
+  'Seated Calf Raise':{icon:'💺',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/110.gif',muscles:['Soleus','Lower Calves'],setup:'Knees under pad, balls of feet on platform edge',steps:['Sit with knee pad across lower thighs','Balls of feet on platform, heels hanging','Lower heels as far as comfortable — full stretch','Press through balls of feet — rise as high as possible','Hold 1 second at top — squeeze calves','Lower slowly — 3 seconds down'],avoid:['Partial range of motion','Going too fast — no benefit','Feet flat on platform — no stretch'],ytId:'3rn-Ubvj5-Y'},
+  'Cable Pull-Through':{icon:'🍑',color:'#4ade80',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/1040.gif',muscles:['Glutes','Hamstrings','Lower Back'],setup:'Rope at LOW cable, stand facing away from machine',steps:['Face away from cable, rope between legs, feet hip-width','Hinge forward at hips, pushing them BACK — soft knee bend','Let rope pull hands between legs and behind you — feel stretch','Drive hips FORWARD powerfully — squeeze glutes hard at top','Think of it as a hip hinge not a squat'],avoid:['Squatting instead of hinging','Rounding lower back','Letting cable yank you back — control the movement'],ytId:'pn8mIlHiYo4'},
+  'Dead Bug':{icon:'🐛',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/606.gif',muscles:['Deep Core','Transverse Abdominis','Lower Back Stability'],setup:'Lie on back, arms toward ceiling, knees at 90° above hips',steps:['Lie flat, arms straight up to ceiling','Bend knees at 90° raised above hips','Press lower back INTO floor — keep it there ALWAYS','Lower opposite arm and leg toward floor simultaneously','Return to start — switch sides. Do not rush'],avoid:['Lower back lifting off the floor','Moving too fast — slow and controlled','Holding breath — exhale as limbs extend'],ytId:'LI0l4Q0Rp1s'},
+  'Ab Wheel Rollout':{icon:'🎡',color:'#c084fc',diff:'hard',img:'https://cdn.jefit.com/assets/img/exercises/gifs/582.gif',muscles:['Core','Abs','Shoulders','Lower Back'],setup:'Kneel on mat, wheel under shoulders, arms straight',steps:['Kneel, grip wheel with both hands directly under shoulders','Brace core HARD before rolling','Roll wheel forward slowly — body gets closer to floor','Go as far as you can while keeping back FLAT','Roll back in using CORE — not momentum'],avoid:['Hips sinking — lower back arch injury','Using momentum to return','Going too far if core is not strong enough'],ytId:'F9O8pTzFGBg'},
+  'Cable Crunch':{icon:'💫',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/217.gif',muscles:['Upper Abs','Rectus Abdominis'],setup:'Rope at HIGH cable, kneel facing machine, rope behind head',steps:['Kneel facing machine, hold rope behind head at ears','Hips stay STILL — do not sit back','Crunch DOWN by rounding upper spine toward floor','Try to bring elbows toward knees','Hold squeeze 1 second — slowly return to upright'],avoid:['Sitting hips back — turns it into a hip flex','Pulling with arms instead of crunching spine','Too heavy — uses neck and shoulders instead of abs'],ytId:'LRoLroDJWKw'},
+  'V-Up':{icon:'✌️',color:'#c084fc',diff:'hard',img:'https://cdn.jefit.com/assets/img/exercises/gifs/604.gif',muscles:['Upper Abs','Lower Abs','Hip Flexors','Core'],setup:'Lie flat on back, arms extended overhead, legs straight',steps:['Start fully flat — arms overhead, legs straight','Simultaneously raise BOTH legs and upper body','Reach hands toward toes at the peak — form a V shape','Hold for 1 second if possible','Lower back down with control — do not crash down'],avoid:['Bending knees to make it easier','Crashing onto mat — control the descent','Neck straining — lead with chest not chin'],ytId:'iP2fjvG0g3w'},
+  'Flutter Kicks':{icon:'🦋',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/573.gif',muscles:['Lower Abs','Hip Flexors','Core'],setup:'Lie flat, hands under lower back, legs 6 inches off floor',steps:['Lie flat, hands palm-down under lower back','Raise both legs to about 6 inches off floor','Kick legs alternately UP and DOWN — small range','Keep lower back PRESSED into hands','Breathe steadily — do not hold breath'],avoid:['Lower back arching off floor','Letting feet touch the ground','Raising legs too high — reduces core tension'],ytId:'ANVdMDaYRts'},
+  'Toe Touches':{icon:'👆',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/598.gif',muscles:['Upper Abs','Core'],setup:'Lie flat, legs raised straight to ceiling, arms at sides',steps:['Lie flat, raise legs straight up to 90°','Keep legs VERTICAL throughout','Reach hands up toward toes — crunch upper body off floor','Touch or get close to toes','Lower upper back slowly — controlled descent'],avoid:['Bending knees','Using neck to pull up — use abs','Dropping upper body fast — slow it down'],ytId:'3ueNFHDoR4M'},
+  'Hanging Knee Raise':{icon:'🏋️',color:'#c084fc',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/231.gif',muscles:['Lower Abs','Hip Flexors','Grip Strength','Core'],setup:'Hang from pull-up bar, arms fully extended, dead hang',steps:['Hang from bar with overhand grip, arms fully extended','Engage shoulders — do not fully relax into joints','Bring BOTH knees up toward chest — round lower back slightly','Hold 1 second at top — squeeze abs','Lower legs slowly — resist gravity on the way down'],avoid:['Swinging momentum to raise legs','Dropping legs too fast','Not rounding lower back at top — reduces ab activation'],ytId:'N0E9LRzCKzA'}
+
 };
+
+
+// ═══ EXERCISE LIBRARY (full catalog for picker) ═══
+const EXERCISE_LIBRARY = [
+  // CARDIO
+  {name:'Treadmill Brisk Walk',tag:'cardio',icon:'🏃',detail:'10 mins warm up'},
+  {name:'Stationary Bike',tag:'cardio',icon:'🚲',detail:'10 mins steady pace'},
+  {name:'Elliptical',tag:'cardio',icon:'🌀',detail:'10 mins warm up'},
+  {name:'Rowing Machine',tag:'cardio',icon:'🚣',detail:'10 mins steady pace'},
+  {name:'Stair Climber',tag:'cardio',icon:'🪜',detail:'10 mins moderate pace'},
+  {name:'Jump Rope',tag:'cardio',icon:'🪢',detail:'3 sets × 2 mins'},
+  {name:'HIIT Treadmill Sprint',tag:'cardio',icon:'⚡',detail:'8 rounds × 30s sprint / 30s rest'},
+  {name:'Battle Ropes',tag:'cardio',icon:'🌊',detail:'4 sets × 30 secs'},
+  // CHEST
+  {name:'Chest Press Machine',tag:'chest',icon:'💪',detail:'4 sets × 12–15 reps'},
+  {name:'Cable Chest Fly',tag:'chest',icon:'🦋',detail:'3 sets × 15 reps'},
+  {name:'Pec Deck Fly Machine',tag:'chest',icon:'🦅',detail:'3 sets × 15 reps'},
+  {name:'Push-Up',tag:'chest',icon:'⬆️',detail:'3 sets × 15–20 reps'},
+  {name:'Incline Dumbbell Press',tag:'chest',icon:'🏋️',detail:'3 sets × 12 reps'},
+  {name:'Cable Crossover',tag:'chest',icon:'✂️',detail:'3 sets × 15 reps'},
+  // SHOULDERS
+  {name:'Dumbbell Shoulder Press',tag:'shoulder',icon:'🏋️',detail:'3 sets × 12 reps'},
+  {name:'Dumbbell Lateral Raise',tag:'shoulder',icon:'🕊️',detail:'3 sets × 15 reps'},
+  {name:'Machine Shoulder Press',tag:'shoulder',icon:'🤖',detail:'3 sets × 12–15 reps'},
+  {name:'Dumbbell Front Raise',tag:'shoulder',icon:'☝️',detail:'3 sets × 12 reps'},
+  {name:'Arnold Press',tag:'shoulder',icon:'💫',detail:'3 sets × 12 reps'},
+  {name:'Rear Delt Fly Machine',tag:'shoulder',icon:'🔙',detail:'3 sets × 15 reps'},
+  {name:'Upright Row Dumbbell',tag:'shoulder',icon:'⬆️',detail:'3 sets × 12 reps'},
+  // BACK
+  {name:'Lat Pulldown',tag:'back',icon:'🦅',detail:'4 sets × 12–15 reps'},
+  {name:'Seated Row Machine',tag:'back',icon:'🚣',detail:'4 sets × 12 reps'},
+  {name:'Cable Face Pull',tag:'back',icon:'🎯',detail:'3 sets × 15 reps'},
+  {name:'Dumbbell Single Arm Row',tag:'back',icon:'🤜',detail:'3 sets × 12 reps each'},
+  {name:'Cable Seated Row',tag:'back',icon:'🛶',detail:'3 sets × 15 reps'},
+  {name:'Assisted Pull-Up Machine',tag:'back',icon:'🧗',detail:'3 sets × 10–12 reps'},
+  {name:'Cable Straight Arm Pulldown',tag:'back',icon:'⬇️',detail:'3 sets × 15 reps'},
+  {name:'Back Extension Machine',tag:'back',icon:'🔄',detail:'3 sets × 15 reps'},
+  {name:'Reverse Grip Lat Pulldown',tag:'back',icon:'🔃',detail:'3 sets × 12 reps'},
+  {name:'Chest Supported Dumbbell Row',tag:'back',icon:'🤸',detail:'3 sets × 12 reps'},
+  // ARMS — BICEPS
+  {name:'Dumbbell Bicep Curl',tag:'arms',icon:'💪',detail:'3 sets × 15 reps'},
+  {name:'Cable Hammer Curl',tag:'arms',icon:'🔨',detail:'3 sets × 12 reps'},
+  {name:'Concentration Curl',tag:'arms',icon:'🎯',detail:'3 sets × 12 reps each'},
+  {name:'Preacher Curl Machine',tag:'arms',icon:'🙏',detail:'3 sets × 12 reps'},
+  {name:'EZ Bar Curl',tag:'arms',icon:'〰️',detail:'3 sets × 12 reps'},
+  // ARMS — TRICEPS
+  {name:'Cable Tricep Pushdown',tag:'arms',icon:'⬇️',detail:'3 sets × 15 reps'},
+  {name:'Dumbbell Overhead Tricep Ext',tag:'arms',icon:'☝️',detail:'3 sets × 12 reps'},
+  {name:'Tricep Bench Dips',tag:'arms',icon:'🪑',detail:'3 sets × 15 reps'},
+  {name:'Dumbbell Skull Crusher',tag:'arms',icon:'💀',detail:'3 sets × 12 reps'},
+  {name:'Overhead Cable Tricep Extension',tag:'arms',icon:'🔼',detail:'3 sets × 15 reps'},
+  // LEGS
+  {name:'Seated Leg Press',tag:'legs',icon:'🦵',detail:'4 sets × 15 reps'},
+  {name:'Dumbbell Romanian Deadlift',tag:'legs',icon:'🏋️',detail:'3 sets × 12 reps'},
+  {name:'Dumbbell Goblet Squat',tag:'legs',icon:'🏆',detail:'3 sets × 15 reps'},
+  {name:'Cable Kickback',tag:'legs',icon:'🍑',detail:'3 sets × 15 reps each'},
+  {name:'Dumbbell Lunges',tag:'legs',icon:'🚶',detail:'3 sets × 12 reps each'},
+  {name:'Leg Curl Machine',tag:'legs',icon:'🦿',detail:'3 sets × 12–15 reps'},
+  {name:'Leg Extension Machine',tag:'legs',icon:'🦵',detail:'3 sets × 15 reps'},
+  {name:'Hip Thrust Machine',tag:'legs',icon:'🍑',detail:'4 sets × 15 reps'},
+  {name:'Dumbbell Hip Thrust',tag:'legs',icon:'🌉',detail:'3 sets × 15 reps'},
+  {name:'Sumo Dumbbell Squat',tag:'legs',icon:'🤼',detail:'3 sets × 15 reps'},
+  {name:'Calf Raise Machine',tag:'legs',icon:'🦶',detail:'4 sets × 20 reps'},
+  {name:'Step-Up with Dumbbells',tag:'legs',icon:'🪜',detail:'3 sets × 12 reps each'},
+  {name:'Glute Bridge',tag:'legs',icon:'🌉',detail:'3 sets × 20 reps'},
+  {name:'Bulgarian Split Squat',tag:'legs',icon:'🏋️',detail:'3 sets × 10 reps each'},
+  {name:'Hip Abduction Machine',tag:'legs',icon:'🦋',detail:'3 sets × 20 reps'},
+  {name:'Smith Machine Squat',tag:'legs',icon:'🏗️',detail:'4 sets × 12 reps'},
+  {name:'Seated Calf Raise',tag:'legs',icon:'💺',detail:'4 sets × 20 reps'},
+  {name:'Cable Pull-Through',tag:'legs',icon:'🍑',detail:'3 sets × 15 reps'},
+  // CORE
+  {name:"Captain's Chair Knee Raise",tag:'core',icon:'🪑',detail:'3 sets × 15 reps'},
+  {name:"Captain's Chair Leg Raise",tag:'core',icon:'🪑',detail:'3 sets × 12 reps'},
+  {name:'Plank',tag:'core',icon:'🏠',detail:'3 sets × 45–60 secs'},
+  {name:'Bicycle Crunches',tag:'core',icon:'🚴',detail:'3 sets × 20 reps'},
+  {name:'Leg Raises',tag:'core',icon:'🦵',detail:'3 sets × 15 reps'},
+  {name:'Russian Twist',tag:'core',icon:'🔄',detail:'3 sets × 20 reps (each side)'},
+  {name:'Dead Bug',tag:'core',icon:'🐛',detail:'3 sets × 10 reps each'},
+  {name:'Side Plank',tag:'core',icon:'↔️',detail:'3 sets × 30–45 secs each side'},
+  {name:'Mountain Climbers',tag:'core',icon:'🧗',detail:'3 sets × 30 secs'},
+  {name:'Ab Wheel Rollout',tag:'core',icon:'🎡',detail:'3 sets × 10 reps'},
+  {name:'Cable Crunch',tag:'core',icon:'💫',detail:'3 sets × 15 reps'},
+  {name:'V-Up',tag:'core',icon:'✌️',detail:'3 sets × 15 reps'},
+  {name:'Flutter Kicks',tag:'core',icon:'🦋',detail:'3 sets × 30 secs'},
+  {name:'Toe Touches',tag:'core',icon:'👆',detail:'3 sets × 20 reps'},
+  {name:'Hanging Knee Raise',tag:'core',icon:'🏋️',detail:'3 sets × 15 reps'},
+];
 
 // ═══ STATE ═══
 let S={};
@@ -850,37 +1009,113 @@ function openEditDay(){
   renderEditDayBody();
   document.getElementById('editDayModal').classList.add('show');
 }
+
+// ── helpers ──
+function getTagColor(tag){return{chest:'#f87171',back:'#60a5fa',legs:'#4ade80',shoulder:'#fbbf24',arms:'#2dd4bf',core:'#c084fc',cardio:'#fb7185'}[tag]||'#888';}
+function getTagBg(tag){return{chest:'rgba(239,68,68,.15)',back:'rgba(59,130,246,.15)',legs:'rgba(34,197,94,.15)',shoulder:'rgba(251,191,36,.15)',arms:'rgba(45,212,191,.15)',core:'rgba(192,132,252,.15)',cardio:'rgba(251,113,133,.15)'}[tag]||'rgba(255,255,255,.07)';}
+
 function renderEditDayBody(){
   const plan=getPlan(schedDay);
-  const TAGS=['chest','back','legs','shoulder','arms','core','cardio'];
   function exRows(sec){
-    return(plan[sec]||[]).map((ex,i)=>`
-      <div class="edit-ex-row">
-        <div style="flex:1;display:grid;gap:4px">
-          <input class="form-input" style="padding:6px 8px;font-size:12px" value="${ex.name}" onchange="updEdEx('${sec}',${i},'name',this.value)">
-          <input class="form-input" style="padding:6px 8px;font-size:11px" value="${ex.detail}" onchange="updEdEx('${sec}',${i},'detail',this.value)">
-          <select class="form-select" style="padding:5px 8px;font-size:11px" onchange="updEdEx('${sec}',${i},'tag',this.value)">
-            ${TAGS.map(t=>`<option value="${t}" ${ex.tag===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}
-          </select>
+    const rows=(plan[sec]||[]).map((ex,i)=>{
+      const libEntry=EXERCISE_LIBRARY.find(e=>e.name===ex.name);
+      const ico=libEntry?libEntry.icon:'🏋️';
+      const tc=getTagColor(ex.tag);const tb=getTagBg(ex.tag);
+      return `<div class="edit-ex-new" id="editrow_${sec}_${i}">
+        <div class="picker-ex-icon" style="background:${tb}">${ico}</div>
+        <div style="flex:1;min-width:0">
+          <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${ex.name}</div>
+          <input class="form-input" style="padding:4px 7px;font-size:11px;margin-top:3px" value="${ex.detail}" onchange="updEdEx('${sec}',${i},'detail',this.value)" placeholder="Sets × reps">
         </div>
-        <button class="icon-btn del-btn" onclick="delEdEx('${sec}',${i})">🗑️</button>
-      </div>`).join('');
+        <span style="font-size:9px;padding:2px 6px;border-radius:8px;background:${tb};color:${tc};font-weight:700;flex-shrink:0">${ex.tag.toUpperCase()}</span>
+        <button class="icon-btn del-btn" onclick="delEdEx('${sec}',${i})" style="flex-shrink:0">✕</button>
+      </div>`;
+    }).join('');
+    const secLabel={'warmup':'🔥 WARM UP','exercises':'💪 MAIN WORKOUT','cooldown':'❄️ COOL DOWN'}[sec]||sec;
+    return rows + `<button class="btn btn-ghost btn-full" style="margin-top:4px;font-size:12px;border:1px dashed var(--bdr)" onclick="openExPicker('${sec}')">＋ Add Exercise to ${secLabel}</button>`;
   }
-  const addBtn=sec=>`<button class="btn btn-ghost btn-full" style="margin-top:6px;font-size:12px" onclick="addEdEx('${sec}')">+ Add Exercise</button>`;
+  document.getElementById('editDayBody').style.display='';
+  document.getElementById('exPickerPanel').style.display='none';
   document.getElementById('editDayBody').innerHTML=`
-    <div class="alert alert-info" style="margin-bottom:10px">Editing <strong>${SDAYS[schedDay]}'s</strong> exercises.</div>
-    <div class="m-sec">🔥 WARM UP</div>${exRows('warmup')}${addBtn('warmup')}
-    <div class="m-sec" style="margin-top:14px">💪 MAIN</div>${exRows('exercises')}${addBtn('exercises')}
-    <div class="m-sec" style="margin-top:14px">❄️ COOL DOWN</div>${exRows('cooldown')}${addBtn('cooldown')}
+    <div style="font-size:11px;color:var(--mut);margin-bottom:10px;padding:8px 10px;background:rgba(240,165,0,.06);border:1px solid rgba(240,165,0,.15);border-radius:9px">
+      Tap <strong style="color:var(--acc)">✕</strong> to remove · Edit sets/reps inline · Tap <strong style="color:var(--acc)">＋ Add</strong> to browse exercises
+    </div>
+    <div class="m-sec">🔥 WARM UP</div>${exRows('warmup')}
+    <div class="m-sec" style="margin-top:14px">💪 MAIN WORKOUT</div>${exRows('exercises')}
+    <div class="m-sec" style="margin-top:14px">❄️ COOL DOWN</div>${exRows('cooldown')}
     <div style="display:flex;gap:8px;margin-top:16px">
-      <button class="btn btn-danger" style="flex:1" onclick="resetDayPlan()">↺ Reset</button>
-      <button class="btn btn-acc" style="flex:1" onclick="closeEditDay()">Save & Close</button>
+      <button class="btn btn-danger" style="flex:1" onclick="resetDayPlan()">↺ Reset to Default</button>
+      <button class="btn btn-acc" style="flex:1" onclick="closeEditDay()">✅ Save & Close</button>
     </div>`;
 }
+
+// ── Exercise Picker ──
+let _pickerSection=null, _pickerTag='all';
+function openExPicker(sec){
+  _pickerSection=sec;_pickerTag='all';
+  const labels={'warmup':'🔥 WARM UP','exercises':'💪 MAIN WORKOUT','cooldown':'❄️ COOL DOWN'};
+  document.getElementById('pickerSectionLabel').textContent='Adding to: '+labels[sec];
+  document.getElementById('exSearchInput').value='';
+  // build tag filter
+  const tags=['all','cardio','chest','back','legs','shoulder','arms','core'];
+  const labels2={all:'All',cardio:'Cardio',chest:'Chest',back:'Back',legs:'Legs',shoulder:'Shoulders',arms:'Arms',core:'Core'};
+  document.getElementById('tagFilterRow').innerHTML=tags.map(t=>`<button class="picker-tag-btn${t==='all'?' active':''}" onclick="setPickerTag('${t}')" id="ptag_${t}">${labels2[t]}</button>`).join('');
+  renderExPickerList();
+  document.getElementById('editDayBody').style.display='none';
+  document.getElementById('exPickerPanel').style.display='block';
+  document.getElementById('exPickerPanel').parentElement.scrollTop=0;
+}
+function closeExPicker(){
+  document.getElementById('exPickerPanel').style.display='none';
+  renderEditDayBody();
+}
+function setPickerTag(tag){
+  _pickerTag=tag;
+  document.querySelectorAll('.picker-tag-btn').forEach(b=>b.classList.remove('active'));
+  const el=document.getElementById('ptag_'+tag);if(el)el.classList.add('active');
+  renderExPickerList();
+}
+function renderExPickerList(){
+  const search=(document.getElementById('exSearchInput')?.value||'').toLowerCase();
+  const plan=getEditPlan();
+  const alreadyIn=new Set([...(plan.warmup||[]),...(plan.exercises||[]),...(plan.cooldown||[])].map(e=>e.name));
+  let filtered=EXERCISE_LIBRARY.filter(e=>{
+    const tagOk=_pickerTag==='all'||e.tag===_pickerTag;
+    const srchOk=!search||e.name.toLowerCase().includes(search)||e.tag.toLowerCase().includes(search);
+    return tagOk&&srchOk;
+  });
+  const tc=e=>getTagColor(e.tag),tb=e=>getTagBg(e.tag);
+  document.getElementById('exPickerList').innerHTML = filtered.length ? filtered.map(e=>{
+    const added=alreadyIn.has(e.name);
+    return `<div class="picker-ex-card${added?' added':''}" onclick="addExFromPicker('${e.name.replace(/'/g,"\'")}')">
+      <div class="picker-ex-icon" style="background:${tb(e)}">${e.icon}</div>
+      <div style="flex:1;min-width:0">
+        <div style="font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${e.name}</div>
+        <div style="font-size:11px;color:var(--mut)">${e.detail}</div>
+      </div>
+      <span style="font-size:9px;padding:2px 6px;border-radius:8px;background:${tb(e)};color:${tc(e)};font-weight:700;flex-shrink:0">${e.tag.toUpperCase()}</span>
+      <span style="font-size:16px;flex-shrink:0;color:${added?'var(--grn)':'var(--acc)'}">${added?'✓':'＋'}</span>
+    </div>`;
+  }).join('') : '<div style="text-align:center;padding:30px;color:var(--mut);font-size:13px">No exercises found 🔍</div>';
+}
+function addExFromPicker(name){
+  const libEx=EXERCISE_LIBRARY.find(e=>e.name===name);if(!libEx)return;
+  const p=getEditPlan();if(!p[_pickerSection])p[_pickerSection]=[];
+  const already=p[_pickerSection].find(e=>e.name===name);
+  if(already){
+    // remove it (toggle off)
+    p[_pickerSection]=p[_pickerSection].filter(e=>e.name!==name);
+  } else {
+    p[_pickerSection].push({name:libEx.name,detail:libEx.detail,tag:libEx.tag});
+  }
+  saveState();
+  // update the plan object for all sections to check duplicates across sections
+  renderExPickerList();
+}
+
 function getEditPlan(){if(!S.customPlan[schedDay])S.customPlan[schedDay]=JSON.parse(JSON.stringify(getPlan(schedDay)));return S.customPlan[schedDay];}
 function updEdEx(sec,idx,field,val){const p=getEditPlan();if(p[sec]&&p[sec][idx])p[sec][idx][field]=val;saveState();}
 function delEdEx(sec,idx){const p=getEditPlan();if(p[sec])p[sec].splice(idx,1);saveState();renderEditDayBody();}
-function addEdEx(sec){const p=getEditPlan();if(!p[sec])p[sec]=[];p[sec].push({name:'New Exercise',detail:'3 sets × 12 reps',tag:'chest'});saveState();renderEditDayBody();}
 function resetDayPlan(){if(confirm('Reset '+SDAYS[schedDay]+' to default?')){delete S.customPlan[schedDay];saveState();renderEditDayBody();}}
 function closeEditDay(){document.getElementById('editDayModal').classList.remove('show');renderSchedule();renderToday();}
 
@@ -1064,6 +1299,62 @@ function renderProfile(){
         🎯 Ideal range: <strong>${iMin}–${iMax} kg</strong><br>${msg}
       </div>`;
   } else bmiCard.style.display='none';
+
+  // --- NEW BMR & TDEE CALCULATION ---
+  const macroCard = document.getElementById('macroCard');
+  if (h > 0 && w > 0 && p.age && p.gender) {
+    macroCard.style.display = '';
+    const age = parseInt(p.age);
+    
+    // 1. Calculate BMR (Mifflin-St Jeor)
+    let bmr = (10 * w) + (6.25 * h) - (5 * age);
+    bmr += (p.gender === 'male') ? 5 : -161;
+
+    // 2. Calculate TDEE based on training days (S.planDays)
+    let activityMultiplier = 1.2; // Sedentary (0 days)
+    if (S.planDays == 3) activityMultiplier = 1.375; // Lightly active
+    if (S.planDays == 4) activityMultiplier = 1.45;  // Light-Moderate
+    if (S.planDays == 5) activityMultiplier = 1.55;  // Moderately active
+    
+    const tdee = Math.round(bmr * activityMultiplier);
+
+    // 3. Calculate Target Calories based on user's goal
+    let calTarget = tdee;
+    let goalText = "Maintenance";
+    let goalColor = "var(--blu)";
+    
+    if (p.goal === 'fat_loss') { 
+      calTarget = tdee - 500; 
+      goalText = "Fat Loss Deficit"; 
+      goalColor = "var(--acc)";
+    } else if (p.goal === 'muscle') { 
+      calTarget = tdee + 300; 
+      goalText = "Muscle Building Surplus"; 
+      goalColor = "var(--grn)";
+    }
+
+    // 4. Render the UI inside the card
+    document.getElementById('macroDisplay').innerHTML = `
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;margin-bottom:10px">
+        <div style="background:rgba(255,255,255,.05);padding:10px;border-radius:12px">
+          <div style="font-size:11px;color:var(--mut)">BMR (Resting)</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--txt)">${Math.round(bmr)} <span style="font-size:12px;font-family:'DM Sans',sans-serif;color:var(--mut)">kcal</span></div>
+        </div>
+        <div style="background:rgba(255,255,255,.05);padding:10px;border-radius:12px">
+          <div style="font-size:11px;color:var(--mut)">TDEE (Active)</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--txt)">${tdee} <span style="font-size:12px;font-family:'DM Sans',sans-serif;color:var(--mut)">kcal</span></div>
+        </div>
+      </div>
+      <div style="background:${goalColor}15;border:1px solid ${goalColor}44;border-radius:12px;padding:12px;text-align:center">
+        <div style="font-size:11px;color:${goalColor};font-weight:700;text-transform:uppercase;letter-spacing:1px">${goalText} Target</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:${goalColor};margin:4px 0">${calTarget} <span style="font-size:16px;font-family:'DM Sans',sans-serif;color:var(--txt)">kcal / day</span></div>
+        <div style="font-size:11px;color:var(--mut)">Calculated using your ${S.planDays}-day training plan</div>
+      </div>
+    `;
+  } else if (macroCard) {
+    macroCard.style.display = 'none';
+  }
+
   // Plan settings
   renderDayAssignGrid();
   // App settings state
@@ -1158,11 +1449,7 @@ function openVid(ytId,name){document.getElementById('vidTitle').textContent=name
 function closeVid(){document.getElementById('vidModal').classList.remove('show');document.getElementById('vidFrame').src='';}
 
 // ═══ WELCOME VIDEO ═══
-// 👇 PASTE YOUR DIRECT VIDEO URL HERE (mp4, webm, etc.)
-// Options: Cloudinary, Dropbox (?dl=1 link), Google Drive direct, your own server
-// Example: 'https://res.cloudinary.com/YOUR_CLOUD/video/upload/your_video.mp4'
 const WELCOME_VIDEO_URL = 'https://res.cloudinary.com/dfe3oqabh/video/upload/v1771838555/NOBODY_Believes_In_You_Gym_Motivation_-_Sam_Odenbach_720p_h264_ehu93l.mp4';
-// ☝️ Replace the URL above with your own motivational video direct link
 
 function unmuteWelcome(){
   const vid=document.getElementById('welcomeVid');
