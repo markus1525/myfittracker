@@ -174,6 +174,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .hist-badge{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.5)}50%{box-shadow:0 0 0 8px rgba(240,165,0,0)}}
 </style>
 </head>
 <body>
@@ -356,6 +357,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         allowfullscreen
         style="display:block;width:100%;height:100%">
       </iframe>
+
     </div>
   </div>
   <!-- Bottom buttons -->
@@ -910,9 +912,9 @@ function closeWelcome(dontShow){
 function showWelcome(){
   try{if(localStorage.getItem('fitNoWelcome')==='1')return;}catch(e){}
   const m=document.getElementById('welcomeModal');
-  // autoplay=1, no mute, loop=1, playlist needed for loop, playsinline for iOS
+  // Autoplay with sound — on iPhone tap video once if no sound
   document.getElementById('welcomeVid').src=
-    'https://www.youtube-nocookie.com/embed/8FqiZzAFp_s?autoplay=1&loop=1&playlist=8FqiZzAFp_s&rel=0&playsinline=1&modestbranding=1&controls=1';
+    'https://www.youtube-nocookie.com/embed/8FqiZzAFp_s?autoplay=1&mute=0&loop=1&playlist=8FqiZzAFp_s&rel=0&playsinline=1&modestbranding=1&controls=1';
   m.style.display='flex';m.style.pointerEvents='all';
   setTimeout(()=>m.style.opacity='1',50);
 }
