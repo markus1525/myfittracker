@@ -1634,24 +1634,46 @@ function clearScheduledNotification(){
   try{localStorage.removeItem('fitNotifScheduled');}catch(e){}
 }
 
-function fireNotification(){
-  if(Notification.permission!=='granted')return;
-  const msg=getRandomMotiv();
-  try{
-    new Notification('FIT TRACKER 🔥',{
-      body:msg,
-      icon:'https://media.istockphoto.com/id/1035561592/vector/vector-design-element-for-the-fitness-center.jpg?s=612x612&w=0&k=20&c=k3yyyEcqeivby9iE7gZIk33PAjtDqNsdEdYiMjw7qsM=',
-      badge:'https://media.istockphoto.com/id/1035561592/vector/vector-design-element-for-the-fitness-center.jpg?s=612x612&w=0&k=20&c=k3yyyEcqeivby9iE7gZIk33PAjtDqNsdEdYiMjw7qsM=',
-      tag:'fittracker-daily',
-      requireInteraction:false
-    });
-  }catch(e){}
+async function fireNotification() {
+  if (Notification.permission !== 'granted') return;
+  const msg = getRandomMotiv();
+  const payload = {
+    title: 'FIT TRACKER 🔥',
+    options: {
+      body: msg,
+      icon: ICON_URL,
+      badge: ICON_URL,
+      tag: 'fittracker-daily',
+      requireInteraction: false
+    }
+  };
+
+  // Try Service Worker method first (required for Android Chrome)
+  if ('serviceWorker' in navigator) {
+    try {
+      const reg = await navigator.serviceWorker.ready;
+      await reg.showNotification(payload.title, payload.options);
+      return;
+    } catch (e) {
+      console.warn('SW notification failed, falling back', e);
+    }
+  }
+
+  // Fallback: direct Notification (works on iOS Safari)
+  try {
+    new Notification(payload.title, payload.options);
+  } catch (e) {
+    console.warn('Notification failed', e);
+  }
 }
 
-function testNotification(){
+async function testNotification(){
   if(Notification.permission!=='granted'){
-    Notification.requestPermission().then(p=>{if(p==='granted')fireNotification();});
-  } else {fireNotification();}
+    const p = await Notification.requestPermission();
+    if(p==='granted') await fireNotification();
+  } else {
+    await fireNotification();
+  }
 }
 
 function updateNotifStatus(msg){
@@ -1670,6 +1692,14 @@ function updateNotifStatus(msg){
 
 // Re-schedule on load if notifications were enabled
 async function initNotifications(){
+  // Register SW for Android support
+  if ('serviceWorker' in navigator) {
+    try {
+      await navigator.serviceWorker.register('./sw.js');
+    } catch (e) {
+      console.warn('SW registration failed:', e);
+    }
+  }
   const cfg=getAppSettings();
   // Default ON on first launch (dailyNotif key not yet set)
   if(cfg.dailyNotif===undefined){
