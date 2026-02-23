@@ -219,7 +219,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <!-- TODAY -->
 <div class="page active" id="page-today">
   <div class="hero"><div class="hero-day" id="todayDayName">LOADING...</div><div class="hero-focus" id="todayFocus"></div><div class="hero-meta" id="todayMeta"></div></div>
-  <div class="done-banner" id="doneBanner"><div style="font-size:36px">🏆</div><div style="font-family:'Bebas Neue',sans-serif;font-size:21px;color:var(--grn);letter-spacing:2px;margin-top:3px">WORKOUT COMPLETE!</div><div style="font-size:12px;color:var(--mut);margin-top:3px">Amazing! Rest, eat protein & recover 💪</div></div>
+  <div class="done-banner" id="doneBanner"><div style="font-size:36px">🏆</div><div style="font-family:'Bebas Neue',sans-serif;font-size:21px;color:var(--grn);letter-spacing:2px;margin-top:3px">WORKOUT COMPLETE!</div><div style="font-size:12px;color:var(--mut);margin-top:3px">Amazing! Rest, eat protein & recover.</div></div>
   <div class="timer-card">
     <div class="timer-lbl">REST TIMER</div><div class="timer-disp" id="timerDisp">01:00</div>
     <div class="timer-btns">
@@ -228,8 +228,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
   </div>
   <div id="workoutSection"></div>
-  <div class="card"><div class="card-hdr"><div><div class="ct">🔥 DAILY CORE</div><div class="cs">Every day — 10 mins</div></div></div><span class="phase ph-core">CORE CIRCUIT</span><div id="coreList"></div></div>
-  <div class="card"><div class="card-hdr"><div><div class="ct">😊 FACE & CHIN</div><div class="cs">5 mins daily</div></div></div><div id="faceList"></div></div>
+  <div class="card"><div class="card-hdr"><div><div class="ct">DAILY CORE</div><div class="cs">Every day — 10 mins</div></div></div><span class="phase ph-core">CORE CIRCUIT</span><div id="coreList"></div></div>
+  <div class="card"><div class="card-hdr"><div><div class="ct">FACE & CHIN</div><div class="cs">5 mins daily</div></div></div><div id="faceList"></div></div>
   <div class="card">
     <div class="card-hdr"><div class="ct">💧 WATER</div><div id="waterCount" style="font-size:12px;color:var(--blu);font-weight:700">0/12 cups</div></div>
     <div style="font-size:11px;color:var(--mut);margin-bottom:5px">Target 3L. Each cup = 250ml.</div>
@@ -264,23 +264,23 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <!-- PROGRESS -->
 <div class="page" id="page-progress">
-  <div class="sec-title">📊 PROGRESS</div>
+  <div class="sec-title">PROGRESS</div>
   <div class="stats-grid">
-    <div class="stat-card"><div class="stat-num" id="stW">0</div><div class="stat-lbl">Workouts Done ✅</div></div>
-    <div class="stat-card"><div class="stat-num" id="stS">0</div><div class="stat-lbl">Day Streak 🔥</div></div>
+    <div class="stat-card"><div class="stat-num" id="stW">0</div><div class="stat-lbl">Workouts Done</div></div>
+    <div class="stat-card"><div class="stat-num" id="stS">0</div><div class="stat-lbl">Day Streak</div></div>
     <div class="stat-card"><div class="stat-num" id="stE">0</div><div class="stat-lbl">Exercises Done</div></div>
-    <div class="stat-card"><div class="stat-num" id="stWa">0</div><div class="stat-lbl">Total Cups 💧</div></div>
+    <div class="stat-card"><div class="stat-num" id="stWa">0</div><div class="stat-lbl">Total Cups</div></div>
   </div>
   <div class="card"><div class="ct" style="margin-bottom:9px">THIS WEEK</div><div id="weekGrid" style="display:flex;gap:5px;justify-content:space-between"></div></div>
-  <div class="card"><div class="ct" style="margin-bottom:9px">🗓️ WORKOUT HISTORY</div><div id="workoutHistory"></div></div>
+  <div class="card"><div class="ct" style="margin-bottom:9px">WORKOUT HISTORY</div><div id="workoutHistory"></div></div>
   <div class="card">
-    <div class="ct" style="margin-bottom:9px">🎯 FAT LOSS TIPS</div>
+    <div class="ct" style="margin-bottom:9px">FAT LOSS TIPS</div>
     <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:17px">🍽️</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">Calorie deficit</span> is #1. Cut sugar, white rice, fried food.</div></div>
     <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:17px">💧</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">3L water daily</span> reduces face puffiness and double chin.</div></div>
     <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:17px">😴</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">Sleep by 10PM.</span> Poor sleep = high cortisol = stubborn belly fat.</div></div>
     <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0"><span style="font-size:17px">⏱️</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">Stop eating after 7:30PM</span> — body burns fat overnight.</div></div>
   </div>
-  <div style="text-align:center;margin-top:11px"><button class="btn btn-danger" onclick="resetAll()">🗑️ Reset All Progress</button></div>
+  <div style="text-align:center;margin-top:11px"><button class="btn btn-danger" onclick="resetAll()">Reset All Progress</button></div>
   <div style="text-align:center;margin-top:18px;padding-bottom:6px">
     <div style="font-size:10px;color:var(--mut);margin-bottom:4px">DEVELOPED BY</div>
     <a href="https://github.com/markus1525" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:20px;padding:7px 14px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--acc)'" onmouseout="this.style.borderColor='var(--bdr)'">
@@ -294,7 +294,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
 <!-- PROFILE -->
 <div class="page" id="page-profile">
-  <div class="sec-title">👤 MY PROFILE</div>
+  <div class="sec-title">MY PROFILE</div>
   <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="uploadPhoto(event)">
   <div class="card" style="text-align:center;padding:18px">
     <div class="prof-avatar-wrap" onclick="document.getElementById('photoInput').click()">
@@ -306,15 +306,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div id="profSub" style="font-size:11px;color:var(--mut);margin-top:2px">Fill in your info below</div>
   </div>
   <div id="bmiCard" class="card" style="display:none">
-    <div class="ct" style="margin-bottom:9px">📊 YOUR BMI</div>
+    <div class="ct" style="margin-bottom:9px">YOUR BMI</div>
     <div id="bmiDisplay"></div>
   </div>
   <div id="macroCard" class="card" style="display:none">
-    <div class="ct" style="margin-bottom:9px">🔥 CALORIE TARGETS</div>
+    <div class="ct" style="margin-bottom:9px">CALORIE TARGETS</div>
     <div id="macroDisplay"></div>
   </div>
   <div class="card">
-    <div class="ct" style="margin-bottom:11px">✏️ MY INFO</div>
+    <div class="ct" style="margin-bottom:11px">MY INFO</div>
     <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" id="pName" type="text" placeholder="e.g. Ahmad" oninput="saveProfile()"></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="pAge" type="number" placeholder="25" oninput="saveProfile()"></div>
@@ -356,7 +356,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 
   <!-- TRAINING PLAN SETTINGS -->
   <div class="card">
-    <div class="ct" style="margin-bottom:4px">🗓️ TRAINING PLAN</div>
+    <div class="ct" style="margin-bottom:4px">TRAINING PLAN</div>
     <div class="cs" style="margin-bottom:12px">Choose how many days per week you train</div>
     <div class="plan-days-sel" id="planDaysSel">
       <button class="plan-day-opt" data-d="3" onclick="applyPreset(3)">3 Days</button>
@@ -368,14 +368,14 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="day-assign-grid" id="dayAssignGrid"></div>
     <div style="display:flex;gap:8px;margin-top:4px">
       <button class="btn btn-danger" style="flex:1;font-size:11px" onclick="resetAssignments()">↺ Reset to Default</button>
-      <button class="btn btn-acc" style="flex:1;font-size:11px" onclick="renderToday();renderSchedule()">✅ Apply</button>
+      <button class="btn btn-acc" style="flex:1;font-size:11px" onclick="renderToday();renderSchedule()">Apply</button>
     </div>
   </div>
 
   <!-- APP SETTINGS CARD -->
   <div class="card" id="settingsCard">
     <div class="card-hdr" style="cursor:pointer;user-select:none" onclick="toggleSettings()">
-      <div><div class="ct">⚙️ APP SETTINGS</div><div class="cs">Customize your experience</div></div>
+      <div><div class="ct">APP SETTINGS</div><div class="cs">Customize your experience</div></div>
       <span id="settingsChevron" style="font-size:18px;color:var(--mut);transition:transform .3s;display:inline-block">▾</span>
     </div>
     <div id="settingsBody">
@@ -411,10 +411,10 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       <div id="notifTimeRow" style="display:none;padding:8px 0 10px;border-bottom:1px solid var(--bdr)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
           <span style="font-size:12px;font-weight:600">Reminder Time</span>
-          <input type="time" id="notifTime" value="10:00" onchange="saveNotifTime(this.value)" style="background:rgba(255,255,255,.08);border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;color:var(--txt);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+          <input type="time" id="notifTime" value="07:00" onchange="saveNotifTime(this.value)" style="background:rgba(255,255,255,.08);border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;color:var(--txt);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
         </div>
         <div id="notifStatus" style="font-size:11px;color:var(--mut);background:rgba(255,255,255,.04);border-radius:8px;padding:7px 10px;line-height:1.5"></div>
-        <button onclick="testNotification()" style="margin-top:7px;width:100%;padding:7px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:10px;color:#4ade80;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔔 Send Test Notification</button>
+        <button onclick="testNotification()" style="margin-top:7px;width:100%;padding:7px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:10px;color:#4ade80;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Send Test Notification</button>
       </div>
 
       <div class="setting-row" style="border-bottom:none">
@@ -431,16 +431,16 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <span style="color:var(--mut)">Storage Used</span>
         <span id="storageUsed" style="color:var(--txt);font-weight:700;background:rgba(255,255,255,.06);padding:2px 9px;border-radius:20px">—</span>
       </div>
-      <button class="btn btn-ghost btn-full" style="font-size:12px;margin-bottom:7px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="exportData()">📤 Export My Data (JSON)</button>
-      <button class="btn btn-danger btn-full" style="font-size:12px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="resetAll()">🗑️ Reset All Progress</button>
+      <button class="btn btn-ghost btn-full" style="font-size:12px;margin-bottom:7px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="exportData()">Export My Data (JSON)</button>
+      <button class="btn btn-danger btn-full" style="font-size:12px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="resetAll()">Reset All Progress</button>
 
       <div style="border-top:1px solid var(--bdr);margin:10px 0"></div>
       <div style="font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">About</div>
       <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:var(--mut)">App Version</span><span style="color:var(--txt);font-weight:700">1.0.0</span></div>
-      <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:var(--mut)">Built for</span><span style="color:var(--acc);font-weight:700">Fat Loss &amp; Fitness 🔥</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:var(--mut)">Built for</span><span style="color:var(--acc);font-weight:700">Fat Loss &amp; Fitness</span></div>
     </div>
   </div>
-  <div style="text-align:center;margin-top:18px;padding-bottom:6px">
+ <div style="text-align:center;margin-top:18px;padding-bottom:6px">
     <div style="font-size:10px;color:var(--mut);margin-bottom:4px">DEVELOPED BY</div>
     <a href="https://github.com/markus1525" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:20px;padding:7px 14px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--acc)'" onmouseout="this.style.borderColor='var(--bdr)'">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="#888"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
@@ -474,7 +474,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="modal-ov" id="editDayModal" onclick="if(event.target===this)closeEditDay()">
   <div class="modal-sheet">
     <div class="modal-drag"></div>
-    <div class="modal-top"><div style="font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--acc)" id="editDayTitle">✏️ EDIT DAY</div><button class="modal-close" style="margin-left:auto" onclick="closeEditDay()">✕</button></div>
+    <div class="modal-top"><div style="font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--acc)" id="editDayTitle">EDIT DAY</div><button class="modal-close" style="margin-left:auto" onclick="closeEditDay()">✕</button></div>
     <div class="modal-body" id="editDayBody"></div>
     <!-- EXERCISE PICKER PANEL (inside same modal sheet) -->
     <div id="exPickerPanel" style="display:none">
@@ -495,7 +495,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="modal-ov" id="editSuppModal" onclick="if(event.target===this)closeEditSupp()">
   <div class="modal-sheet">
     <div class="modal-drag"></div>
-    <div class="modal-top"><div style="font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--acc)">✏️ EDIT SUPPLEMENTS</div><button class="modal-close" style="margin-left:auto" onclick="closeEditSupp()">✕</button></div>
+    <div class="modal-top"><div style="font-family:'Bebas Neue',sans-serif;font-size:19px;color:var(--acc)">EDIT SUPPLEMENTS</div><button class="modal-close" style="margin-left:auto" onclick="closeEditSupp()">✕</button></div>
     <div class="modal-body" id="editSuppBody"></div>
   </div>
 </div>
@@ -513,7 +513,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <!-- WELCOME VIDEO POPUP -->
 <div id="welcomeModal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:space-between;backdrop-filter:blur(8px);opacity:0;transition:opacity .4s;pointer-events:none;padding:env(safe-area-inset-top,12px) 0 env(safe-area-inset-bottom,0)">
   <div style="width:100%;padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,#f0a500,#e05a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💪 STAY MOTIVATED!</div><div style="font-size:11px;color:#666;margin-top:1px">Your daily fitness boost</div></div>
+    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,#f0a500,#e05a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">STAY MOTIVATED!</div><div style="font-size:11px;color:#666;margin-top:1px">Your daily fitness boost</div></div>
     <button onclick="closeWelcome(false)" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:34px;height:34px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
   </div>
   <div style="flex:1;width:100%;max-width:420px;padding:0 12px;display:flex;align-items:center;justify-content:center;min-height:0;position:relative">
@@ -885,7 +885,7 @@ function renderToday(){
   if(plan.isRest){
     ws.innerHTML=`<div class="card" style="text-align:center;padding:22px"><div style="font-size:44px">😴</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--grn);margin-top:6px">REST DAY</div><div style="font-size:12px;color:var(--mut);margin-top:6px">${plan.focus} — still do core & face 👇</div></div>`;
   } else {
-    let h=`<div class="card"><div class="card-hdr"><div><div class="ct">🏋️ TODAY'S WORKOUT</div><div class="cs">Tap ✓ to complete · ℹ️ to see how</div></div></div>
+    let h=`<div class="card"><div class="card-hdr"><div><div class="ct">TODAY'S WORKOUT</div><div class="cs">Tap ✓ to complete · ℹ️ to see how</div></div></div>
     <div class="prg-wrap" style="margin-bottom:12px"><div class="prg-lbl"><span>Completion</span><span id="wPrgLbl">0 / 0</span></div><div class="prg-bar"><div class="prg-fill" id="wPrgFill" style="width:0%"></div></div></div>
     <span class="phase ph-warm">🔥 WARM UP</span>`;
     plan.warmup.forEach((ex,i)=>h+=renderEx(ex,'warm_'+i));
@@ -972,13 +972,13 @@ function renderSchedContent(){
   const sched=isGym?[
     {time:'7:00 AM',act:'Swisse ACV',pill:'supp'},{time:'7:30 AM',act:'Breakfast + Sugar Balance',pill:'meal'},
     {time:'12:30 PM',act:'Swisse ACV',pill:'supp'},{time:'1:00 PM',act:'Lunch + Sugar Balance',pill:'meal'},
-    {time:'4:00 PM',act:'💪 GYM SESSION',pill:'gym'},{time:'5:30 PM',act:'Whey shake (post-workout)',pill:'protein'},
-    {time:'6:45 PM',act:'Swisse ACV',pill:'supp'},{time:'7:00 PM',act:'Dinner + Sugar Balance',pill:'meal'},{time:'10:00 PM',act:'Sleep 😴',pill:'sleep'}
+    {time:'4:00 PM',act:'GYM SESSION',pill:'gym'},{time:'5:30 PM',act:'Whey shake (post-workout)',pill:'protein'},
+    {time:'6:45 PM',act:'Swisse ACV',pill:'supp'},{time:'7:00 PM',act:'Dinner + Sugar Balance',pill:'meal'},{time:'10:00 PM',act:'Sleep',pill:'sleep'}
   ]:[
     {time:'7:00 AM',act:'Swisse ACV',pill:'supp'},{time:'7:30 AM',act:'Breakfast + Sugar Balance',pill:'meal'},
     {time:'12:30 PM',act:'Swisse ACV',pill:'supp'},{time:'1:00 PM',act:'Lunch + Sugar Balance',pill:'meal'},
     {time:'3:00 PM',act:'Whey Fibre shake',pill:'protein'},{time:'6:45 PM',act:'Swisse ACV',pill:'supp'},
-    {time:'7:00 PM',act:'Dinner + Sugar Balance',pill:'meal'},{time:'10:00 PM',act:'Sleep 😴',pill:'sleep'}
+    {time:'7:00 PM',act:'Dinner + Sugar Balance',pill:'meal'},{time:'10:00 PM',act:'Sleep',pill:'sleep'}
   ];
   const pillLbl={supp:'SUPPLEMENT',gym:'GYM',meal:'MEAL',sleep:'SLEEP',protein:'PROTEIN'};
   let h='';
@@ -1005,7 +1005,7 @@ function renderSchedContent(){
 // ═══ EDIT DAY EXERCISES ═══
 function openEditDay(){
   const plan=getPlan(schedDay);
-  document.getElementById('editDayTitle').textContent=`✏️ ${SDAYS[schedDay]} — ${plan.name}`;
+  document.getElementById('editDayTitle').textContent=`${SDAYS[schedDay]} — ${plan.name}`;
   renderEditDayBody();
   document.getElementById('editDayModal').classList.add('show');
 }
@@ -1031,7 +1031,7 @@ function renderEditDayBody(){
         <button class="icon-btn del-btn" onclick="delEdEx('${sec}',${i})" style="flex-shrink:0">✕</button>
       </div>`;
     }).join('');
-    const secLabel={'warmup':'🔥 WARM UP','exercises':'💪 MAIN WORKOUT','cooldown':'❄️ COOL DOWN'}[sec]||sec;
+    const secLabel={'warmup':'WARM UP','exercises':'MAIN WORKOUT','cooldown':'COOL DOWN'}[sec]||sec;
     return rows + `<button class="btn btn-ghost btn-full" style="margin-top:4px;font-size:12px;border:1px dashed var(--bdr)" onclick="openExPicker('${sec}')">＋ Add Exercise to ${secLabel}</button>`;
   }
   document.getElementById('editDayBody').style.display='';
@@ -1040,9 +1040,9 @@ function renderEditDayBody(){
     <div style="font-size:11px;color:var(--mut);margin-bottom:10px;padding:8px 10px;background:rgba(240,165,0,.06);border:1px solid rgba(240,165,0,.15);border-radius:9px">
       Tap <strong style="color:var(--acc)">✕</strong> to remove · Edit sets/reps inline · Tap <strong style="color:var(--acc)">＋ Add</strong> to browse exercises
     </div>
-    <div class="m-sec">🔥 WARM UP</div>${exRows('warmup')}
-    <div class="m-sec" style="margin-top:14px">💪 MAIN WORKOUT</div>${exRows('exercises')}
-    <div class="m-sec" style="margin-top:14px">❄️ COOL DOWN</div>${exRows('cooldown')}
+    <div class="m-sec">WARM UP</div>${exRows('warmup')}
+    <div class="m-sec" style="margin-top:14px">MAIN WORKOUT</div>${exRows('exercises')}
+    <div class="m-sec" style="margin-top:14px">COOL DOWN</div>${exRows('cooldown')}
     <div style="display:flex;gap:8px;margin-top:16px">
       <button class="btn btn-danger" style="flex:1" onclick="resetDayPlan()">↺ Reset to Default</button>
       <button class="btn btn-acc" style="flex:1" onclick="closeEditDay()">✅ Save & Close</button>
@@ -1053,7 +1053,7 @@ function renderEditDayBody(){
 let _pickerSection=null, _pickerTag='all';
 function openExPicker(sec){
   _pickerSection=sec;_pickerTag='all';
-  const labels={'warmup':'🔥 WARM UP','exercises':'💪 MAIN WORKOUT','cooldown':'❄️ COOL DOWN'};
+  const labels={'warmup':'WARM UP','exercises':'MAIN WORKOUT','cooldown':'COOL DOWN'};
   document.getElementById('pickerSectionLabel').textContent='Adding to: '+labels[sec];
   document.getElementById('exSearchInput').value='';
   // build tag filter
@@ -1282,79 +1282,133 @@ function renderProfile(){
     else if(bmi<25){cat='Normal Weight ✅';col='#22c55e';}
     else if(bmi<30){cat='Overweight';col='#f0a500';}
     else{cat='Obese';col='#ef4444';}
-    const iMin=(18.5*(h/100)**2).toFixed(1),iMax=(24.9*(h/100)**2).toFixed(1);
-    const diff=(w-(24.9*(h/100)**2));
-    const msg=diff>0?`📉 Lose <strong>${diff.toFixed(1)} kg</strong> to reach normal range`:'✅ You are in the normal weight range!';
+    const iMin=((18.5*(h/100)**2)).toFixed(1), iMax=((24.9*(h/100)**2)).toFixed(1);
+    // ── Fix: base message on actual BMI category, not just weight diff ──
+    let msg, boxBg, boxBorder, boxTxt;
+    if(bmi < 18.5){
+      const toGain = ((18.5*(h/100)**2) - w).toFixed(1);
+      msg = `📈 Gain <strong>${toGain} kg</strong> to reach normal weight range`;
+      boxBg='rgba(96,165,250,.08)'; boxBorder='rgba(96,165,250,.25)'; boxTxt='#93c5fd';
+    } else if(bmi < 25){
+      msg = '✅ You are in the normal weight range!';
+      boxBg='rgba(34,197,94,.08)'; boxBorder='rgba(34,197,94,.25)'; boxTxt='#86efac';
+    } else if(bmi < 30){
+      const toLose = (w - (24.9*(h/100)**2)).toFixed(1);
+      msg = `📉 Lose <strong>${toLose} kg</strong> to reach normal weight range`;
+      boxBg='rgba(240,165,0,.08)'; boxBorder='rgba(240,165,0,.25)'; boxTxt='#fcd34d';
+    } else {
+      const toLose = (w - (24.9*(h/100)**2)).toFixed(1);
+      msg = `📉 Lose <strong>${toLose} kg</strong> to reach normal weight range`;
+      boxBg='rgba(239,68,68,.08)'; boxBorder='rgba(239,68,68,.25)'; boxTxt='#fca5a5';
+    }
+    // BMI bar: scale 10–45 range
+    const barPct = Math.min(Math.max((bmi-10)/35*100, 1), 99);
     document.getElementById('bmiDisplay').innerHTML=`
       <div style="text-align:center">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:${col};line-height:1">${bmiR}</div>
-        <div style="font-weight:700;font-size:15px;color:${col}">${cat}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:56px;color:${col};line-height:1">${bmiR}</div>
+        <div style="font-weight:700;font-size:16px;color:${col};margin-top:2px">${cat}</div>
         <div style="font-size:11px;color:var(--mut);margin-top:4px">${h}cm · ${w}kg</div>
       </div>
-      <div style="background:var(--bdr);height:8px;border-radius:10px;margin-top:12px;overflow:hidden">
-        <div style="height:100%;width:${Math.min(Math.max((bmi-10)/35*100,2),100)}%;background:${col};border-radius:10px;transition:width .6s"></div>
+      <div style="position:relative;margin-top:14px">
+        <div style="background:linear-gradient(90deg,#60a5fa 0%,#22c55e 30%,#22c55e 55%,#f0a500 70%,#ef4444 100%);height:8px;border-radius:10px;overflow:hidden">
+          <div style="position:absolute;top:-4px;left:${barPct}%;transform:translateX(-50%);width:16px;height:16px;background:${col};border:2px solid white;border-radius:50%;box-shadow:0 0 6px ${col}"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mut);margin-top:8px"><span>Underweight<br>&lt;18.5</span><span>Normal<br>18.5–24.9</span><span>Overweight<br>25–29.9</span><span>Obese<br>≥30</span></div>
       </div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mut);margin-top:3px"><span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span></div>
-      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px;margin-top:10px;font-size:12px;color:#86efac;line-height:1.8">
-        🎯 Ideal range: <strong>${iMin}–${iMax} kg</strong><br>${msg}
+      <div style="background:${boxBg};border:1px solid ${boxBorder};border-radius:10px;padding:10px;margin-top:12px;font-size:12px;color:${boxTxt};line-height:1.8">
+        🎯 Healthy weight for your height: <strong>${iMin}–${iMax} kg</strong><br>${msg}
       </div>`;
   } else bmiCard.style.display='none';
 
-  // --- NEW BMR & TDEE CALCULATION ---
+  // ── CALORIE TARGETS (BMR / TDEE / Goal) ──
   const macroCard = document.getElementById('macroCard');
-  if (h > 0 && w > 0 && p.age && p.gender) {
-    macroCard.style.display = '';
-    const age = parseInt(p.age);
-    
-    // 1. Calculate BMR (Mifflin-St Jeor)
-    let bmr = (10 * w) + (6.25 * h) - (5 * age);
-    bmr += (p.gender === 'male') ? 5 : -161;
-
-    // 2. Calculate TDEE based on training days (S.planDays)
-    let activityMultiplier = 1.2; // Sedentary (0 days)
-    if (S.planDays == 3) activityMultiplier = 1.375; // Lightly active
-    if (S.planDays == 4) activityMultiplier = 1.45;  // Light-Moderate
-    if (S.planDays == 5) activityMultiplier = 1.55;  // Moderately active
-    
-    const tdee = Math.round(bmr * activityMultiplier);
-
-    // 3. Calculate Target Calories based on user's goal
-    let calTarget = tdee;
-    let goalText = "Maintenance";
-    let goalColor = "var(--blu)";
-    
-    if (p.goal === 'fat_loss') { 
-      calTarget = tdee - 500; 
-      goalText = "Fat Loss Deficit"; 
-      goalColor = "var(--acc)";
-    } else if (p.goal === 'muscle') { 
-      calTarget = tdee + 300; 
-      goalText = "Muscle Building Surplus"; 
-      goalColor = "var(--grn)";
+  if(h>0 && w>0 && p.age && p.gender && macroCard){
+    macroCard.style.display='';
+    const age=parseInt(p.age);
+    // Mifflin-St Jeor BMR (most accurate for general population)
+    let bmr = (10 * w) + (6.25 * h) - (5 * age) + (p.gender==='male' ? 5 : -161);
+    // Activity multiplier based on training days
+    const planDays = S.planDays||4;
+    const mult = planDays===0?1.2 : planDays===3?1.375 : planDays===4?1.45 : planDays===5?1.55 : 1.2;
+    const tdee = Math.round(bmr * mult);
+    const bmrR = Math.round(bmr);
+    // Goal-based calorie target
+    const goal = p.goal||'fat_loss';
+    const bmiVal = w/((h/100)**2);
+    let calTarget, goalLabel2, goalColor, goalIcon, goalDesc;
+    if(goal==='fat_loss'){
+      calTarget = tdee - 500;
+      goalLabel2 = 'Fat Loss Deficit';
+      goalColor = 'var(--acc)';
+      goalIcon = '📉';
+      goalDesc = '500 kcal/day below TDEE = ~0.5kg loss/week';
+    } else if(goal==='muscle'){
+      calTarget = tdee + 300;
+      goalLabel2 = 'Muscle Building Surplus';
+      goalColor = 'var(--grn)';
+      goalIcon = '📈';
+      goalDesc = '300 kcal/day above TDEE for lean muscle gain';
+    } else if(goal==='endurance'){
+      calTarget = tdee + 100;
+      goalLabel2 = 'Endurance Maintenance';
+      goalColor = '#60a5fa';
+      goalIcon = '⚡';
+      goalDesc = 'Slight surplus to fuel cardio performance';
+    } else {
+      calTarget = tdee;
+      goalLabel2 = 'Maintenance';
+      goalColor = '#a855f7';
+      goalIcon = '⚖️';
+      goalDesc = 'Match TDEE to maintain current weight';
     }
-
-    // 4. Render the UI inside the card
-    document.getElementById('macroDisplay').innerHTML = `
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;margin-bottom:10px">
-        <div style="background:rgba(255,255,255,.05);padding:10px;border-radius:12px">
-          <div style="font-size:11px;color:var(--mut)">BMR (Resting)</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--txt)">${Math.round(bmr)} <span style="font-size:12px;font-family:'DM Sans',sans-serif;color:var(--mut)">kcal</span></div>
+    // Underweight warning for fat loss goal
+    const warnHtml = (bmiVal<18.5 && goal==='fat_loss')
+      ? `<div style="background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.3);border-radius:10px;padding:9px 11px;margin-bottom:10px;font-size:11px;color:#93c5fd;line-height:1.5">
+          ⚠️ <strong>Note:</strong> Your BMI (${Math.round(bmiVal*10)/10}) is below normal range. Consider switching your goal to <strong>Build Muscle</strong> for healthier weight gain instead of a calorie deficit.
+        </div>` : '';
+    // Macro split (protein 30%, carbs 45%, fat 25% for fat loss | protein 30%, carbs 45%, fat 25% for muscle)
+    const prot = Math.round(calTarget * 0.30 / 4); // 4 kcal/g
+    const carb = Math.round(calTarget * 0.45 / 4);
+    const fat  = Math.round(calTarget * 0.25 / 9); // 9 kcal/g
+    document.getElementById('macroDisplay').innerHTML=`${warnHtml}
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px">
+        <div style="background:rgba(255,255,255,.05);padding:11px;border-radius:12px;text-align:center">
+          <div style="font-size:10px;color:var(--mut);font-weight:700;letter-spacing:.5px">BMR</div>
+          <div style="font-size:9px;color:var(--mut);margin-bottom:4px">Calories at complete rest</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--txt)">${bmrR} <span style="font-size:11px;font-family:'DM Sans',sans-serif;color:var(--mut)">kcal</span></div>
         </div>
-        <div style="background:rgba(255,255,255,.05);padding:10px;border-radius:12px">
-          <div style="font-size:11px;color:var(--mut)">TDEE (Active)</div>
-          <div style="font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--txt)">${tdee} <span style="font-size:12px;font-family:'DM Sans',sans-serif;color:var(--mut)">kcal</span></div>
+        <div style="background:rgba(255,255,255,.05);padding:11px;border-radius:12px;text-align:center">
+          <div style="font-size:10px;color:var(--mut);font-weight:700;letter-spacing:.5px">TDEE</div>
+          <div style="font-size:9px;color:var(--mut);margin-bottom:4px">With ${planDays}-day training plan</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--txt)">${tdee} <span style="font-size:11px;font-family:'DM Sans',sans-serif;color:var(--mut)">kcal</span></div>
         </div>
       </div>
-      <div style="background:${goalColor}15;border:1px solid ${goalColor}44;border-radius:12px;padding:12px;text-align:center">
-        <div style="font-size:11px;color:${goalColor};font-weight:700;text-transform:uppercase;letter-spacing:1px">${goalText} Target</div>
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:${goalColor};margin:4px 0">${calTarget} <span style="font-size:16px;font-family:'DM Sans',sans-serif;color:var(--txt)">kcal / day</span></div>
-        <div style="font-size:11px;color:var(--mut)">Calculated using your ${S.planDays}-day training plan</div>
+      <div style="background:${goalColor}18;border:2px solid ${goalColor}44;border-radius:13px;padding:13px;text-align:center;margin-bottom:10px">
+        <div style="font-size:10px;color:${goalColor};font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:2px">${goalIcon} ${goalLabel2}</div>
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:42px;color:${goalColor};line-height:1.1">${calTarget} <span style="font-size:16px;font-family:'DM Sans',sans-serif;color:var(--txt)">kcal / day</span></div>
+        <div style="font-size:11px;color:var(--mut);margin-top:4px">${goalDesc}</div>
       </div>
-    `;
-  } else if (macroCard) {
-    macroCard.style.display = 'none';
+      <div style="font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:7px">Suggested Macro Split</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;text-align:center">
+        <div style="background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);border-radius:10px;padding:8px">
+          <div style="font-size:9px;color:#f87171;font-weight:700">PROTEIN</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#f87171">${prot}g</div>
+          <div style="font-size:9px;color:var(--mut)">30%</div>
+        </div>
+        <div style="background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.2);border-radius:10px;padding:8px">
+          <div style="font-size:9px;color:var(--acc);font-weight:700">CARBS</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--acc)">${carb}g</div>
+          <div style="font-size:9px;color:var(--mut)">45%</div>
+        </div>
+        <div style="background:rgba(168,85,247,.1);border:1px solid rgba(168,85,247,.2);border-radius:10px;padding:8px">
+          <div style="font-size:9px;color:#c084fc;font-weight:700">FAT</div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#c084fc">${fat}g</div>
+          <div style="font-size:9px;color:var(--mut)">25%</div>
+        </div>
+      </div>`;
+  } else if(macroCard){
+    macroCard.style.display='none';
   }
-
   // Plan settings
   renderDayAssignGrid();
   // App settings state
@@ -1392,7 +1446,7 @@ function renderSettingsState(){
   const notifOn=!!cfg.dailyNotif;
   const tog=document.getElementById('tog_dailyNotif');if(tog)tog.classList.toggle('on',notifOn);
   const row=document.getElementById('notifTimeRow');if(row)row.style.display=notifOn?'block':'none';
-  const nt=document.getElementById('notifTime');if(nt)nt.value=cfg.notifTime||'10:00';
+  const nt=document.getElementById('notifTime');if(nt)nt.value=cfg.notifTime||'07:00';
   if(notifOn)updateNotifStatus();
 }
 function exportData(){
@@ -1433,11 +1487,11 @@ function showExInfo(name){
     :`<div style="font-size:36px">🖼️</div><div style="font-size:11px;color:var(--mut)">No image</div>`}
   </div>`;
   document.getElementById('mBody').innerHTML=`${imgHtml}
-    <div class="m-sec">🎯 Target Muscles</div><div class="muscle-pills">${db.muscles.map(m=>`<span class="muscle-pill">${m}</span>`).join('')}</div>
-    <div class="m-sec">⚙️ Setup</div><div class="setup-box">${db.setup}</div>
-    <div class="m-sec">✅ How To Do It</div><ol class="steps-list">${db.steps.map((s,i)=>`<li class="step-li"><span class="step-n">${i+1}</span><span>${s}</span></li>`).join('')}</ol>
-    <div class="m-sec">⚠️ Mistakes To Avoid</div><ul class="avoid-list">${db.avoid.map(a=>`<li class="avoid-li"><span>❌</span><span>${a}</span></li>`).join('')}</ul>
-    <div class="m-sec">📺 Watch Tutorial</div>
+    <div class="m-sec">Target Muscles</div><div class="muscle-pills">${db.muscles.map(m=>`<span class="muscle-pill">${m}</span>`).join('')}</div>
+    <div class="m-sec">Setup</div><div class="setup-box">${db.setup}</div>
+    <div class="m-sec">How To Do It ✅</div><ol class="steps-list">${db.steps.map((s,i)=>`<li class="step-li"><span class="step-n">${i+1}</span><span>${s}</span></li>`).join('')}</ol>
+    <div class="m-sec">Mistakes To Avoid ⚠️</div><ul class="avoid-list">${db.avoid.map(a=>`<li class="avoid-li"><span>❌</span><span>${a}</span></li>`).join('')}</ul>
+    <div class="m-sec">Watch Tutorial</div>
     <button class="btn-yt" onclick="openVid('${db.ytId}','${name.replace(/'/g,"\\'")}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>Watch Video Tutorial</button>
     <div style="font-size:10px;color:var(--mut);text-align:center;margin-top:6px">Opens YouTube — requires internet</div>`;
   document.getElementById('exModal').classList.add('show');document.body.style.overflow='hidden';
@@ -1449,7 +1503,11 @@ function openVid(ytId,name){document.getElementById('vidTitle').textContent=name
 function closeVid(){document.getElementById('vidModal').classList.remove('show');document.getElementById('vidFrame').src='';}
 
 // ═══ WELCOME VIDEO ═══
+// 👇 PASTE YOUR DIRECT VIDEO URL HERE (mp4, webm, etc.)
+// Options: Cloudinary, Dropbox (?dl=1 link), Google Drive direct, your own server
+// Example: 'https://res.cloudinary.com/YOUR_CLOUD/video/upload/your_video.mp4'
 const WELCOME_VIDEO_URL = 'https://res.cloudinary.com/dfe3oqabh/video/upload/v1771838555/NOBODY_Believes_In_You_Gym_Motivation_-_Sam_Odenbach_720p_h264_ehu93l.mp4';
+// ☝️ Replace the URL above with your own motivational video direct link
 
 function unmuteWelcome(){
   const vid=document.getElementById('welcomeVid');
@@ -1544,7 +1602,7 @@ function scheduleNotification(){
   clearScheduledNotification();
   const cfg=getAppSettings();
   if(!cfg.dailyNotif)return;
-  const [hh,mm]=(cfg.notifTime||'10:00').split(':').map(Number);
+  const [hh,mm]=(cfg.notifTime||'07:00').split(':').map(Number);
   const now=new Date();
   const target=new Date();
   target.setHours(hh,mm,0,0);
@@ -1594,7 +1652,7 @@ function updateNotifStatus(msg){
   if(!cfg.dailyNotif){el.textContent='Notifications are off.';return;}
   const perm=('Notification' in window)?Notification.permission:'unsupported';
   if(perm!=='granted'){el.innerHTML='⚠️ Permission not granted. Tap the toggle to re-request.';return;}
-  const t=cfg.notifTime||'10:00';
+  const t=cfg.notifTime||'07:00';
   const [hh,mm]=t.split(':').map(Number);
   const ampm=hh>=12?'PM':'AM';
   const h12=hh%12||12;
