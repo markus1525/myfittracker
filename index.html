@@ -6,7 +6,6 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="FIT TRACKER">
-<meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a0a0f">
 <link rel="manifest" id="pwa-manifest">
 <link rel="icon" id="favicon">
@@ -113,21 +112,31 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .alert{border-radius:10px;padding:8px 11px;font-size:12px;margin-bottom:8px;display:flex;align-items:flex-start;gap:6px}
 .alert-warn{background:rgba(240,165,0,.1);border:1px solid rgba(240,165,0,.2);color:#fcd34d}
 .alert-info{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.2);color:#93c5fd}
-.tip-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)}
-.tip-item:last-child{border-bottom:none}
-.tip-hi{color:var(--acc);font-weight:700}
 .face-item{padding:8px 0;border-bottom:1px solid var(--bdr)}
 .face-item:last-child{border-bottom:none}
 .face-nm{font-size:13px;font-weight:700;margin-bottom:2px}
 .face-ds{font-size:11px;color:var(--mut)}
 /* PROFILE */
-.profile-avatar{width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:34px;margin:0 auto 10px}
-.bmi-gauge{position:relative;width:160px;height:80px;margin:0 auto 10px;overflow:hidden}
-.bmi-arc-bg{fill:none;stroke:var(--bdr);stroke-width:18}
-.bmi-arc-fill{fill:none;stroke-width:18;stroke-linecap:round;transition:stroke-dashoffset .8s ease}
-.bmi-num{font-family:'Bebas Neue',sans-serif;font-size:34px;text-align:center;line-height:1}
-.bmi-cat{font-size:12px;text-align:center;font-weight:700;margin-top:2px}
-.bmi-scale{display:flex;justify-content:space-between;font-size:9px;color:var(--mut);margin-top:6px}
+.prof-avatar-wrap{position:relative;width:90px;height:90px;margin:0 auto 12px;cursor:pointer}
+.prof-avatar{width:90px;height:90px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:38px;overflow:hidden;border:3px solid rgba(240,165,0,.3)}
+.prof-avatar img{width:100%;height:100%;object-fit:cover}
+.prof-avatar-edit{position:absolute;bottom:2px;right:2px;width:26px;height:26px;background:var(--acc);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;border:2px solid var(--bg)}
+/* PLAN SETTINGS */
+.plan-days-sel{display:flex;gap:8px;margin-bottom:14px}
+.plan-day-opt{flex:1;padding:10px 6px;border-radius:12px;border:2px solid var(--bdr);background:var(--card);color:var(--mut);font-size:13px;font-weight:700;cursor:pointer;text-align:center;transition:all .2s;font-family:'DM Sans',sans-serif}
+.plan-day-opt.active{border-color:var(--acc);color:var(--acc);background:rgba(240,165,0,.1)}
+/* DAY ASSIGNMENT GRID */
+.day-assign-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.day-assign-card{background:rgba(255,255,255,.04);border:1px solid var(--bdr);border-radius:12px;padding:10px 12px;cursor:pointer;transition:all .2s;position:relative}
+.day-assign-card.gym{border-color:rgba(240,165,0,.3)}
+.day-assign-card.rest-day{border-color:rgba(34,197,94,.2)}
+.day-assign-card .day-label{font-size:11px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+.day-assign-card .type-label{font-size:12px;font-weight:700}
+.day-assign-card .type-emoji{font-size:20px;margin-bottom:3px}
+.type-picker{display:none;position:absolute;left:0;right:0;top:calc(100% + 4px);background:#1e1e2e;border:1px solid var(--bdr);border-radius:12px;z-index:50;padding:6px;box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.type-picker.show{display:block}
+.type-opt{padding:8px 10px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;transition:background .15s}
+.type-opt:hover,.type-opt:active{background:rgba(255,255,255,.08)}
 /* FORMS */
 .form-group{margin-bottom:10px}
 .form-label{font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;display:block}
@@ -159,19 +168,27 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .step-li:last-child,.avoid-li:last-child{border-bottom:none}
 .step-n{width:21px;height:21px;background:var(--acc);color:#000;border-radius:50%;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
 .avoid-li{color:#fca5a5}
-/* EDIT EXERCISE ITEM */
 .edit-ex-row{display:flex;align-items:center;gap:7px;padding:8px;background:rgba(255,255,255,.04);border-radius:10px;margin-bottom:6px}
-.edit-ex-row .ex-inf{flex:1}
-/* VIDEO */
 .vid-modal-ov{position:fixed;inset:0;z-index:400;background:rgba(0,0,0,.92);display:flex;align-items:center;justify-content:center;pointer-events:none;opacity:0;transition:opacity .3s}
 .vid-modal-ov.show{opacity:1;pointer-events:all}
 .vid-wrap{width:100%;max-width:480px;padding:14px}
 .vid-close{position:absolute;top:18px;right:18px;background:rgba(255,255,255,.15);border:none;border-radius:50%;width:38px;height:38px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:19px;color:white}
 .vid-frame{width:100%;aspect-ratio:16/9;border-radius:12px;border:none;background:#000}
-/* HISTORY */
 .hist-day{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--bdr);font-size:12px}
 .hist-day:last-child{border-bottom:none}
-.hist-badge{width:32px;height:32px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+/* SETTINGS */
+.setting-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.setting-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;flex-shrink:0}
+.setting-inf{flex:1;min-width:0}
+.setting-nm{font-size:13px;font-weight:600}
+.setting-ds{font-size:11px;color:var(--mut);margin-top:1px}
+.toggle-wrap{cursor:pointer;flex-shrink:0}
+.toggle-track{width:44px;height:24px;background:var(--bdr);border-radius:12px;position:relative;transition:background .25s}
+.toggle-track.on{background:var(--acc)}
+.toggle-thumb{position:absolute;top:3px;left:3px;width:18px;height:18px;background:white;border-radius:50%;transition:transform .25s;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.toggle-track.on .toggle-thumb{transform:translateX(20px)}
+#settingsBody{overflow:hidden;transition:max-height .35s ease,opacity .3s ease;max-height:2000px;opacity:1}
+#settingsBody.collapsed{max-height:0;opacity:0;pointer-events:none}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.5)}50%{box-shadow:0 0 0 8px rgba(240,165,0,0)}}
@@ -182,7 +199,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 <div class="hdr">
   <div class="hdr-top">
     <div style="display:flex;align-items:center;gap:9px">
-      <canvas id="headerIcon" width="36" height="36" style="border-radius:9px;flex-shrink:0"></canvas>
+      <img id="headerIcon" style="width:36px;height:36px;border-radius:9px;flex-shrink:0;object-fit:cover;border:1px solid rgba(240,165,0,0.3);display:none">
       <div class="logo">FIT TRACKER</div>
     </div>
     <div class="streak" id="streakBadge">🔥 0 day streak</div>
@@ -206,7 +223,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="card"><div class="card-hdr"><div><div class="ct">😊 FACE & CHIN</div><div class="cs">5 mins daily</div></div></div><div id="faceList"></div></div>
   <div class="card">
     <div class="card-hdr"><div class="ct">💧 WATER</div><div id="waterCount" style="font-size:12px;color:var(--blu);font-weight:700">0/12 cups</div></div>
-    <div style="font-size:11px;color:var(--mut);margin-bottom:5px">Target 3L. Each cup = 250ml. Tap to track!</div>
+    <div style="font-size:11px;color:var(--mut);margin-bottom:5px">Target 3L. Each cup = 250ml.</div>
     <div class="water-grid" id="waterGrid"></div>
     <div class="prg-wrap"><div class="prg-bar"><div class="prg-fill" id="waterFill" style="width:0%"></div></div></div>
   </div>
@@ -249,26 +266,33 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   <div class="card"><div class="ct" style="margin-bottom:9px">🗓️ WORKOUT HISTORY</div><div id="workoutHistory"></div></div>
   <div class="card">
     <div class="ct" style="margin-bottom:9px">🎯 FAT LOSS TIPS</div>
-    <div class="tip-item"><span style="font-size:17px">🍽️</span><div style="font-size:12px;line-height:1.5"><span class="tip-hi">Calorie deficit</span> is #1. Cut sugar, white rice, fried food.</div></div>
-    <div class="tip-item"><span style="font-size:17px">💧</span><div style="font-size:12px;line-height:1.5"><span class="tip-hi">3L water daily</span> reduces face puffiness and double chin.</div></div>
-    <div class="tip-item"><span style="font-size:17px">😴</span><div style="font-size:12px;line-height:1.5"><span class="tip-hi">Sleep by 10PM.</span> Poor sleep = high cortisol = stubborn belly fat.</div></div>
-    <div class="tip-item"><span style="font-size:17px">⏱️</span><div style="font-size:12px;line-height:1.5"><span class="tip-hi">Stop eating after 7:30PM</span> — body burns fat overnight.</div></div>
-  </div>
-  <div class="card">
-    <div class="ct" style="margin-bottom:9px">⏳ RESULTS TIMELINE</div>
-    <div class="sched-row"><div class="sched-time">Week 1–2</div><div class="sched-act">Less bloating, more energy</div></div>
-    <div class="sched-row"><div class="sched-time">Week 3–4</div><div class="sched-act">Clothes feeling looser</div></div>
-    <div class="sched-row"><div class="sched-time">Week 6–8</div><div class="sched-act" style="color:var(--acc)">Visible belly fat reduction ⭐</div></div>
-    <div class="sched-row"><div class="sched-time">Week 8–12</div><div class="sched-act" style="color:var(--grn)">Double chin slimming 🎉</div></div>
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:17px">🍽️</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">Calorie deficit</span> is #1. Cut sugar, white rice, fried food.</div></div>
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:17px">💧</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">3L water daily</span> reduces face puffiness and double chin.</div></div>
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--bdr)"><span style="font-size:17px">😴</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">Sleep by 10PM.</span> Poor sleep = high cortisol = stubborn belly fat.</div></div>
+    <div style="display:flex;align-items:flex-start;gap:8px;padding:8px 0"><span style="font-size:17px">⏱️</span><div style="font-size:12px;line-height:1.5"><span style="color:var(--acc);font-weight:700">Stop eating after 7:30PM</span> — body burns fat overnight.</div></div>
   </div>
   <div style="text-align:center;margin-top:11px"><button class="btn btn-danger" onclick="resetAll()">🗑️ Reset All Progress</button></div>
+  <div style="text-align:center;margin-top:18px;padding-bottom:6px">
+    <div style="font-size:10px;color:var(--mut);margin-bottom:4px">DEVELOPED BY</div>
+    <a href="https://github.com/markus1525" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:20px;padding:7px 14px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--acc)'" onmouseout="this.style.borderColor='var(--bdr)'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#888"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      <span style="font-size:12px;font-weight:700;color:var(--txt)">Min Thu Kyaw Khaung</span>
+      <span style="font-size:10px;color:var(--mut)">(Markus)</span>
+    </a>
+    <div style="font-size:10px;color:var(--bdr);margin-top:6px">github.com/markus1525</div>
+  </div>
 </div>
 
 <!-- PROFILE -->
 <div class="page" id="page-profile">
   <div class="sec-title">👤 MY PROFILE</div>
+  <input type="file" id="photoInput" accept="image/*" style="display:none" onchange="uploadPhoto(event)">
   <div class="card" style="text-align:center;padding:18px">
-    <div class="profile-avatar" id="profAvatar">👤</div>
+    <div class="prof-avatar-wrap" onclick="document.getElementById('photoInput').click()">
+      <div class="prof-avatar" id="profAvatar"><span id="profAvatarEmoji">👤</span></div>
+      <div class="prof-avatar-edit">📷</div>
+    </div>
+    <div style="font-size:10px;color:var(--mut);margin-bottom:8px">Tap photo to change</div>
     <div id="profName" style="font-family:'Bebas Neue',sans-serif;font-size:23px;letter-spacing:1px">YOUR NAME</div>
     <div id="profSub" style="font-size:11px;color:var(--mut);margin-top:2px">Fill in your info below</div>
   </div>
@@ -280,7 +304,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="ct" style="margin-bottom:11px">✏️ MY INFO</div>
     <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" id="pName" type="text" placeholder="e.g. Ahmad" oninput="saveProfile()"></div>
     <div class="form-row">
-      <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="pAge" type="number" placeholder="25" min="10" max="99" oninput="saveProfile()"></div>
+      <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="pAge" type="number" placeholder="25" oninput="saveProfile()"></div>
       <div class="form-group"><label class="form-label">Gender</label><select class="form-select" id="pGender" onchange="saveProfile()"><option value="">Select</option><option value="male">Male 👨</option><option value="female">Female 👩</option></select></div>
     </div>
     <div class="form-row">
@@ -289,13 +313,87 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </div>
     <div class="form-group"><label class="form-label">Goal</label>
       <select class="form-select" id="pGoal" onchange="saveProfile()">
-        <option value="fat_loss">Fat Loss & Toning</option>
-        <option value="muscle">Build Muscle</option>
-        <option value="endurance">Improve Endurance</option>
-        <option value="maintain">Maintain Weight</option>
+        <option value="fat_loss">Fat Loss & Toning</option><option value="muscle">Build Muscle</option><option value="endurance">Improve Endurance</option><option value="maintain">Maintain Weight</option>
       </select>
     </div>
-    <div id="idealBox" style="display:none;background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:11px;margin-top:5px;font-size:12px;color:#86efac;line-height:1.8"></div>
+  </div>
+
+  <!-- TRAINING PLAN SETTINGS -->
+  <div class="card">
+    <div class="ct" style="margin-bottom:4px">🗓️ TRAINING PLAN</div>
+    <div class="cs" style="margin-bottom:12px">Choose how many days per week you train</div>
+    <div class="plan-days-sel" id="planDaysSel">
+      <button class="plan-day-opt" data-d="3" onclick="applyPreset(3)">3 Days</button>
+      <button class="plan-day-opt" data-d="4" onclick="applyPreset(4)">4 Days</button>
+      <button class="plan-day-opt" data-d="5" onclick="applyPreset(5)">5 Days</button>
+      <button class="plan-day-opt" data-d="0" onclick="applyPreset(0)">Custom</button>
+    </div>
+    <div class="cs" style="margin-bottom:10px">Tap a day to change its workout type</div>
+    <div class="day-assign-grid" id="dayAssignGrid"></div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <button class="btn btn-danger" style="flex:1;font-size:11px" onclick="resetAssignments()">↺ Reset to Default</button>
+      <button class="btn btn-acc" style="flex:1;font-size:11px" onclick="renderToday();renderSchedule()">✅ Apply</button>
+    </div>
+  </div>
+
+  <!-- APP SETTINGS CARD -->
+  <div class="card" id="settingsCard">
+    <div class="card-hdr" style="cursor:pointer;user-select:none" onclick="toggleSettings()">
+      <div><div class="ct">⚙️ APP SETTINGS</div><div class="cs">Customize your experience</div></div>
+      <span id="settingsChevron" style="font-size:18px;color:var(--mut);transition:transform .3s;display:inline-block">▾</span>
+    </div>
+    <div id="settingsBody">
+      <div style="font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Preferences</div>
+
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(239,68,68,.15)">🎬</div>
+        <div class="setting-inf"><div class="setting-nm">Startup Motivation Video</div><div class="setting-ds">Play video when app opens</div></div>
+        <div class="toggle-wrap" onclick="toggleSetting('welcomeVideo')"><div class="toggle-track" id="tog_welcomeVideo"><div class="toggle-thumb"></div></div></div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(59,130,246,.15)">🔔</div>
+        <div class="setting-inf"><div class="setting-nm">Rest Timer Alert</div><div class="setting-ds">Vibrate when rest timer ends</div></div>
+        <div class="toggle-wrap" onclick="toggleSetting('timerVibrate')"><div class="toggle-track" id="tog_timerVibrate"><div class="toggle-thumb"></div></div></div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(168,85,247,.15)">💡</div>
+        <div class="setting-inf"><div class="setting-nm">Keep Screen On</div><div class="setting-ds">Prevent sleep during workout</div></div>
+        <div class="toggle-wrap" onclick="toggleSetting('keepScreen')"><div class="toggle-track" id="tog_keepScreen"><div class="toggle-thumb"></div></div></div>
+      </div>
+
+      <div class="setting-row" style="border-bottom:none">
+        <div class="setting-icon" style="background:rgba(240,165,0,.15)">⏱️</div>
+        <div class="setting-inf"><div class="setting-nm">Default Rest Timer</div><div class="setting-ds">Duration when app loads</div></div>
+        <select class="form-select" id="defTimerSel" style="width:78px;padding:5px 8px;font-size:12px" onchange="saveDefaultTimer(this.value)">
+          <option value="45">45s</option><option value="60">60s</option><option value="90">90s</option><option value="120">2 min</option>
+        </select>
+      </div>
+
+      <div style="border-top:1px solid var(--bdr);margin:10px 0"></div>
+      <div style="font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Data &amp; Storage</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;padding:4px 0;margin-bottom:8px">
+        <span style="color:var(--mut)">Storage Used</span>
+        <span id="storageUsed" style="color:var(--txt);font-weight:700;background:rgba(255,255,255,.06);padding:2px 9px;border-radius:20px">—</span>
+      </div>
+      <button class="btn btn-ghost btn-full" style="font-size:12px;margin-bottom:7px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="exportData()">📤 Export My Data (JSON)</button>
+      <button class="btn btn-danger btn-full" style="font-size:12px;display:flex;align-items:center;justify-content:center;gap:7px" onclick="resetAll()">🗑️ Reset All Progress</button>
+
+      <div style="border-top:1px solid var(--bdr);margin:10px 0"></div>
+      <div style="font-size:10px;color:var(--mut);font-weight:700;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">About</div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:var(--mut)">App Version</span><span style="color:var(--txt);font-weight:700">1.0.0</span></div>
+      <div style="display:flex;justify-content:space-between;font-size:12px;padding:3px 0"><span style="color:var(--mut)">Built for</span><span style="color:var(--acc);font-weight:700">Fat Loss &amp; Fitness 🔥</span></div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:18px;padding-bottom:6px">
+    <div style="font-size:10px;color:var(--mut);margin-bottom:4px">DEVELOPED BY</div>
+    <a href="https://github.com/markus1525" target="_blank" rel="noopener" style="text-decoration:none;display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.05);border:1px solid var(--bdr);border-radius:20px;padding:7px 14px;transition:border-color .2s" onmouseover="this.style.borderColor='var(--acc)'" onmouseout="this.style.borderColor='var(--bdr)'">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="#888"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+      <span style="font-size:12px;font-weight:700;color:var(--txt)">Min Thu Kyaw Khaung</span>
+      <span style="font-size:10px;color:var(--mut)">(Markus)</span>
+    </a>
+    <div style="font-size:10px;color:var(--bdr);margin-top:6px">github.com/markus1525</div>
   </div>
 </div>
 
@@ -336,37 +434,6 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
 </div>
 
-<!-- WELCOME VIDEO POPUP -->
-<div id="welcomeModal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:space-between;backdrop-filter:blur(8px);opacity:0;transition:opacity .4s;pointer-events:none;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)">
-  <!-- Top bar -->
-  <div style="width:100%;padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
-    <div>
-      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,#f0a500,#e05a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💪 STAY MOTIVATED!</div>
-      <div style="font-size:11px;color:#666;margin-top:1px">Your daily fitness boost</div>
-    </div>
-    <button onclick="closeWelcome(false)" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:34px;height:34px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">✕</button>
-  </div>
-  <!-- Video — fills most of screen, 9:16 Shorts format -->
-  <div style="flex:1;width:100%;max-width:420px;padding:0 12px;display:flex;align-items:center;justify-content:center;min-height:0">
-    <div style="width:100%;height:100%;max-height:calc(100vh - 140px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;box-shadow:0 0 60px rgba(240,165,0,.3);position:relative">
-      <iframe id="welcomeVid"
-        width="100%" height="100%"
-        src=""
-        frameborder="0"
-        allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture"
-        allowfullscreen
-        style="display:block;width:100%;height:100%">
-      </iframe>
-
-    </div>
-  </div>
-  <!-- Bottom buttons -->
-  <div style="width:100%;padding:12px 16px 16px;display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0">
-    <button onclick="closeWelcome(false)" style="width:100%;max-width:380px;padding:14px;background:linear-gradient(90deg,#f0a500,#e05a00);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.5px">LET'S TRAIN! 🔥</button>
-    <button onclick="closeWelcome(true)" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline">Don't show again</button>
-  </div>
-</div>
-
 <!-- VIDEO MODAL -->
 <div class="vid-modal-ov" id="vidModal">
   <button class="vid-close" onclick="closeVid()">✕</button>
@@ -377,78 +444,118 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
 </div>
 
+<!-- WELCOME VIDEO POPUP -->
+<div id="welcomeModal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:space-between;backdrop-filter:blur(8px);opacity:0;transition:opacity .4s;pointer-events:none;padding:env(safe-area-inset-top,12px) 0 env(safe-area-inset-bottom,0)">
+  <div style="width:100%;padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,#f0a500,#e05a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💪 STAY MOTIVATED!</div><div style="font-size:11px;color:#666;margin-top:1px">Your daily fitness boost</div></div>
+    <button onclick="closeWelcome(false)" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:34px;height:34px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+  </div>
+  <div style="flex:1;width:100%;max-width:420px;padding:0 12px;display:flex;align-items:center;justify-content:center;min-height:0">
+    <div style="width:100%;height:100%;max-height:calc(100vh - 140px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;box-shadow:0 0 60px rgba(240,165,0,.3)">
+      <iframe id="welcomeVid" width="100%" height="100%" src="" frameborder="0" allow="autoplay;encrypted-media;accelerometer;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;height:100%"></iframe>
+    </div>
+  </div>
+  <div style="width:100%;padding:12px 16px 16px;display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0">
+    <button onclick="closeWelcome(false)" style="width:100%;max-width:380px;padding:14px;background:linear-gradient(90deg,#f0a500,#e05a00);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif">LET'S TRAIN! 🔥</button>
+    <button onclick="closeWelcome(true)" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline">Don't show again</button>
+  </div>
+</div>
+
 <script>
-// ═══ PWA ICON (Custom image) ═══
+// ═══ ICON URL ═══
 const ICON_URL='https://media.istockphoto.com/id/1035561592/vector/vector-design-element-for-the-fitness-center.jpg?s=612x612&w=0&k=20&c=k3yyyEcqeivby9iE7gZIk33PAjtDqNsdEdYiMjw7qsM=';
+
+// ═══ PWA ═══
 (()=>{
-  // Apple touch icon
   let link=document.querySelector("link[rel='apple-touch-icon']");
   if(!link){link=document.createElement('link');link.rel='apple-touch-icon';document.head.appendChild(link);}
   link.href=ICON_URL;
-  // Favicon
   let fav=document.querySelector("link[rel='icon']");
   if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav);}
   fav.href=ICON_URL;
-  // Manifest with custom icon
-  const m={name:'Fit Tracker',short_name:'FitTracker',start_url:'.',display:'standalone',background_color:'#0a0a0f',theme_color:'#f0a500',icons:[{src:ICON_URL,sizes:'512x512',type:'image/jpeg'},{src:ICON_URL,sizes:'192x192',type:'image/jpeg'}]};
+  const m={name:'Fit Tracker',short_name:'FitTracker',start_url:'.',display:'standalone',background_color:'#0a0a0f',theme_color:'#f0a500',icons:[{src:ICON_URL,sizes:'512x512',type:'image/jpeg'}]};
   const b=new Blob([JSON.stringify(m)],{type:'application/json'});
   document.getElementById('pwa-manifest').href=URL.createObjectURL(b);
+  const img=document.getElementById('headerIcon');
+  img.src=ICON_URL;img.style.display='';
+  img.onerror=()=>img.style.display='none';
 })();
 
-// ═══ EXERCISE DB ═══
-const EX_DB = {
-  'Treadmill Brisk Walk':{icon:'🏃',color:'#fb7185',diff:'easy',img:'https://images.ctfassets.net/1q5z3k4ftwpz/43ltI6uNBC4Hrpx3UEl0u2/0f97d3418450c6a718480d2592a04a34/5-benefits-of-walking-on-a-treadmill-for-fitness-and-wellbeing',muscles:['Legs','Core','Cardio System'],setup:'Set speed 5.5–6.5 km/h, incline 2–5%',steps:['Stand tall, shoulders relaxed, eyes forward','Swing arms naturally — do NOT hold the rails','Take medium natural strides','Breathe steadily through nose','Keep incline 2–5% to maximize fat burn'],avoid:['Holding handrails (reduces calorie burn by 25%)','Looking down at feet (bad posture)','Too slow — should feel like a brisk purposeful walk'],ytId:'R1GAiAZfbQk'},
-  'Chest Press Machine':{icon:'💪',color:'#f87171',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/178.gif',muscles:['Chest (Pectorals)','Triceps','Front Shoulders'],setup:'Adjust seat so handles align with your mid-chest level',steps:['Sit with back FLAT against the pad throughout','Grip handles with elbows at ~90°','Press forward until arms almost straight — no full lock','Slowly return to start taking 3 full seconds','Exhale as you press, inhale on the way back'],avoid:['Arching lower back off the pad','Using momentum or bouncing','Fully locking elbows at the top'],ytId:'n8TOta_pfr4'},
-  'Dumbbell Shoulder Press':{icon:'🏋️',color:'#fbbf24',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/48.gif',muscles:['Shoulders (Deltoids)','Triceps','Upper Traps'],setup:'Sit on adjustable bench at 90°. Hold dumbbells at ear height',steps:['Hold dumbbells at ear level, palms facing forward','Keep core tight, back flat against bench','Press up until arms nearly straight — slight bend at top','Lower slowly 2–3 seconds back to ear height','Keep elbows slightly in front, not flared to the side'],avoid:['Leaning back excessively as you press','Dumbbells touching at the top','Dropping the weights fast on the way down'],ytId:'qEwKCR5JCog'},
-  'Cable Chest Fly':{icon:'🦋',color:'#f87171',diff:'medium',img:'https://liftmanual.com/wp-content/uploads/2023/04/cable-seated-chest-fly.jpg',muscles:['Inner Chest','Chest (Pectorals)','Front Shoulders'],setup:'Set pulleys to chest height. Stand centered between cables',steps:['Hold handles, step one foot forward for stability','Slight bend in elbows — KEEP this bend throughout','Bring hands together in front of chest like a hugging motion','Squeeze chest HARD for 1 second at the peak','Slowly open arms back — feel the full chest stretch'],avoid:['Straightening elbows (becomes a shoulder exercise)','Using too much weight — form breaks down fast','Letting the weight pull your arms too far back'],ytId:'PRw7ieDBLl4'},
-  'Dumbbell Lateral Raise':{icon:'🕊️',color:'#fbbf24',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-lateral-raise.jpg',muscles:['Side Deltoids','Shoulder'],setup:'Stand with light dumbbells at your sides. Go lighter than you think!',steps:['Stand with slight knee bend, core tight','Keep a slight bend in elbows throughout','Raise arms OUT to the side until parallel to floor','Lead with your elbows, not your wrists','Lower slowly — 3 seconds down for max burn'],avoid:['Going heavy — ruins form, trains traps not delts','Shrugging shoulders UP as you raise','Raising above shoulder height'],ytId:'XPPfnSEATJA'},
-  'Cable Tricep Pushdown':{icon:'⬇️',color:'#2dd4bf',diff:'easy',img:'https://training.fit/wp-content/uploads/2020/03/trizepsdruecken-kabelzug.png',muscles:['Triceps (all 3 heads)'],setup:'Attach rope or straight bar to HIGH cable pulley',steps:['Stand close to machine, elbows GLUED to sides','Keep elbows completely still — they should not move at all','Push rope/bar down until arms fully extended','Spread the rope apart at the bottom for extra squeeze','Slowly return up — elbows never leave sides'],avoid:['Flaring elbows out (targets wrong muscle)','Leaning too far forward','Using shoulders to push the weight'],ytId:'JDEDaZTEzGE'},
-  'Dumbbell Overhead Tricep Ext':{icon:'☝️',color:'#2dd4bf',diff:'easy',img:'https://training.fit/wp-content/uploads/2020/03/trizepsdruecken-beidarmig-kurzhantel.png',muscles:['Triceps (long head)','Core (stability)'],setup:'Sit on bench. Hold ONE dumbbell with both hands overhead',steps:['Hold dumbbell above head, both hands gripping underneath','Upper arms stay close to head and pointing straight up','Lower dumbbell behind head by bending elbows','Stop when forearms are parallel to floor','Press back up, squeeze triceps hard at the top'],avoid:['Elbows flaring out wide','Arching lower back off bench','Choosing too heavy a weight — kills form'],ytId:'xbNm9fRoUTw'},
-  'Stationary Bike':{icon:'🚲',color:'#fb7185',diff:'easy',img:'https://www.jtxfitness.com/media/catalog/product/j/t/jtx-racerm-smart-exercise-bike.jpg',muscles:['Legs','Cardio System','Glutes'],setup:'Adjust seat: knee has slight bend at the bottom of the pedal stroke',steps:['Set seat height — slight bend at knee at pedal bottom','Sit upright or very slight lean to handles','Pedal at 60–80 RPM comfortable pace','Resistance should feel like light-to-moderate effort','Breathe steadily — you should be able to speak in short sentences'],avoid:['Seat too low — causes knee pain','Zero resistance spinning (wastes time)','Hunching forward over handles'],ytId:'NwwDBARCGgo'},
-  'Seated Leg Press':{icon:'🦵',color:'#4ade80',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/lever-seated-leg-press.jpg',muscles:['Quads','Hamstrings','Glutes','Calves'],setup:'Adjust seat so knees reach 90° with feet flat on platform',steps:['Sit with lower back flat against the pad','Place feet shoulder-width, centered on the platform','Release safety handles and lower weight slowly','Stop when knees reach ~90° — do NOT go lower','Press through your HEELS powerfully to push platform back'],avoid:['Knees caving inward — major injury risk','Hips lifting off the seat at the bottom','Locking knees out fully at the top'],ytId:'qCR9bN3G1t4'},
-  'Dumbbell Romanian Deadlift':{icon:'🏋️',color:'#4ade80',diff:'medium',img:'https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-romanian-deadlift.jpg',muscles:['Hamstrings','Glutes','Lower Back'],setup:'Stand with dumbbells in front of thighs, feet hip-width',steps:['Start standing tall, dumbbells resting on thighs','Slight bend in knees — KEEP this throughout','Hinge at hips and push hips BACK as you lower','Keep dumbbells sliding close against your legs','Lower until you feel a strong hamstring stretch, then drive hips forward to stand'],avoid:['Rounding the lower back — serious injury risk','Bending knees too much (becomes a squat)','Letting dumbbells drift away from your legs'],ytId:'tjyKumw8S44'},
-  'Dumbbell Goblet Squat':{icon:'🏆',color:'#4ade80',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-goblet-box-squat.jpg',muscles:['Quads','Glutes','Core','Inner Thighs'],setup:'Hold one dumbbell vertically at chest. Feet shoulder-width, toes out slightly',steps:['Hold dumbbell at chest height with both hands underneath','Push hips back FIRST then bend knees to descend','Keep chest tall — do not let it collapse forward','Go until thighs are parallel to floor or slightly below','Drive through heels to stand, squeeze glutes hard at top'],avoid:['Heels lifting off the floor','Knees caving inward as you squat','Chest falling forward'],ytId:'2LnkzQ7paAc'},
-  'Cable Kickback':{icon:'🍑',color:'#4ade80',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/cable-donkey-kickback.jpg',muscles:['Glutes (especially outer glute)','Hip Stabilizers'],setup:'Attach ankle strap to LOW cable pulley',steps:['Strap on ankle, face the machine, slight lean forward','Hold machine frame for balance','Core tight, slight bend in standing knee','Kick the strapped leg STRAIGHT back — squeeze glute at peak','Hold 1 second at top, then lower slowly with full control'],avoid:['Swinging leg with momentum','Using your lower back to kick instead of glute','Rushing the reps — slow and controlled is key'],ytId:'Zreysysk52c'},
-  "Captain's Chair Knee Raise":{icon:'🪑',color:'#c084fc',diff:'medium',img:'https://i.makeagif.com/media/6-04-2015/Ur48-u.gif',muscles:['Lower Abs','Hip Flexors','Core'],setup:"Prop forearms on the captain's chair pads, back against pad, legs hanging",steps:['Forearms on pads, shoulders pressed down, legs hanging','Keep back against pad — do NOT swing','Slowly raise knees toward your chest','Hold at the top for 1 second, squeeze abs','Lower legs slowly — do not let them drop or swing'],avoid:['Swinging legs to gain momentum','Dropping legs too fast','Holding breath — exhale as knees come up'],ytId:'7KDDZtaUaxw'},
-  "Captain's Chair Leg Raise":{icon:'🪑',color:'#c084fc',diff:'hard',img:'https://www.verywellfit.com/thmb/wY2NmB0-W3tCxZDntFbRtzUZHMQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/42-3498291-Captains-Chair-Leg-Raises-GIF-a2f30dc759fe474c94893c8bd19abecb.gif',muscles:['Lower Abs','Hip Flexors','Core'],setup:'Same as knee raise but legs stay STRAIGHT throughout',steps:['Prop up on captain\'s chair, legs hanging straight','Keep legs as straight as possible throughout','Raise legs until parallel to floor or higher','Hold 1–2 seconds squeezing abs hard at top','Lower very slowly — this is where results happen'],avoid:['Bending knees to compensate for weak abs','Swinging using momentum — defeats the purpose','Leaning back too much from the pad'],ytId:'Gtv_pe0E42U'},
-  'Elliptical':{icon:'🌀',color:'#fb7185',diff:'easy',img:'https://www.garagegymreviews.com/wp-content/uploads/2023/07/DSC09957-1.jpg',muscles:['Full Body','Legs','Arms','Cardio System'],setup:'Set moderate resistance. Hold the moving handles for full-body benefit',steps:['Step on pedals and grip the MOVING handles','Move in smooth oval motion — no stomping','Actively push AND pull the handles (upper body counts!)','Keep core lightly engaged throughout','Comfortable pace — able to hold a conversation'],avoid:['Only using legs and ignoring the arm handles','Leaning body weight heavily onto handles','Pedaling so fast you lose smooth form'],ytId:'YWfswVvOaiI'},
-  'Lat Pulldown':{icon:'🦅',color:'#60a5fa',diff:'easy',img:'https://bellsofsteel.com/cdn/shop/articles/Does-Lat-Pulldown-Work-Forearms.webp?v=1708539827&width=1024',muscles:['Lats (Back "Wings")','Biceps','Rear Delts'],setup:'Adjust thigh pads to lock your knees in. Use overhand wide grip',steps:['Grip bar wider than shoulder-width, overhand','Slight lean back (10–15°), chest up and forward','Pull bar to your UPPER CHEST — lead with elbows going down','Squeeze lats hard when bar touches chest','Slowly let bar rise back up — feel the lat stretch at the top'],avoid:['Pulling bar BEHIND the neck — dangerous for spine','Using body momentum to swing and pull','Letting the bar rise back up too fast'],ytId:'SALxEARiMkw'},
-  'Seated Row Machine':{icon:'🚣',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/21.gif',muscles:['Middle Back','Lats','Biceps','Rear Delts'],setup:'Sit with chest pad touching chest, arms extended to reach grips',steps:['Chest against pad, arms fully extended forward','Grab handles — use neutral (palms facing each other) grip if available','Pull handles toward your lower chest/upper abdomen','Squeeze shoulder blades TOGETHER at the peak — hold 1 sec','Slowly extend arms fully back out — feel the full back stretch'],avoid:['Rounding back as you pull — serious injury risk','Pulling with biceps only instead of initiating with back','Jerking or using momentum'],ytId:'RPxM76cp0Y8'},
-  'Cable Face Pull':{icon:'🎯',color:'#60a5fa',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/cable-standing-face-pull.jpg',muscles:['Rear Delts','Upper Traps','External Rotators'],setup:'Attach rope to HIGH cable (at or above eye level)',steps:['Grip rope with thumbs pointing BACK toward you','Stand with slight lean back for stability','Pull rope toward your FACE — separate the rope as you pull','Externally rotate wrists until hands are beside your ears','Hold 1 second — slowly extend arms back out'],avoid:['Going too heavy — ruins the rotation and form','Shrugging traps up instead of pulling rear delt','Not separating the rope ends at the peak'],ytId:'0Po47vvj9g4'},
-  'Dumbbell Single Arm Row':{icon:'🤜',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/90.gif',muscles:['Lats','Middle Back','Biceps'],setup:'Place same-side knee AND hand on bench. Other foot on floor',steps:['Same-side knee and hand on bench — back PARALLEL to floor','Hold dumbbell in free hand, arm fully extended down','Pull dumbbell toward your HIP — lead with elbow','Keep shoulder blade engaged','Lower arm fully straight before the next rep'],avoid:['Rotating torso to lift (use back not body momentum)','Pulling to chest instead of hip','Not using full range of motion at the bottom'],ytId:'DMo3HJoawrU'},
-  'Dumbbell Bicep Curl':{icon:'💪',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/276.gif',muscles:['Biceps','Brachialis'],setup:'Stand tall with dumbbells at sides, palms facing FORWARD',steps:['Stand tall, elbows tucked tight at sides — they stay there!','Curl both dumbbells up, rotating palms toward ceiling as you lift','Do NOT let elbows drift forward as you curl up','Squeeze biceps HARD at the top for 1 second','Lower slowly 2–3 seconds'],avoid:['Swinging body/using momentum — halves the bicep work','Elbows drifting forward at the top','Dropping weights fast on the way down'],ytId:'6DeLZ6cbgWQ'},
-  'Cable Hammer Curl':{icon:'🔨',color:'#2dd4bf',diff:'easy',img:'https://barbend.com/wp-content/uploads/2021/08/rope-hammer-curl-barbend-movement-gif-masters.gif',muscles:['Brachialis (arm thickness)','Biceps','Forearms'],setup:'Attach rope to LOW cable. Hold with neutral grip (palms facing each other)',steps:['Hold rope ends with palms facing each other (neutral grip)','Elbows tucked at sides — do not let them move','Curl rope toward shoulders keeping neutral grip throughout','At the top, keep the rope split (do not let ends touch)','Lower slowly back to full arm extension'],avoid:['Swinging elbows forward','Letting elbows flare out to the sides','Using too heavy a weight'],ytId:'O6JZnQaW-co'},
-  'Plank':{icon:'🏠',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/631.gif',muscles:['Core','Abs','Lower Back','Glutes','Shoulders'],setup:'Face down on floor — forearms on ground, elbows under shoulders, up on toes',steps:['Forearms on floor, elbows directly under shoulders','Rise up on toes — body forms a straight line head to heel','Squeeze core, glutes, AND quads simultaneously','Look at the floor — neck neutral, not looking up','Breathe normally and hold for 45–60 seconds'],avoid:['Hips too high (piked up) — this is cheating','Hips sagging down toward floor — lower back pain','Holding breath throughout the hold'],ytId:'pSHjTRCQxIw'},
-  'Bicycle Crunches':{icon:'🚴',color:'#c084fc',diff:'easy',img:'https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyanJvN2JsOWt4b2FsNG1yZnBsbGV4ejBtY2Q1enB6NTRteTBnYTc1NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/TMNCtgJGJnV8k/giphy.gif',muscles:['Obliques','Upper Abs','Core'],setup:'Lie flat on back, hands lightly behind head, legs raised to 90°',steps:['Lie on back, both knees bent at 90°, lifted off floor','Hands lightly behind head — do NOT pull on neck','Bring right elbow toward left knee while EXTENDING right leg','Switch: left elbow to right knee, extend left leg out','Slow and controlled — 2 full seconds each side'],avoid:['Pulling head with hands — neck pain and cheating','Going too fast (pure momentum, no muscle work)','Not fully extending the opposite leg as you rotate'],ytId:'9FGilxCbdz8'},
-  'Leg Raises':{icon:'🦵',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/44.gif',muscles:['Lower Abs','Hip Flexors'],setup:'Lie flat on back on a mat, hands under lower back for support',steps:['Lie flat, place hands palm-down under your lower back','Keep legs straight or very slightly bent throughout','Raise legs until pointing at ceiling (90°)','Hold for 1 second at top','Lower legs SLOWLY — stop just BEFORE heels touch the floor, then repeat'],avoid:['Lower back arching off floor — use hands as support','Dropping legs fast','Bending knees too much'],ytId:'JB2oyawG9KI'},
-  'Dumbbell Lunges':{icon:'🚶',color:'#4ade80',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/136.gif',muscles:['Quads','Glutes','Hamstrings','Balance'],setup:'Stand tall with dumbbells at sides',steps:['Stand with feet together, dumbbells at sides','Take a LONG step forward with one leg','Lower your back knee toward the floor — stop just before it touches','Both knees should be at approximately 90° at the bottom','Push off front foot powerfully to return to start, then alternate legs'],avoid:['Front knee going past your toes — increases knee stress','Leaning torso too far forward','Back knee slamming into the floor'],ytId:'9gglI77Kzq8'},
-  'Cable Seated Row':{icon:'🚣',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/21.gif',muscles:['Middle Back','Lats','Biceps'],setup:'Sit on cable row station. Feet on pads, slight bend in knees',steps:['Sit upright with slight lean forward to start','Grip V-bar handle (neutral grip) or handles provided','Pull toward lower abdomen/navel area','Retract shoulder blades TOGETHER at peak — think pinching a pencil','Slowly return arms forward feeling the back fully stretch'],avoid:['Rounding back as you row — back should stay flat','Leaning back too far (becomes a back extension)','Only using biceps to pull'],ytId:'lJoozxC0Rns'}
+// ═══ WORKOUT TEMPLATES ═══
+const TEMPLATES = {
+  rest:{name:'REST DAY',focus:'Active Recovery',isRest:true},
+  push:{name:'UPPER PUSH',focus:'Chest • Shoulders • Triceps',color:'#ef4444',duration:'60 mins',
+    warmup:[{name:'Treadmill Brisk Walk',detail:'10 mins warm up',tag:'cardio'}],
+    exercises:[{name:'Chest Press Machine',detail:'4 sets × 12–15 reps',tag:'chest'},{name:'Dumbbell Shoulder Press',detail:'3 sets × 12 reps',tag:'shoulder'},{name:'Cable Chest Fly',detail:'3 sets × 15 reps',tag:'chest'},{name:'Dumbbell Lateral Raise',detail:'3 sets × 15 reps',tag:'shoulder'},{name:'Cable Tricep Pushdown',detail:'3 sets × 15 reps',tag:'arms'},{name:'Dumbbell Overhead Tricep Ext',detail:'3 sets × 12 reps',tag:'arms'}],
+    cooldown:[{name:'Stationary Bike',detail:'10 mins easy pace',tag:'cardio'}]},
+  pull:{name:'UPPER PULL',focus:'Back • Biceps',color:'#3b82f6',duration:'60 mins',
+    warmup:[{name:'Elliptical',detail:'10 mins warm up',tag:'cardio'}],
+    exercises:[{name:'Lat Pulldown',detail:'4 sets × 12–15 reps',tag:'back'},{name:'Seated Row Machine',detail:'4 sets × 12 reps',tag:'back'},{name:'Cable Face Pull',detail:'3 sets × 15 reps',tag:'back'},{name:'Dumbbell Single Arm Row',detail:'3 sets × 12 reps each',tag:'back'},{name:'Dumbbell Bicep Curl',detail:'3 sets × 15 reps',tag:'arms'},{name:'Cable Hammer Curl',detail:'3 sets × 12 reps',tag:'arms'}],
+    cooldown:[{name:'Treadmill Brisk Walk',detail:'10 mins cool down',tag:'cardio'}]},
+  lower:{name:'LOWER BODY',focus:'Legs • Glutes • Core',color:'#22c55e',duration:'60 mins',
+    warmup:[{name:'Stationary Bike',detail:'10 mins warm up',tag:'cardio'}],
+    exercises:[{name:'Seated Leg Press',detail:'4 sets × 15 reps',tag:'legs'},{name:'Dumbbell Romanian Deadlift',detail:'3 sets × 12 reps',tag:'legs'},{name:'Dumbbell Goblet Squat',detail:'3 sets × 15 reps',tag:'legs'},{name:'Cable Kickback',detail:'3 sets × 15 reps each',tag:'legs'},{name:"Captain's Chair Knee Raise",detail:'3 sets × 15 reps',tag:'core'}],
+    cooldown:[{name:'Elliptical',detail:'10 mins easy pace',tag:'cardio'}]},
+  fullbody:{name:'FULL BODY BURN',focus:'Full Body • Cardio Finisher',color:'#f0a500',duration:'75 mins',
+    warmup:[{name:'Treadmill Brisk Walk',detail:'5 mins warm up',tag:'cardio'}],
+    exercises:[{name:'Chest Press Machine',detail:'3 sets × 15 reps',tag:'chest'},{name:'Lat Pulldown',detail:'3 sets × 15 reps',tag:'back'},{name:'Seated Leg Press',detail:'3 sets × 15 reps',tag:'legs'},{name:'Dumbbell Shoulder Press',detail:'3 sets × 12 reps',tag:'shoulder'},{name:'Cable Seated Row',detail:'3 sets × 15 reps',tag:'back'},{name:'Dumbbell Lunges',detail:'3 sets × 12 reps each',tag:'legs'},{name:"Captain's Chair Leg Raise",detail:'3 sets × 12 reps',tag:'core'}],
+    cooldown:[{name:'Stationary Bike',detail:'20 mins cardio finisher 🔥',tag:'cardio'}]}
 };
 
-// ═══ DEFAULT DATA ═══
-const DEFAULT_PLAN = {
-  1:{name:'UPPER PUSH',focus:'Chest • Shoulders • Triceps',color:'#ef4444',duration:'60 mins',warmup:[{name:'Treadmill Brisk Walk',detail:'10 mins warm up',tag:'cardio'}],exercises:[{name:'Chest Press Machine',detail:'4 sets × 12–15 reps',tag:'chest'},{name:'Dumbbell Shoulder Press',detail:'3 sets × 12 reps',tag:'shoulder'},{name:'Cable Chest Fly',detail:'3 sets × 15 reps',tag:'chest'},{name:'Dumbbell Lateral Raise',detail:'3 sets × 15 reps',tag:'shoulder'},{name:'Cable Tricep Pushdown',detail:'3 sets × 15 reps',tag:'arms'},{name:'Dumbbell Overhead Tricep Ext',detail:'3 sets × 12 reps',tag:'arms'}],cooldown:[{name:'Stationary Bike',detail:'10 mins easy pace',tag:'cardio'}]},
-  2:{name:'LOWER BODY',focus:'Legs • Glutes • Core',color:'#22c55e',duration:'60 mins',warmup:[{name:'Stationary Bike',detail:'10 mins warm up',tag:'cardio'}],exercises:[{name:'Seated Leg Press',detail:'4 sets × 15 reps',tag:'legs'},{name:'Dumbbell Romanian Deadlift',detail:'3 sets × 12 reps',tag:'legs'},{name:'Dumbbell Goblet Squat',detail:'3 sets × 15 reps',tag:'legs'},{name:'Cable Kickback',detail:'3 sets × 15 reps each side',tag:'legs'},{name:"Captain's Chair Knee Raise",detail:'3 sets × 15 reps',tag:'core'}],cooldown:[{name:'Elliptical',detail:'10 mins easy pace',tag:'cardio'}]},
-  3:{name:'REST DAY',focus:'Active Recovery',isRest:true},
-  4:{name:'UPPER PULL',focus:'Back • Biceps',color:'#3b82f6',duration:'60 mins',warmup:[{name:'Elliptical',detail:'10 mins warm up',tag:'cardio'}],exercises:[{name:'Lat Pulldown',detail:'4 sets × 12–15 reps',tag:'back'},{name:'Seated Row Machine',detail:'4 sets × 12 reps',tag:'back'},{name:'Cable Face Pull',detail:'3 sets × 15 reps',tag:'back'},{name:'Dumbbell Single Arm Row',detail:'3 sets × 12 reps each',tag:'back'},{name:'Dumbbell Bicep Curl',detail:'3 sets × 15 reps',tag:'arms'},{name:'Cable Hammer Curl',detail:'3 sets × 12 reps',tag:'arms'}],cooldown:[{name:'Treadmill Brisk Walk',detail:'10 mins cool down',tag:'cardio'}]},
-  5:{name:'REST DAY',focus:'Stretch & Light Walk',isRest:true},
-  6:{name:'FULL BODY BURN',focus:'Full Body • Cardio Finisher',color:'#f0a500',duration:'75 mins',warmup:[{name:'Treadmill Brisk Walk',detail:'5 mins warm up',tag:'cardio'}],exercises:[{name:'Chest Press Machine',detail:'3 sets × 15 reps',tag:'chest'},{name:'Lat Pulldown',detail:'3 sets × 15 reps',tag:'back'},{name:'Seated Leg Press',detail:'3 sets × 15 reps',tag:'legs'},{name:'Dumbbell Shoulder Press',detail:'3 sets × 12 reps',tag:'shoulder'},{name:'Cable Seated Row',detail:'3 sets × 15 reps',tag:'back'},{name:'Dumbbell Lunges',detail:'3 sets × 12 reps each',tag:'legs'},{name:"Captain's Chair Leg Raise",detail:'3 sets × 12 reps',tag:'core'}],cooldown:[{name:'Stationary Bike',detail:'20 mins cardio finisher 🔥',tag:'cardio'}]},
-  0:{name:'REST DAY',focus:'Full Recovery',isRest:true}
+const TYPE_INFO = {
+  rest:     {label:'Rest Day',    emoji:'😴', color:'#22c55e'},
+  push:     {label:'Upper Push',  emoji:'💪', color:'#ef4444'},
+  pull:     {label:'Upper Pull',  emoji:'🦅', color:'#3b82f6'},
+  lower:    {label:'Lower Body',  emoji:'🦵', color:'#22c55e'},
+  fullbody: {label:'Full Body',   emoji:'🔥', color:'#f0a500'}
 };
-const DEFAULT_SUPPS = {
-  morning:[{icon:'🍎',name:'Swisse ACV',time:'7:00 AM — 15 mins BEFORE breakfast',id:'acv_m'},{icon:'🥣',name:'Breakfast',time:'7:30 AM',isMeal:true},{icon:'⚖️',name:'Blackmores Sugar Balance',time:'WITH breakfast',id:'sb_m'}],
-  midday:[{icon:'🍎',name:'Swisse ACV',time:'12:30 PM — 15 mins BEFORE lunch',id:'acv_l'},{icon:'🍽️',name:'Lunch',time:'1:00 PM',isMeal:true},{icon:'⚖️',name:'Blackmores Sugar Balance',time:'WITH lunch',id:'sb_l'},{icon:'💪',name:'B2 Whey Fibre Shake',time:'3:00–4:00 PM snack or post-workout',id:'whey_m'}],
-  evening:[{icon:'🍎',name:'Swisse ACV',time:'6:45 PM — 15 mins BEFORE dinner',id:'acv_d'},{icon:'🍽️',name:'Dinner',time:'7:00 PM — stop eating after 7:30PM!',isMeal:true},{icon:'⚖️',name:'Blackmores Sugar Balance',time:'WITH dinner',id:'sb_d'}],
-  bed:[{icon:'💪',name:'B2 Whey Fibre Shake',time:'9:00–9:30 PM (optional)',id:'whey_b'},{icon:'📱',name:'Stop Screen Time',time:'9:30 PM — blue light disrupts sleep',isMeal:true},{icon:'😴',name:'SLEEP',time:'10:00 PM target',isMeal:true}]
+
+const PRESETS = {
+  3:{0:'rest',1:'push',2:'rest',3:'lower',4:'rest',5:'pull',6:'rest'},
+  4:{0:'rest',1:'push',2:'lower',3:'rest',4:'pull',5:'rest',6:'fullbody'},
+  5:{0:'rest',1:'push',2:'lower',3:'pull',4:'rest',5:'fullbody',6:'lower'}
 };
+const DEFAULT_ASSIGNMENTS = PRESETS[4];
+
 const CORE_EX=[{name:'Plank',detail:'3 sets × 45–60 secs',tag:'core'},{name:"Captain's Chair Knee Raise",detail:'3 sets × 15 reps',tag:'core'},{name:'Bicycle Crunches',detail:'3 sets × 20 reps',tag:'core'},{name:'Leg Raises',detail:'3 sets × 15 reps',tag:'core'}];
 const FACE_EX=[{name:'🫦 Chin Tucks',desc:'Pull chin straight back, hold 5 secs — 10 reps'},{name:'⬆️ Neck Tilts',desc:'Tilt head back, look at ceiling, hold — 10 reps'},{name:'😮 Jaw Stretch',desc:'Open mouth wide, stick tongue toward nose — 10 reps'},{name:'🍬 Chew Sugar-Free Gum',desc:'Tones jaw muscles naturally — do daily'}];
+const DEFAULT_SUPPS={morning:[{icon:'🍎',name:'Swisse ACV',time:'7:00 AM — 15 mins BEFORE breakfast',id:'acv_m'},{icon:'🥣',name:'Breakfast',time:'7:30 AM',isMeal:true},{icon:'⚖️',name:'Blackmores Sugar Balance',time:'WITH breakfast',id:'sb_m'}],midday:[{icon:'🍎',name:'Swisse ACV',time:'12:30 PM — 15 mins BEFORE lunch',id:'acv_l'},{icon:'🍽️',name:'Lunch',time:'1:00 PM',isMeal:true},{icon:'⚖️',name:'Blackmores Sugar Balance',time:'WITH lunch',id:'sb_l'},{icon:'💪',name:'B2 Whey Fibre Shake',time:'3:00–4:00 PM',id:'whey_m'}],evening:[{icon:'🍎',name:'Swisse ACV',time:'6:45 PM — 15 mins BEFORE dinner',id:'acv_d'},{icon:'🍽️',name:'Dinner',time:'7:00 PM — stop eating after 7:30PM!',isMeal:true},{icon:'⚖️',name:'Blackmores Sugar Balance',time:'WITH dinner',id:'sb_d'}],bed:[{icon:'💪',name:'B2 Whey Fibre Shake',time:'9:00–9:30 PM (optional)',id:'whey_b'},{icon:'📱',name:'Stop Screen Time',time:'9:30 PM',isMeal:true},{icon:'😴',name:'SLEEP',time:'10:00 PM target',isMeal:true}]};
 const SDAYS=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+
+// ═══ EXERCISE DB ═══
+const EX_DB={
+  'Treadmill Brisk Walk':{icon:'🏃',color:'#fb7185',diff:'easy',img:'https://images.ctfassets.net/1q5z3k4ftwpz/43ltI6uNBC4Hrpx3UEl0u2/0f97d3418450c6a718480d2592a04a34/5-benefits-of-walking-on-a-treadmill-for-fitness-and-wellbeing',muscles:['Legs','Core','Cardio'],setup:'Set speed 5.5–6.5 km/h, incline 2–5%',steps:['Stand tall, shoulders relaxed, eyes forward','Swing arms naturally — do NOT hold the rails','Take medium natural strides','Breathe steadily through nose','Keep incline 2–5% to maximize fat burn'],avoid:['Holding handrails (reduces calorie burn by 25%)','Looking down at feet','Too slow — brisk purposeful walk'],ytId:'R1GAiAZfbQk'},
+  'Chest Press Machine':{icon:'💪',color:'#f87171',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/178.gif',muscles:['Chest','Triceps','Front Shoulders'],setup:'Adjust seat so handles align with mid-chest',steps:['Sit with back FLAT against pad','Grip handles with elbows at ~90°','Press forward until arms almost straight','Slowly return — 3 full seconds','Exhale press, inhale return'],avoid:['Arching lower back off pad','Using momentum','Fully locking elbows'],ytId:'n8TOta_pfr4'},
+  'Dumbbell Shoulder Press':{icon:'🏋️',color:'#fbbf24',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/48.gif',muscles:['Shoulders','Triceps','Upper Traps'],setup:'Sit on bench at 90°. Dumbbells at ear height',steps:['Hold dumbbells at ear level, palms forward','Core tight, back flat against bench','Press up until arms nearly straight','Lower slowly 2–3 seconds','Keep elbows slightly in front'],avoid:['Leaning back excessively','Dumbbells touching at top','Dropping weights fast'],ytId:'qEwKCR5JCog'},
+  'Cable Chest Fly':{icon:'🦋',color:'#f87171',diff:'medium',img:'https://liftmanual.com/wp-content/uploads/2023/04/cable-seated-chest-fly.jpg',muscles:['Inner Chest','Pectorals','Front Shoulders'],setup:'Set pulleys to chest height. Stand centered',steps:['Step one foot forward for stability','Slight bend in elbows — KEEP throughout','Bring hands together — hugging motion','Squeeze chest HARD 1 second at peak','Slowly open arms back — feel the stretch'],avoid:['Straightening elbows','Too much weight','Arms pulled too far back'],ytId:'PRw7ieDBLl4'},
+  'Dumbbell Lateral Raise':{icon:'🕊️',color:'#fbbf24',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-lateral-raise.jpg',muscles:['Side Deltoids','Shoulder'],setup:'Light dumbbells at sides. Go lighter than you think!',steps:['Slight knee bend, core tight','Keep slight bend in elbows throughout','Raise arms OUT to side until parallel to floor','Lead with elbows not wrists','Lower slowly — 3 seconds down'],avoid:['Going heavy — trains traps not delts','Shrugging as you raise','Raising above shoulder height'],ytId:'XPPfnSEATJA'},
+  'Cable Tricep Pushdown':{icon:'⬇️',color:'#2dd4bf',diff:'easy',img:'https://training.fit/wp-content/uploads/2020/03/trizepsdruecken-kabelzug.png',muscles:['Triceps (all 3 heads)'],setup:'Attach rope to HIGH cable pulley',steps:['Elbows GLUED to sides','Elbows stay completely still','Push down until arms fully extended','Spread rope apart at bottom for squeeze','Return up — elbows never leave sides'],avoid:['Flaring elbows out','Leaning too far forward','Using shoulders to push'],ytId:'JDEDaZTEzGE'},
+  'Dumbbell Overhead Tricep Ext':{icon:'☝️',color:'#2dd4bf',diff:'easy',img:'https://training.fit/wp-content/uploads/2020/03/trizepsdruecken-beidarmig-kurzhantel.png',muscles:['Triceps long head','Core stability'],setup:'Sit on bench. ONE dumbbell, both hands overhead',steps:['Hold dumbbell above head, hands gripping underneath','Upper arms close to head, pointing straight up','Lower behind head by bending elbows','Stop when forearms parallel to floor','Press up, squeeze triceps hard at top'],avoid:['Elbows flaring wide','Arching lower back','Too heavy — kills form'],ytId:'xbNm9fRoUTw'},
+  'Stationary Bike':{icon:'🚲',color:'#fb7185',diff:'easy',img:'https://www.jtxfitness.com/media/catalog/product/j/t/jtx-racerm-smart-exercise-bike.jpg',muscles:['Legs','Cardio','Glutes'],setup:'Seat height: slight bend at knee at pedal bottom',steps:['Slight bend at knee when pedal is at bottom','Sit upright','Pedal 60–80 RPM comfortable pace','Light-to-moderate resistance','Breathe steadily — able to speak short sentences'],avoid:['Seat too low — knee pain','Zero resistance spinning','Hunching forward'],ytId:'NwwDBARCGgo'},
+  'Seated Leg Press':{icon:'🦵',color:'#4ade80',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/lever-seated-leg-press.jpg',muscles:['Quads','Hamstrings','Glutes','Calves'],setup:'Knees reach 90° with feet flat on platform',steps:['Lower back flat against pad','Feet shoulder-width, centered on platform','Lower weight slowly','Stop at ~90° — do NOT go lower','Press through HEELS powerfully'],avoid:['Knees caving inward','Hips lifting off seat','Locking knees at top'],ytId:'qCR9bN3G1t4'},
+  'Dumbbell Romanian Deadlift':{icon:'🏋️',color:'#4ade80',diff:'medium',img:'https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-romanian-deadlift.jpg',muscles:['Hamstrings','Glutes','Lower Back'],setup:'Dumbbells in front of thighs, feet hip-width',steps:['Stand tall, dumbbells on thighs','Slight knee bend — KEEP throughout','Hinge at hips, push hips BACK','Dumbbells slide close against legs','Lower until hamstring stretch, then drive hips forward'],avoid:['Rounding lower back — injury risk','Bending knees too much','Dumbbells drifting away from legs'],ytId:'tjyKumw8S44'},
+  'Dumbbell Goblet Squat':{icon:'🏆',color:'#4ade80',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/dumbbell-goblet-box-squat.jpg',muscles:['Quads','Glutes','Core','Inner Thighs'],setup:'Dumbbell at chest, feet shoulder-width, toes out',steps:['Hold dumbbell at chest, both hands underneath','Push hips back FIRST then bend knees','Keep chest tall','Go until thighs parallel to floor','Drive through heels, squeeze glutes at top'],avoid:['Heels lifting off floor','Knees caving inward','Chest falling forward'],ytId:'2LnkzQ7paAc'},
+  'Cable Kickback':{icon:'🍑',color:'#4ade80',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/cable-donkey-kickback.jpg',muscles:['Glutes','Hip Stabilizers'],setup:'Ankle strap to LOW cable pulley',steps:['Face machine, slight lean forward','Hold machine for balance','Core tight, slight bend in standing knee','Kick strapped leg STRAIGHT back — squeeze glute','Hold 1 sec at top, lower slowly'],avoid:['Swinging with momentum','Using lower back instead of glute','Rushing — slow and controlled'],ytId:'Zreysysk52c'},
+  "Captain's Chair Knee Raise":{icon:'🪑',color:'#c084fc',diff:'medium',img:'https://i.makeagif.com/media/6-04-2015/Ur48-u.gif',muscles:['Lower Abs','Hip Flexors','Core'],setup:"Forearms on captain's chair pads, legs hanging",steps:['Shoulders pressed down, legs hanging','Keep back against pad — NO swinging','Slowly raise knees to chest','Hold 1 second, squeeze abs','Lower slowly — do not drop or swing'],avoid:['Swinging to gain momentum','Dropping legs too fast','Holding breath — exhale as knees come up'],ytId:'7KDDZtaUaxw'},
+  "Captain's Chair Leg Raise":{icon:'🪑',color:'#c084fc',diff:'hard',img:'https://www.verywellfit.com/thmb/wY2NmB0-W3tCxZDntFbRtzUZHMQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/42-3498291-Captains-Chair-Leg-Raises-GIF-a2f30dc759fe474c94893c8bd19abecb.gif',muscles:['Lower Abs','Hip Flexors','Core'],setup:'Same as knee raise but legs STRAIGHT throughout',steps:['Legs hanging straight','Keep legs as straight as possible','Raise until parallel to floor or higher','Hold 1–2 seconds squeezing abs','Lower very slowly — this is where results happen'],avoid:['Bending knees (do knee raises instead)','Swinging with momentum','Leaning back too much'],ytId:'Gtv_pe0E42U'},
+  'Elliptical':{icon:'🌀',color:'#fb7185',diff:'easy',img:'https://www.garagegymreviews.com/wp-content/uploads/2023/07/DSC09957-1.jpg',muscles:['Full Body','Legs','Arms','Cardio'],setup:'Moderate resistance. Hold the MOVING handles',steps:['Step on pedals, grip moving handles','Smooth oval motion — no stomping','Actively push AND pull handles','Core lightly engaged','Comfortable pace — able to converse'],avoid:['Only using legs, ignoring arm handles','Leaning heavily on handles','Too fast — lose smooth form'],ytId:'YWfswVvOaiI'},
+  'Lat Pulldown':{icon:'🦅',color:'#60a5fa',diff:'easy',img:'https://bellsofsteel.com/cdn/shop/articles/Does-Lat-Pulldown-Work-Forearms.webp?v=1708539827&width=1024',muscles:['Lats','Biceps','Rear Delts'],setup:'Thigh pads locked. Overhand wide grip',steps:['Grip bar wider than shoulder-width','Slight lean back 10–15°, chest up','Pull bar to UPPER CHEST — elbows go down','Squeeze lats hard when bar touches chest','Slowly let bar rise — feel lat stretch'],avoid:['Pulling bar BEHIND neck — spine danger','Body momentum swinging','Bar rising back too fast'],ytId:'SALxEARiMkw'},
+  'Seated Row Machine':{icon:'🚣',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/21.gif',muscles:['Middle Back','Lats','Biceps','Rear Delts'],setup:'Chest pad touching chest, arms extended',steps:['Chest against pad, arms fully extended','Neutral grip if available','Pull to lower chest/upper abdomen','Squeeze shoulder blades TOGETHER — hold 1 sec','Slowly extend arms back out — feel stretch'],avoid:['Rounding back — injury risk','Using only biceps instead of back','Jerking or momentum'],ytId:'RPxM76cp0Y8'},
+  'Cable Face Pull':{icon:'🎯',color:'#60a5fa',diff:'easy',img:'https://liftmanual.com/wp-content/uploads/2023/04/cable-standing-face-pull.jpg',muscles:['Rear Delts','Upper Traps','External Rotators'],setup:'Rope at HIGH cable, at or above eye level',steps:['Grip rope, thumbs pointing BACK','Slight lean back for stability','Pull rope toward FACE — separate rope','Rotate wrists until hands beside ears','Hold 1 sec — slowly extend back'],avoid:['Too heavy — ruins rotation and form','Shrugging traps instead of pulling rear delt','Not separating rope ends at peak'],ytId:'0Po47vvj9g4'},
+  'Dumbbell Single Arm Row':{icon:'🤜',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/90.gif',muscles:['Lats','Middle Back','Biceps'],setup:'Same-side knee AND hand on bench. Other foot on floor',steps:['Back PARALLEL to floor','Dumbbell arm fully extended down','Pull toward HIP — lead with elbow','Keep shoulder blade engaged','Lower arm fully straight before next rep'],avoid:['Rotating torso (use back not momentum)','Pulling to chest instead of hip','Not using full range of motion'],ytId:'DMo3HJoawrU'},
+  'Dumbbell Bicep Curl':{icon:'💪',color:'#2dd4bf',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/276.gif',muscles:['Biceps','Brachialis'],setup:'Stand tall, dumbbells at sides, palms FORWARD',steps:['Elbows tucked tight at sides — stay there!','Curl up, rotate palms toward ceiling','Do NOT let elbows drift forward','Squeeze biceps HARD at top — 1 second','Lower slowly 2–3 seconds'],avoid:['Swinging body — halves the work','Elbows drifting forward at top','Dropping weights fast on way down'],ytId:'6DeLZ6cbgWQ'},
+  'Cable Hammer Curl':{icon:'🔨',color:'#2dd4bf',diff:'easy',img:'https://barbend.com/wp-content/uploads/2021/08/rope-hammer-curl-barbend-movement-gif-masters.gif',muscles:['Brachialis','Biceps','Forearms'],setup:'Rope at LOW cable. Neutral grip (palms facing each other)',steps:['Palms facing each other (neutral grip)','Elbows tucked at sides','Curl toward shoulders, keep neutral grip','Keep rope split at top — do not let ends touch','Lower slowly back to full extension'],avoid:['Swinging elbows forward','Elbows flaring out','Too heavy — ruins neutral grip form'],ytId:'O6JZnQaW-co'},
+  'Plank':{icon:'🏠',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/631.gif',muscles:['Core','Abs','Lower Back','Glutes','Shoulders'],setup:'Forearms on floor, elbows under shoulders, up on toes',steps:['Elbows directly under shoulders','Straight line head to heel','Squeeze core, glutes, AND quads','Look at floor — neck neutral','Breathe normally and hold 45–60 seconds'],avoid:['Hips too high — cheating','Hips sagging — lower back pain','Holding breath throughout'],ytId:'pSHjTRCQxIw'},
+  'Bicycle Crunches':{icon:'🚴',color:'#c084fc',diff:'easy',img:'https://media2.giphy.com/media/v1.Y2lkPTZjMDliOTUyanJvN2JsOWt4b2FsNG1yZnBsbGV4ejBtY2Q1enB6NTRteTBnYTc1NSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/TMNCtgJGJnV8k/giphy.gif',muscles:['Obliques','Upper Abs','Core'],setup:'Lie flat, hands behind head, legs raised 90°',steps:['Both knees bent 90°, lifted off floor','Hands behind head — do NOT pull on neck','Right elbow to left knee, extend right leg','Switch: left elbow to right knee, extend left leg','Slow and controlled — 2 full seconds each side'],avoid:['Pulling head with hands','Going too fast — pure momentum','Not extending opposite leg as you rotate'],ytId:'9FGilxCbdz8'},
+  'Leg Raises':{icon:'🦵',color:'#c084fc',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/44.gif',muscles:['Lower Abs','Hip Flexors'],setup:'Lie flat, hands under lower back for support',steps:['Hands palm-down under lower back','Legs straight or very slightly bent','Raise legs to ceiling (90°)','Hold 1 second at top','Lower SLOWLY — stop just BEFORE heels touch floor'],avoid:['Lower back arching — use hands as support','Dropping legs fast','Bending knees too much'],ytId:'JB2oyawG9KI'},
+  'Dumbbell Lunges':{icon:'🚶',color:'#4ade80',diff:'medium',img:'https://cdn.jefit.com/assets/img/exercises/gifs/136.gif',muscles:['Quads','Glutes','Hamstrings','Balance'],setup:'Stand tall with dumbbells at sides',steps:['Feet together, dumbbells at sides','Take a LONG step forward','Lower back knee toward floor — stop before touching','Both knees at ~90°','Push off front foot powerfully — alternate legs'],avoid:['Front knee past toes','Leaning torso too far forward','Back knee slamming into floor'],ytId:'9gglI77Kzq8'},
+  'Cable Seated Row':{icon:'🚣',color:'#60a5fa',diff:'easy',img:'https://cdn.jefit.com/assets/img/exercises/gifs/21.gif',muscles:['Middle Back','Lats','Biceps'],setup:'Feet on pads, slight bend in knees',steps:['Slight lean forward to start','Grip V-bar (neutral grip)','Pull toward lower abdomen/navel','Squeeze shoulder blades — pinch a pencil','Slowly return — feel the back stretch'],avoid:['Rounding back — stay flat','Leaning back too far','Using only biceps to pull'],ytId:'lJoozxC0Rns'}
+};
 
 // ═══ STATE ═══
 let S={};
-function loadState(){try{S=JSON.parse(localStorage.getItem('fitV3')||'{}')}catch(e){S={}}}
-function saveState(){try{localStorage.setItem('fitV3',JSON.stringify(S))}catch(e){}}
+function loadState(){try{S=JSON.parse(localStorage.getItem('fitV4')||'{}')}catch(e){S={}}}
+function saveState(){try{localStorage.setItem('fitV4',JSON.stringify(S))}catch(e){}}
 function getDay(){return new Date().getDay()}
 function getDK(){return new Date().toDateString()}
 function initState(){
@@ -462,32 +569,29 @@ function initState(){
   if(!S.customPlan)S.customPlan={};
   if(!S.customSupps)S.customSupps={};
   if(!S.profile)S.profile={};
+  if(!S.assignments)S.assignments={...DEFAULT_ASSIGNMENTS};
+  if(!S.planDays)S.planDays=4;
 }
+
 function getPlan(d){
-  // merge custom plan over default
-  const def=JSON.parse(JSON.stringify(DEFAULT_PLAN[d]||DEFAULT_PLAN[0]));
+  const type=S.assignments?.[d]||DEFAULT_ASSIGNMENTS[d]||'rest';
+  const tmpl=JSON.parse(JSON.stringify(TEMPLATES[type]||TEMPLATES.rest));
   const c=S.customPlan[d];
-  if(!c)return def;
-  if(c.name)def.name=c.name;
-  if(c.focus)def.focus=c.focus;
-  if(c.isRest!==undefined)def.isRest=c.isRest;
-  if(c.warmup)def.warmup=c.warmup;
-  if(c.exercises)def.exercises=c.exercises;
-  if(c.cooldown)def.cooldown=c.cooldown;
-  return def;
+  if(c){
+    if(c.warmup)tmpl.warmup=c.warmup;
+    if(c.exercises)tmpl.exercises=c.exercises;
+    if(c.cooldown)tmpl.cooldown=c.cooldown;
+  }
+  return tmpl;
 }
 function getSupps(){
   const def=JSON.parse(JSON.stringify(DEFAULT_SUPPS));
-  Object.keys(S.customSupps||{}).forEach(sec=>{
-    if(def[sec]&&S.customSupps[sec])def[sec]=S.customSupps[sec];
-  });
+  Object.keys(S.customSupps||{}).forEach(sec=>{if(def[sec])def[sec]=S.customSupps[sec];});
   return def;
 }
-function countWorkouts(){
-  return Object.values(S.days||{}).filter(d=>d.done).length;
-}
+function countWorkouts(){return Object.values(S.days||{}).filter(d=>d.done).length;}
 
-// ═══ NAVIGATION ═══
+// ═══ NAV ═══
 function showPage(id,btn){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
@@ -505,21 +609,21 @@ function setTimer(s){resetTimer();tOrig=s;tSec=s;updTimerDisp()}
 function updTimerDisp(){const m=String(Math.floor(tSec/60)).padStart(2,'0'),s=String(tSec%60).padStart(2,'0');document.getElementById('timerDisp').textContent=m+':'+s}
 function toggleTimer(){
   if(tRun){clearInterval(tInt);tRun=false;document.getElementById('timerBtn').textContent='START'}
-  else{tRun=true;document.getElementById('timerBtn').textContent='PAUSE';tInt=setInterval(()=>{tSec--;if(tSec<=0){tSec=0;clearInterval(tInt);tRun=false;document.getElementById('timerBtn').textContent='START';const d=document.getElementById('timerDisp');d.style.color='var(--grn)';setTimeout(()=>{d.style.color='var(--blu)';setTimer(tOrig)},2000);}updTimerDisp()},1000)}
+  else{tRun=true;document.getElementById('timerBtn').textContent='PAUSE';tInt=setInterval(()=>{tSec--;if(tSec<=0){tSec=0;clearInterval(tInt);tRun=false;document.getElementById('timerBtn').textContent='START';
+    const cfg=getAppSettings();if(cfg.timerVibrate&&navigator.vibrate)navigator.vibrate([200,100,200]);
+    const d=document.getElementById('timerDisp');d.style.color='var(--grn)';setTimeout(()=>{d.style.color='var(--blu)';setTimer(tOrig)},2000);}updTimerDisp()},1000)}
 }
 function resetTimer(){clearInterval(tInt);tRun=false;tSec=tOrig;document.getElementById('timerBtn').textContent='START';updTimerDisp()}
 
 // ═══ RENDER EXERCISE ROW ═══
 function tagCls(t){return'tag-'+t}
-function renderEx(ex,key,showDel,delCb){
+function renderEx(ex,key){
   const k=getDK(),done=S.days[k]?.ex?.[key]||false,hasInfo=!!EX_DB[ex.name];
-  const safeKey=key.replace(/'/g,"\\'");
   return`<div class="ex-item" id="exrow_${key}">
-    <button class="ex-chk${done?' done':''}" onclick="toggleEx('${safeKey}')" id="chk_${key}">${done?'✓':''}</button>
+    <button class="ex-chk${done?' done':''}" onclick="toggleEx('${key.replace(/'/g,"\\'")}')" id="chk_${key}">${done?'✓':''}</button>
     <div class="ex-inf"><div class="ex-nm">${ex.name}</div><div class="ex-dt">${ex.detail}</div></div>
     <span class="ex-tag ${tagCls(ex.tag)}">${ex.tag.toUpperCase()}</span>
     ${hasInfo?`<button class="icon-btn info-btn" data-ex="${ex.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" onclick="showExInfo(this.dataset.ex)">ℹ️</button>`:''}
-    ${showDel?`<button class="icon-btn del-btn" onclick="${delCb}">🗑️</button>`:''}
   </div>`;
 }
 
@@ -532,8 +636,7 @@ function toggleEx(key){
   saveState();
   const btn=document.getElementById('chk_'+key);
   if(btn){btn.classList.toggle('done',!was);btn.textContent=!was?'✓':'';}
-  updWorkoutProgress();
-  checkDone();
+  updWorkoutProgress();checkDone();
 }
 
 function updWorkoutProgress(){
@@ -543,8 +646,7 @@ function updWorkoutProgress(){
   const done=Object.values(S.days[getDK()]?.ex||{}).filter(Boolean).length;
   const pct=all.length?Math.round(done/all.length*100):0;
   const f=document.getElementById('wPrgFill'),l=document.getElementById('wPrgLbl');
-  if(f)f.style.width=pct+'%';
-  if(l)l.textContent=done+' / '+all.length+' exercises';
+  if(f)f.style.width=pct+'%';if(l)l.textContent=done+' / '+all.length+' exercises';
 }
 
 function checkDone(){
@@ -560,29 +662,23 @@ function checkDone(){
 
 function updStreak(){
   const t=getDK();
-  if(S.lastDate!==t){
-    const y=new Date();y.setDate(y.getDate()-1);
-    S.streak=S.lastDate===y.toDateString()?(S.streak||0)+1:1;
-    S.lastDate=t;
-  }
+  if(S.lastDate!==t){const y=new Date();y.setDate(y.getDate()-1);S.streak=S.lastDate===y.toDateString()?(S.streak||0)+1:1;S.lastDate=t;}
   document.getElementById('streakBadge').textContent='🔥 '+S.streak+' day streak';
 }
 
 // ═══ TODAY ═══
 function renderToday(){
-  const dn=getDay(),plan=getPlan(dn),k=getDK(),now=new Date();
-  document.getElementById('hdrDate').textContent=now.toLocaleDateString('en-MY',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  const dn=getDay(),plan=getPlan(dn),k=getDK();
+  document.getElementById('hdrDate').textContent=new Date().toLocaleDateString('en-MY',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
   document.getElementById('streakBadge').textContent='🔥 '+(S.streak||0)+' day streak';
   document.getElementById('todayDayName').textContent=plan.name;
   document.getElementById('todayFocus').textContent=plan.focus;
-  const meta=document.getElementById('todayMeta');
-  meta.innerHTML=plan.isRest?'<span class="mpill" style="color:var(--grn)">😴 Rest & Recover</span>'
-    :`<span class="mpill">⏱️ ${plan.duration||'60 mins'}</span><span class="mpill">Rest 45–60s between sets</span>`;
+  document.getElementById('todayMeta').innerHTML=plan.isRest?'<span class="mpill" style="color:var(--grn)">😴 Rest & Recover</span>':`<span class="mpill">⏱️ ${plan.duration||'60 mins'}</span><span class="mpill">Rest 45–60s between sets</span>`;
   const ws=document.getElementById('workoutSection');
   if(plan.isRest){
-    ws.innerHTML=`<div class="card" style="text-align:center;padding:22px"><div style="font-size:44px">😴</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--grn);margin-top:6px">REST DAY</div><div style="font-size:12px;color:var(--mut);margin-top:6px">${plan.focus} — still do core & face exercises 👇</div></div>`;
+    ws.innerHTML=`<div class="card" style="text-align:center;padding:22px"><div style="font-size:44px">😴</div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--grn);margin-top:6px">REST DAY</div><div style="font-size:12px;color:var(--mut);margin-top:6px">${plan.focus} — still do core & face 👇</div></div>`;
   } else {
-    let h=`<div class="card"><div class="card-hdr"><div><div class="ct">🏋️ TODAY'S WORKOUT</div><div class="cs">Tap ✓ to complete · Tap ℹ️ to see how</div></div></div>
+    let h=`<div class="card"><div class="card-hdr"><div><div class="ct">🏋️ TODAY'S WORKOUT</div><div class="cs">Tap ✓ to complete · ℹ️ to see how</div></div></div>
     <div class="prg-wrap" style="margin-bottom:12px"><div class="prg-lbl"><span>Completion</span><span id="wPrgLbl">0 / 0</span></div><div class="prg-bar"><div class="prg-fill" id="wPrgFill" style="width:0%"></div></div></div>
     <span class="phase ph-warm">🔥 WARM UP</span>`;
     plan.warmup.forEach((ex,i)=>h+=renderEx(ex,'warm_'+i));
@@ -609,8 +705,7 @@ function renderWater(){
 }
 function toggleWater(i){
   const k=getDK(),cur=S.days[k].water||0,diff=i<cur?-(cur-i):i+1-cur;
-  S.days[k].water=i<cur?i:i+1;
-  S.totalWater=Math.max(0,(S.totalWater||0)+diff);
+  S.days[k].water=i<cur?i:i+1;S.totalWater=Math.max(0,(S.totalWater||0)+diff);
   saveState();renderWater();
 }
 
@@ -627,43 +722,32 @@ function renderSupps(){
   });
 }
 function toggleSupp(id){
-  const k=getDK();
-  if(!S.days[k].supp)S.days[k].supp={};
-  S.days[k].supp[id]=!S.days[k].supp[id];
-  saveState();
+  const k=getDK();if(!S.days[k].supp)S.days[k].supp={};
+  S.days[k].supp[id]=!S.days[k].supp[id];saveState();
   const btn=document.getElementById('sc_'+id),done=S.days[k].supp[id];
   if(btn){btn.classList.toggle('done',done);btn.textContent=done?'✓':'';}
 }
 
-// ═══ EDIT SUPPLEMENTS ═══
+// ═══ EDIT SUPPS ═══
 function openEditSupps(){
   const supps=getSupps();
-  let h='<div style="font-size:12px;color:var(--mut);margin-bottom:12px">Edit supplement names and times. Changes saved instantly.</div>';
+  let h='<div style="font-size:12px;color:var(--mut);margin-bottom:12px">Edit supplement names and times.</div>';
   ['morning','midday','evening','bed'].forEach(sec=>{
     h+=`<div class="ct" style="margin-bottom:8px">${{morning:'☀️ MORNING',midday:'🌞 MIDDAY',evening:'🌙 EVENING',bed:'💤 BEFORE BED'}[sec]}</div>`;
     supps[sec].forEach((s,i)=>{
-      if(s.isMeal){h+=`<div style="padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;color:var(--mut)">${s.icon} ${s.name} <em>(meal/reminder — fixed)</em></div>`;return;}
-      h+=`<div class="edit-ex-row">
-        <div class="supp-icon">${s.icon}</div>
-        <div style="flex:1;display:grid;gap:4px">
-          <input class="form-input" style="padding:6px 8px;font-size:12px" value="${s.name}" onchange="updateSuppName('${sec}',${i},this.value)" placeholder="Supplement name">
-          <input class="form-input" style="padding:6px 8px;font-size:12px" value="${s.time}" onchange="updateSuppTime('${sec}',${i},this.value)" placeholder="Time / note">
-        </div>
-      </div>`;
-    });
-    h+='<div style="margin-bottom:12px"></div>';
+      if(s.isMeal){h+=`<div style="padding:6px 0;border-bottom:1px solid var(--bdr);font-size:12px;color:var(--mut)">${s.icon} ${s.name}</div>`;return;}
+      h+=`<div class="edit-ex-row"><div class="supp-icon">${s.icon}</div><div style="flex:1;display:grid;gap:4px">
+        <input class="form-input" style="padding:6px 8px;font-size:12px" value="${s.name}" onchange="updateSuppField('${sec}',${i},'name',this.value)" placeholder="Name">
+        <input class="form-input" style="padding:6px 8px;font-size:11px" value="${s.time}" onchange="updateSuppField('${sec}',${i},'time',this.value)" placeholder="Time / note">
+      </div></div>`;
+    });h+='<div style="margin-bottom:12px"></div>';
   });
   document.getElementById('editSuppBody').innerHTML=h;
   document.getElementById('editSuppModal').classList.add('show');
 }
-function updateSuppName(sec,idx,val){
+function updateSuppField(sec,idx,field,val){
   if(!S.customSupps[sec])S.customSupps[sec]=JSON.parse(JSON.stringify(getSupps()[sec]));
-  if(S.customSupps[sec][idx])S.customSupps[sec][idx].name=val;
-  saveState();
-}
-function updateSuppTime(sec,idx,val){
-  if(!S.customSupps[sec])S.customSupps[sec]=JSON.parse(JSON.stringify(getSupps()[sec]));
-  if(S.customSupps[sec][idx])S.customSupps[sec][idx].time=val;
+  if(S.customSupps[sec][idx])S.customSupps[sec][idx][field]=val;
   saveState();
 }
 function closeEditSupp(){document.getElementById('editSuppModal').classList.remove('show');renderSupps();}
@@ -682,8 +766,7 @@ function renderSchedContent(){
     {time:'7:00 AM',act:'Swisse ACV',pill:'supp'},{time:'7:30 AM',act:'Breakfast + Sugar Balance',pill:'meal'},
     {time:'12:30 PM',act:'Swisse ACV',pill:'supp'},{time:'1:00 PM',act:'Lunch + Sugar Balance',pill:'meal'},
     {time:'4:00 PM',act:'💪 GYM SESSION',pill:'gym'},{time:'5:30 PM',act:'Whey shake (post-workout)',pill:'protein'},
-    {time:'6:45 PM',act:'Swisse ACV',pill:'supp'},{time:'7:00 PM',act:'Dinner + Sugar Balance',pill:'meal'},
-    {time:'10:00 PM',act:'Sleep 😴',pill:'sleep'}
+    {time:'6:45 PM',act:'Swisse ACV',pill:'supp'},{time:'7:00 PM',act:'Dinner + Sugar Balance',pill:'meal'},{time:'10:00 PM',act:'Sleep 😴',pill:'sleep'}
   ]:[
     {time:'7:00 AM',act:'Swisse ACV',pill:'supp'},{time:'7:30 AM',act:'Breakfast + Sugar Balance',pill:'meal'},
     {time:'12:30 PM',act:'Swisse ACV',pill:'supp'},{time:'1:00 PM',act:'Lunch + Sugar Balance',pill:'meal'},
@@ -693,16 +776,13 @@ function renderSchedContent(){
   const pillLbl={supp:'SUPPLEMENT',gym:'GYM',meal:'MEAL',sleep:'SLEEP',protein:'PROTEIN'};
   let h='';
   if(plan){
+    const ti=TYPE_INFO[S.assignments?.[schedDay]||'rest'];
     h+=`<div class="card" style="border-color:${isGym?(plan.color||'var(--acc)'):'var(--grn)'}44">
       <div class="card-hdr"><div><div class="ct">${plan.name}</div><div class="cs">${plan.focus}</div></div>${isGym?`<span class="mpill" style="background:rgba(240,165,0,.1);color:var(--acc)">${plan.duration||'60 mins'}</span>`:''}</div>`;
     if(isGym){
       [...(plan.warmup||[]),...(plan.exercises||[]),...(plan.cooldown||[])].forEach(ex=>{
-        const hasInfo=!!EX_DB[ex.name];
-        h+=`<div class="ex-item" style="padding:7px 0">
-          <div class="ex-inf"><div class="ex-nm" style="font-size:12px">${ex.name}</div><div class="ex-dt">${ex.detail}</div></div>
-          <span class="ex-tag ${tagCls(ex.tag)}">${ex.tag.toUpperCase()}</span>
-          ${hasInfo?`<button class="icon-btn info-btn" style="width:26px;height:26px;font-size:12px" data-ex="${ex.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" onclick="showExInfo(this.dataset.ex)">ℹ️</button>`:''}
-        </div>`;
+        const hi=!!EX_DB[ex.name];
+        h+=`<div class="ex-item" style="padding:7px 0"><div class="ex-inf"><div class="ex-nm" style="font-size:12px">${ex.name}</div><div class="ex-dt">${ex.detail}</div></div><span class="ex-tag ${tagCls(ex.tag)}">${ex.tag.toUpperCase()}</span>${hi?`<button class="icon-btn info-btn" style="width:26px;height:26px;font-size:12px" data-ex="${ex.name.replace(/"/g,'&quot;').replace(/'/g,'&#39;')}" onclick="showExInfo(this.dataset.ex)">ℹ️</button>`:''}</div>`;
       });
     } else {
       h+=`<div style="text-align:center;padding:10px"><span style="font-size:30px">😴</span><div style="font-size:12px;color:var(--mut);margin-top:6px">Rest, recover, core & face exercises</div></div>`;
@@ -715,71 +795,210 @@ function renderSchedContent(){
   document.getElementById('schedContent').innerHTML=h;
 }
 
-// ═══ EDIT DAY (add/remove/edit exercises) ═══
+// ═══ EDIT DAY EXERCISES ═══
 function openEditDay(){
   const plan=getPlan(schedDay);
-  document.getElementById('editDayTitle').textContent=`✏️ EDIT — ${SDAYS[schedDay]} (${plan.name})`;
+  document.getElementById('editDayTitle').textContent=`✏️ ${SDAYS[schedDay]} — ${plan.name}`;
   renderEditDayBody();
   document.getElementById('editDayModal').classList.add('show');
 }
 function renderEditDayBody(){
   const plan=getPlan(schedDay);
   const TAGS=['chest','back','legs','shoulder','arms','core','cardio'];
-  function exRows(section){
-    return(plan[section]||[]).map((ex,i)=>`
-      <div class="edit-ex-row" id="ederow_${section}_${i}">
+  function exRows(sec){
+    return(plan[sec]||[]).map((ex,i)=>`
+      <div class="edit-ex-row">
         <div style="flex:1;display:grid;gap:4px">
-          <input class="form-input" style="padding:6px 8px;font-size:12px" value="${ex.name}" onchange="updEdEx('${section}',${i},'name',this.value)" placeholder="Exercise name">
-          <input class="form-input" style="padding:6px 8px;font-size:11px" value="${ex.detail}" onchange="updEdEx('${section}',${i},'detail',this.value)" placeholder="Sets × reps">
-          <select class="form-select" style="padding:5px 8px;font-size:11px" onchange="updEdEx('${section}',${i},'tag',this.value)">
+          <input class="form-input" style="padding:6px 8px;font-size:12px" value="${ex.name}" onchange="updEdEx('${sec}',${i},'name',this.value)">
+          <input class="form-input" style="padding:6px 8px;font-size:11px" value="${ex.detail}" onchange="updEdEx('${sec}',${i},'detail',this.value)">
+          <select class="form-select" style="padding:5px 8px;font-size:11px" onchange="updEdEx('${sec}',${i},'tag',this.value)">
             ${TAGS.map(t=>`<option value="${t}" ${ex.tag===t?'selected':''}>${t.charAt(0).toUpperCase()+t.slice(1)}</option>`).join('')}
           </select>
         </div>
-        <button class="icon-btn del-btn" style="align-self:center" onclick="delEdEx('${section}',${i})">🗑️</button>
+        <button class="icon-btn del-btn" onclick="delEdEx('${sec}',${i})">🗑️</button>
       </div>`).join('');
   }
-  function addBtn(section){return`<button class="btn btn-ghost btn-full" style="margin-top:6px;font-size:12px" onclick="addEdEx('${section}')">+ Add Exercise</button>`;}
-  let h=`
-    <div class="alert alert-info" style="margin-bottom:10px">Changes apply to <strong>${SDAYS[schedDay]}'s</strong> workout plan.</div>
+  const addBtn=sec=>`<button class="btn btn-ghost btn-full" style="margin-top:6px;font-size:12px" onclick="addEdEx('${sec}')">+ Add Exercise</button>`;
+  document.getElementById('editDayBody').innerHTML=`
+    <div class="alert alert-info" style="margin-bottom:10px">Editing <strong>${SDAYS[schedDay]}'s</strong> exercises.</div>
     <div class="m-sec">🔥 WARM UP</div>${exRows('warmup')}${addBtn('warmup')}
-    <div class="m-sec" style="margin-top:14px">💪 MAIN WORKOUT</div>${exRows('exercises')}${addBtn('exercises')}
+    <div class="m-sec" style="margin-top:14px">💪 MAIN</div>${exRows('exercises')}${addBtn('exercises')}
     <div class="m-sec" style="margin-top:14px">❄️ COOL DOWN</div>${exRows('cooldown')}${addBtn('cooldown')}
     <div style="display:flex;gap:8px;margin-top:16px">
-      <button class="btn btn-danger" style="flex:1" onclick="resetDayPlan()">Reset to Default</button>
+      <button class="btn btn-danger" style="flex:1" onclick="resetDayPlan()">↺ Reset</button>
       <button class="btn btn-acc" style="flex:1" onclick="closeEditDay()">Save & Close</button>
     </div>`;
-  document.getElementById('editDayBody').innerHTML=h;
 }
-function getEditPlan(){
-  if(!S.customPlan[schedDay]){
-    S.customPlan[schedDay]=JSON.parse(JSON.stringify(DEFAULT_PLAN[schedDay]||DEFAULT_PLAN[0]));
-  }
-  return S.customPlan[schedDay];
-}
-function updEdEx(section,idx,field,val){
-  const p=getEditPlan();
-  if(!p[section])p[section]=[];
-  if(p[section][idx])p[section][idx][field]=val;
-  saveState();
-}
-function delEdEx(section,idx){
-  const p=getEditPlan();
-  if(!p[section])return;
-  p[section].splice(idx,1);
-  saveState();renderEditDayBody();
-}
-function addEdEx(section){
-  const p=getEditPlan();
-  if(!p[section])p[section]=[];
-  p[section].push({name:'New Exercise',detail:'3 sets × 12 reps',tag:'chest'});
-  saveState();renderEditDayBody();
-}
-function resetDayPlan(){
-  if(confirm('Reset '+SDAYS[schedDay]+' to default plan?')){
-    delete S.customPlan[schedDay];saveState();renderEditDayBody();
-  }
-}
+function getEditPlan(){if(!S.customPlan[schedDay])S.customPlan[schedDay]=JSON.parse(JSON.stringify(getPlan(schedDay)));return S.customPlan[schedDay];}
+function updEdEx(sec,idx,field,val){const p=getEditPlan();if(p[sec]&&p[sec][idx])p[sec][idx][field]=val;saveState();}
+function delEdEx(sec,idx){const p=getEditPlan();if(p[sec])p[sec].splice(idx,1);saveState();renderEditDayBody();}
+function addEdEx(sec){const p=getEditPlan();if(!p[sec])p[sec]=[];p[sec].push({name:'New Exercise',detail:'3 sets × 12 reps',tag:'chest'});saveState();renderEditDayBody();}
+function resetDayPlan(){if(confirm('Reset '+SDAYS[schedDay]+' to default?')){delete S.customPlan[schedDay];saveState();renderEditDayBody();}}
 function closeEditDay(){document.getElementById('editDayModal').classList.remove('show');renderSchedule();renderToday();}
+
+// ═══ DAY ASSIGNMENT / PLAN SETTINGS ═══
+let activePicker=null;
+function renderDayAssignGrid(){
+  const cnt=Object.values(S.assignments||{}).filter(v=>v!=='rest').length;
+  document.querySelectorAll('.plan-day-opt').forEach(b=>{
+    const d=parseInt(b.dataset.d);
+    b.classList.toggle('active', d===0 ? ![3,4,5].includes(cnt) : d===cnt);
+  });
+  const grid=document.getElementById('dayAssignGrid');
+  if(!grid)return;
+  grid.innerHTML=SDAYS.map((day,i)=>{
+    const type=S.assignments?.[i]||'rest';
+    const ti=TYPE_INFO[type];
+    const isRest=type==='rest';
+    return`<div class="day-assign-card${isRest?' rest-day':' gym'}" style="position:relative" onclick="toggleDayPicker(${i},event)">
+      <div class="day-label">${day}</div>
+      <div class="type-emoji">${ti.emoji}</div>
+      <div class="type-label" style="color:${ti.color}">${ti.label}</div>
+      <div class="type-picker" id="picker_${i}">
+        ${Object.entries(TYPE_INFO).map(([k,v])=>`<div class="type-opt" onclick="setDayType(${i},'${k}',event)"><span style="font-size:16px">${v.emoji}</span><span style="color:${v.color}">${v.label}</span></div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+function toggleDayPicker(dayIdx,e){
+  e.stopPropagation();
+  const pid='picker_'+dayIdx;
+  if(activePicker&&activePicker!==pid){document.getElementById(activePicker)?.classList.remove('show');}
+  const p=document.getElementById(pid);
+  if(p){p.classList.toggle('show');activePicker=p.classList.contains('show')?pid:null;}
+}
+function setDayType(dayIdx,type,e){
+  e.stopPropagation();
+  if(!S.assignments)S.assignments={...DEFAULT_ASSIGNMENTS};
+  S.assignments[dayIdx]=type;
+  saveState();
+  document.getElementById('picker_'+dayIdx)?.classList.remove('show');
+  activePicker=null;
+  renderDayAssignGrid();
+}
+document.addEventListener('click',()=>{
+  if(activePicker){document.getElementById(activePicker)?.classList.remove('show');activePicker=null;}
+});
+function applyPreset(n){
+  if(n===0){S.planDays=0;saveState();renderDayAssignGrid();return;}
+  if(!PRESETS[n])return;
+  S.assignments={...PRESETS[n]};S.planDays=n;saveState();
+  renderDayAssignGrid();renderToday();renderSchedule();
+}
+function resetAssignments(){
+  if(confirm('Reset to default 4-day plan?')){S.assignments={...DEFAULT_ASSIGNMENTS};S.planDays=4;saveState();renderDayAssignGrid();renderToday();renderSchedule();}}
+
+// ═══ PROFILE + PHOTO UPLOAD ═══
+function uploadPhoto(e){
+  const file=e.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=ev=>{S.profile.photo=ev.target.result;saveState();renderProfile();};
+  reader.readAsDataURL(file);
+}
+function saveProfile(){
+  S.profile={...S.profile,
+    name:document.getElementById('pName').value,
+    age:document.getElementById('pAge').value,
+    gender:document.getElementById('pGender').value,
+    height:document.getElementById('pHeight').value,
+    weight:document.getElementById('pWeight').value,
+    goal:document.getElementById('pGoal').value
+  };
+  saveState();renderProfile();
+}
+function renderProfile(){
+  const p=S.profile||{};
+  document.getElementById('pName').value=p.name||'';
+  document.getElementById('pAge').value=p.age||'';
+  document.getElementById('pGender').value=p.gender||'';
+  document.getElementById('pHeight').value=p.height||'';
+  document.getElementById('pWeight').value=p.weight||'';
+  if(p.goal)document.getElementById('pGoal').value=p.goal;
+  const avatar=document.getElementById('profAvatar');
+  const emojiEl=document.getElementById('profAvatarEmoji');
+  if(p.photo){
+    emojiEl.style.display='none';
+    let img=avatar.querySelector('img');
+    if(!img){img=document.createElement('img');avatar.appendChild(img);}
+    img.src=p.photo;img.style.cssText='width:100%;height:100%;object-fit:cover;border-radius:50%';
+  } else {
+    emojiEl.style.display='';
+    const img=avatar.querySelector('img');if(img)img.remove();
+    emojiEl.textContent=p.gender==='female'?'👩':(p.gender==='male'?'👨':'👤');
+  }
+  document.getElementById('profName').textContent=p.name||'YOUR NAME';
+  const goalLabel={fat_loss:'Fat Loss',muscle:'Build Muscle',endurance:'Endurance',maintain:'Maintain'};
+  document.getElementById('profSub').textContent=p.age&&p.gender?`${p.age} yrs • ${p.gender==='male'?'Male':'Female'} • ${goalLabel[p.goal]||'Fat Loss'}`:'Fill in your info below';
+  const h=parseFloat(p.height),w=parseFloat(p.weight);
+  const bmiCard=document.getElementById('bmiCard');
+  if(h>0&&w>0){
+    bmiCard.style.display='';
+    const bmi=w/((h/100)**2),bmiR=Math.round(bmi*10)/10;
+    let cat,col;
+    if(bmi<18.5){cat='Underweight';col='#60a5fa';}
+    else if(bmi<25){cat='Normal Weight ✅';col='#22c55e';}
+    else if(bmi<30){cat='Overweight';col='#f0a500';}
+    else{cat='Obese';col='#ef4444';}
+    const iMin=(18.5*(h/100)**2).toFixed(1),iMax=(24.9*(h/100)**2).toFixed(1);
+    const diff=(w-(24.9*(h/100)**2));
+    const msg=diff>0?`📉 Lose <strong>${diff.toFixed(1)} kg</strong> to reach normal range`:'✅ You are in the normal weight range!';
+    document.getElementById('bmiDisplay').innerHTML=`
+      <div style="text-align:center">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:${col};line-height:1">${bmiR}</div>
+        <div style="font-weight:700;font-size:15px;color:${col}">${cat}</div>
+        <div style="font-size:11px;color:var(--mut);margin-top:4px">${h}cm · ${w}kg</div>
+      </div>
+      <div style="background:var(--bdr);height:8px;border-radius:10px;margin-top:12px;overflow:hidden">
+        <div style="height:100%;width:${Math.min(Math.max((bmi-10)/35*100,2),100)}%;background:${col};border-radius:10px;transition:width .6s"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mut);margin-top:3px"><span>Underweight</span><span>Normal</span><span>Overweight</span><span>Obese</span></div>
+      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px;margin-top:10px;font-size:12px;color:#86efac;line-height:1.8">
+        🎯 Ideal range: <strong>${iMin}–${iMax} kg</strong><br>${msg}
+      </div>`;
+  } else bmiCard.style.display='none';
+  // Plan settings
+  renderDayAssignGrid();
+  // App settings state
+  renderSettingsState();
+}
+
+// ═══ APP SETTINGS ═══
+function getAppSettings(){try{return JSON.parse(localStorage.getItem('fitSettings')||'{}')}catch(e){return{}}}
+function saveAppSettings(k,v){const s=getAppSettings();s[k]=v;try{localStorage.setItem('fitSettings',JSON.stringify(s))}catch(e){}}
+let _wakeLock=null;
+function toggleSettings(){
+  const body=document.getElementById('settingsBody'),chev=document.getElementById('settingsChevron');
+  body.classList.toggle('collapsed');
+  chev.style.transform=body.classList.contains('collapsed')?'rotate(-90deg)':'rotate(0deg)';
+}
+function toggleSetting(key){
+  const cfg=getAppSettings(),newVal=!cfg[key];
+  saveAppSettings(key,newVal);
+  const t=document.getElementById('tog_'+key);if(t)t.classList.toggle('on',newVal);
+  if(key==='welcomeVideo'){try{newVal?localStorage.removeItem('fitNoWelcome'):localStorage.setItem('fitNoWelcome','1')}catch(e){}}
+  if(key==='keepScreen'){if(newVal&&navigator.wakeLock){navigator.wakeLock.request('screen').then(wl=>{_wakeLock=wl}).catch(()=>{});}else if(_wakeLock){_wakeLock.release();_wakeLock=null;}}
+  if(key==='timerVibrate'&&newVal&&navigator.vibrate){navigator.vibrate([50,30,50]);}
+}
+function saveDefaultTimer(val){saveAppSettings('defTimer',parseInt(val));tOrig=parseInt(val);setTimer(parseInt(val));}
+function renderSettingsState(){
+  const cfg=getAppSettings();
+  let noWelcome=false;try{noWelcome=localStorage.getItem('fitNoWelcome')==='1'}catch(e){}
+  const vals={welcomeVideo:!noWelcome,timerVibrate:!!cfg.timerVibrate,keepScreen:!!cfg.keepScreen};
+  Object.keys(vals).forEach(k=>{const t=document.getElementById('tog_'+k);if(t)t.classList.toggle('on',vals[k]);});
+  const ds=document.getElementById('defTimerSel');if(ds)ds.value=cfg.defTimer||60;
+  try{const raw=localStorage.getItem('fitV4')||'';const kb=(new Blob([raw]).size/1024).toFixed(1);const el=document.getElementById('storageUsed');if(el)el.textContent=kb+' KB';}catch(e){}
+  if(cfg.defTimer){tOrig=cfg.defTimer;tSec=cfg.defTimer;updTimerDisp();}
+  if(cfg.keepScreen&&navigator.wakeLock&&!_wakeLock){navigator.wakeLock.request('screen').then(wl=>{_wakeLock=wl}).catch(()=>{});}
+}
+function exportData(){
+  try{
+    const data={profile:S.profile||{},days:S.days||{},streak:S.streak||0,totalEx:S.totalEx||0,totalWater:S.totalWater||0,assignments:S.assignments||{},planDays:S.planDays||4,exportedAt:new Date().toISOString()};
+    const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;a.download='fittracker_'+new Date().toISOString().slice(0,10)+'.json';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+  }catch(e){alert('Export failed.');}
+}
 
 // ═══ PROGRESS ═══
 function renderProgress(){
@@ -788,85 +1007,11 @@ function renderProgress(){
   document.getElementById('stE').textContent=S.totalEx||0;
   document.getElementById('stWa').textContent=S.totalWater||0;
   const wg=document.getElementById('weekGrid'),today=getDay();
-  wg.innerHTML=SDAYS.map((d,i)=>{
-    const isRest=getPlan(i)?.isRest,isTd=i===today;
-    return`<div style="text-align:center;flex:1"><div style="font-size:10px;color:${isTd?'var(--acc)':'var(--mut)'};margin-bottom:4px;font-weight:${isTd?'700':'400'}">${d}</div><div style="width:34px;height:34px;border-radius:8px;background:${isRest?'rgba(34,197,94,.1)':'rgba(240,165,0,.1)'};border:2px solid ${isTd?'var(--acc)':'var(--bdr)'};display:flex;align-items:center;justify-content:center;font-size:15px;margin:0 auto">${isRest?'😴':'💪'}</div></div>`;
-  }).join('');
-  // Workout history
+  wg.innerHTML=SDAYS.map((d,i)=>{const isRest=getPlan(i)?.isRest,isTd=i===today;return`<div style="text-align:center;flex:1"><div style="font-size:10px;color:${isTd?'var(--acc)':'var(--mut)'};margin-bottom:4px;font-weight:${isTd?'700':'400'}">${d}</div><div style="width:34px;height:34px;border-radius:8px;background:${isRest?'rgba(34,197,94,.1)':'rgba(240,165,0,.1)'};border:2px solid ${isTd?'var(--acc)':'var(--bdr)'};display:flex;align-items:center;justify-content:center;font-size:15px;margin:0 auto">${isRest?'😴':'💪'}</div></div>`;}).join('');
   const hist=document.getElementById('workoutHistory');
-  const donedays=Object.entries(S.days||{}).filter(([,d])=>d.done).sort((a,b)=>new Date(b[0])-new Date(a[0])).slice(0,10);
-  if(!donedays.length){hist.innerHTML='<div style="font-size:12px;color:var(--mut);text-align:center;padding:10px">No workouts completed yet. Get started! 💪</div>';return;}
-  hist.innerHTML=donedays.map(([date])=>{
-    const d=new Date(date);
-    const dn=d.getDay(),plan=getPlan(dn);
-    return`<div class="hist-day">
-      <div class="hist-badge" style="background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3)">✅</div>
-      <div style="flex:1"><div style="font-weight:700;font-size:13px">${plan.name}</div><div style="font-size:11px;color:var(--mut)">${d.toLocaleDateString('en-MY',{weekday:'short',month:'short',day:'numeric'})}</div></div>
-      <div style="font-size:11px;color:var(--grn);font-weight:700">Done!</div>
-    </div>`;
-  }).join('');
-}
-
-// ═══ PROFILE / BMI ═══
-function saveProfile(){
-  const p={
-    name:document.getElementById('pName').value,
-    age:document.getElementById('pAge').value,
-    gender:document.getElementById('pGender').value,
-    height:document.getElementById('pHeight').value,
-    weight:document.getElementById('pWeight').value,
-    goal:document.getElementById('pGoal').value
-  };
-  S.profile=p;saveState();renderProfile();
-}
-function renderProfile(){
-  const p=S.profile||{};
-  // fill inputs
-  if(document.getElementById('pName').value!==undefined){
-    document.getElementById('pName').value=p.name||'';
-    document.getElementById('pAge').value=p.age||'';
-    document.getElementById('pGender').value=p.gender||'';
-    document.getElementById('pHeight').value=p.height||'';
-    document.getElementById('pWeight').value=p.weight||'';
-    if(p.goal)document.getElementById('pGoal').value=p.goal;
-  }
-  const avatar=document.getElementById('profAvatar');
-  avatar.textContent=p.gender==='female'?'👩':(p.gender==='male'?'👨':'👤');
-  document.getElementById('profName').textContent=p.name||'YOUR NAME';
-  const goalLabel={fat_loss:'Fat Loss & Toning',muscle:'Build Muscle',endurance:'Improve Endurance',maintain:'Maintain Weight'};
-  document.getElementById('profSub').textContent=p.age&&p.gender?`${p.age} yrs • ${p.gender==='male'?'Male':'Female'} • ${goalLabel[p.goal]||'Fat Loss'}`:  'Fill in your info below';
-  // BMI
-  const h=parseFloat(p.height),w=parseFloat(p.weight);
-  const bmiCard=document.getElementById('bmiCard');
-  if(h>0&&w>0){
-    bmiCard.style.display='';
-    const bmi=w/((h/100)**2),bmiR=Math.round(bmi*10)/10;
-    let cat,color;
-    if(bmi<18.5){cat='Underweight';color='#60a5fa';}
-    else if(bmi<25){cat='Normal Weight';color='#22c55e';}
-    else if(bmi<30){cat='Overweight';color='#f0a500';}
-    else{cat='Obese';color='#ef4444';}
-    // ideal weight range
-    const idealMin=(18.5*(h/100)**2).toFixed(1),idealMax=(24.9*(h/100)**2).toFixed(1);
-    const diff=w-(24.9*(h/100)**2);
-    const loseMsg=diff>0?`<br>📉 To reach normal range: lose <strong>${diff.toFixed(1)} kg</strong>`:' — great job!';
-    document.getElementById('bmiDisplay').innerHTML=`
-      <div style="text-align:center">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:52px;color:${color};line-height:1">${bmiR}</div>
-        <div style="font-weight:700;font-size:15px;color:${color};margin-top:2px">${cat}</div>
-        <div style="font-size:11px;color:var(--mut);margin-top:4px">Height: ${h}cm · Weight: ${w}kg</div>
-      </div>
-      <div style="background:var(--bdr);height:8px;border-radius:10px;margin-top:12px;overflow:hidden">
-        <div style="height:100%;width:${Math.min(Math.max((bmi-10)/35*100,2),100)}%;background:${color};border-radius:10px;transition:width .6s ease"></div>
-      </div>
-      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--mut);margin-top:3px"><span>10</span><span>18.5</span><span>25</span><span>30</span><span>45</span></div>
-      <div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.2);border-radius:10px;padding:10px;margin-top:10px;font-size:12px;color:#86efac;line-height:1.7">
-        🎯 Ideal weight range: <strong>${idealMin}–${idealMax} kg</strong>${loseMsg}
-      </div>`;
-    document.getElementById('idealBox').style.display='none';
-  } else {
-    bmiCard.style.display='none';
-  }
+  const done=Object.entries(S.days||{}).filter(([,d])=>d.done).sort((a,b)=>new Date(b[0])-new Date(a[0])).slice(0,10);
+  hist.innerHTML=done.length?done.map(([date])=>{const d=new Date(date),plan=getPlan(d.getDay());return`<div class="hist-day"><div style="width:32px;height:32px;border-radius:8px;background:rgba(34,197,94,.15);border:1px solid rgba(34,197,94,.3);display:flex;align-items:center;justify-content:center">✅</div><div style="flex:1"><div style="font-weight:700;font-size:13px">${plan.name}</div><div style="font-size:11px;color:var(--mut)">${d.toLocaleDateString('en-MY',{weekday:'short',month:'short',day:'numeric'})}</div></div><div style="font-size:11px;color:var(--grn);font-weight:700">Done!</div></div>`;}).join('')
+  :'<div style="font-size:12px;color:var(--mut);text-align:center;padding:10px">No workouts completed yet. Get started! 💪</div>';
 }
 
 // ═══ EXERCISE INFO MODAL ═══
@@ -880,7 +1025,7 @@ function showExInfo(name){
   document.getElementById('mDiff').innerHTML=`<span class="diff-badge ${diffCls}">${diffLbl}</span>`;
   const imgHtml=`<div style="width:100%;aspect-ratio:16/9;border-radius:14px;overflow:hidden;margin-bottom:4px;background:linear-gradient(135deg,rgba(240,165,0,.08),rgba(59,130,246,.08));border:2px dashed var(--bdr);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px">
     ${db.img?`<img src="${db.img}" alt="${name}" style="width:100%;height:100%;object-fit:cover;display:block" onerror="this.parentElement.innerHTML='<div style=\\'text-align:center;padding:20px\\'><div style=\\'font-size:36px\\'>🖼️</div><div style=\\'font-size:11px;color:var(--mut);margin-top:6px\\'>Image unavailable</div></div>'">`
-    :`<div style="font-size:36px">🖼️</div><div style="font-size:11px;color:var(--mut)">No image added yet</div>`}
+    :`<div style="font-size:36px">🖼️</div><div style="font-size:11px;color:var(--mut)">No image</div>`}
   </div>`;
   document.getElementById('mBody').innerHTML=`${imgHtml}
     <div class="m-sec">🎯 Target Muscles</div><div class="muscle-pills">${db.muscles.map(m=>`<span class="muscle-pill">${m}</span>`).join('')}</div>
@@ -890,65 +1035,42 @@ function showExInfo(name){
     <div class="m-sec">📺 Watch Tutorial</div>
     <button class="btn-yt" onclick="openVid('${db.ytId}','${name.replace(/'/g,"\\'")}')"><svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg>Watch Video Tutorial</button>
     <div style="font-size:10px;color:var(--mut);text-align:center;margin-top:6px">Opens YouTube — requires internet</div>`;
-  document.getElementById('exModal').classList.add('show');
-  document.body.style.overflow='hidden';
+  document.getElementById('exModal').classList.add('show');document.body.style.overflow='hidden';
 }
 function closeModal(){document.getElementById('exModal').classList.remove('show');document.body.style.overflow='';}
 
 // ═══ VIDEO ═══
-function openVid(ytId,name){
-  document.getElementById('vidTitle').textContent=name;
-  document.getElementById('vidFrame').src=`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`;
-  document.getElementById('vidModal').classList.add('show');
-}
+function openVid(ytId,name){document.getElementById('vidTitle').textContent=name;document.getElementById('vidFrame').src=`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`;document.getElementById('vidModal').classList.add('show');}
+function closeVid(){document.getElementById('vidModal').classList.remove('show');document.getElementById('vidFrame').src='';}
+
+// ═══ WELCOME VIDEO ═══
 function closeWelcome(dontShow){
-  const m=document.getElementById('welcomeModal');
-  m.style.opacity='0';
+  const m=document.getElementById('welcomeModal');m.style.opacity='0';
   setTimeout(()=>{m.style.pointerEvents='none';m.style.display='none';},400);
-  // Stop video
   document.getElementById('welcomeVid').src='';
   if(dontShow){try{localStorage.setItem('fitNoWelcome','1')}catch(e){}}
 }
 function showWelcome(){
   try{if(localStorage.getItem('fitNoWelcome')==='1')return;}catch(e){}
   const m=document.getElementById('welcomeModal');
-  // Autoplay with sound — on iPhone tap video once if no sound
-  document.getElementById('welcomeVid').src=
-    'https://www.youtube-nocookie.com/embed/8FqiZzAFp_s?autoplay=1&mute=0&loop=1&playlist=8FqiZzAFp_s&rel=0&playsinline=1&modestbranding=1&controls=1';
+  document.getElementById('welcomeVid').src='https://www.youtube-nocookie.com/embed/8FqiZzAFp_s?autoplay=1&mute=0&loop=1&playlist=8FqiZzAFp_s&rel=0&playsinline=1&modestbranding=1&controls=1';
   m.style.display='flex';m.style.pointerEvents='all';
   setTimeout(()=>m.style.opacity='1',50);
 }
 
-
-
-// ═══ SWIPE TO CLOSE MODAL ═══
+// ═══ SWIPE MODAL CLOSE ═══
 let touchY=0;
 document.getElementById('modalSheet').addEventListener('touchstart',e=>touchY=e.touches[0].clientY,{passive:true});
 document.getElementById('modalSheet').addEventListener('touchmove',e=>{if(e.touches[0].clientY-touchY>80)closeModal();},{passive:true});
 
 // ═══ RESET ═══
-function resetAll(){
-  if(confirm('Reset ALL progress? This cannot be undone.')){
-    try{localStorage.removeItem('fitV3')}catch(e){}
-    S={};initState();saveState();location.reload();
-  }
-}
+function resetAll(){if(confirm('Reset ALL progress? Cannot be undone.')){try{localStorage.removeItem('fitV4')}catch(e){}S={};initState();saveState();location.reload();}}
 
 // ═══ INIT ═══
 window.addEventListener('load',()=>{
   loadState();initState();saveState();
-  const hc=document.getElementById('headerIcon');
-  if(hc){
-    hc.style.display='none';
-    const img=document.createElement('img');
-    img.src=ICON_URL;
-    img.style.cssText='width:36px;height:36px;border-radius:9px;flex-shrink:0;object-fit:cover;border:1px solid rgba(240,165,0,0.3)';
-    img.onerror=()=>{hc.style.display='';img.remove();};
-    hc.parentNode.insertBefore(img,hc);
-  }
   renderToday();renderProfile();updTimerDisp();
-  // Show welcome popup after short delay
-  setTimeout(showWelcome, 800);
+  setTimeout(showWelcome,800);
 });
 document.querySelectorAll('.nb')[1].addEventListener('click',renderSupps);
 </script>
