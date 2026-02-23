@@ -8,8 +8,8 @@
 <meta name="apple-mobile-web-app-title" content="FIT TRACKER">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="theme-color" content="#0a0a0f">
-<link rel="icon" id="favicon">
 <link rel="manifest" id="pwa-manifest">
+<link rel="icon" id="favicon">
 <title>FIT TRACKER</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -335,6 +335,36 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
   </div>
 </div>
 
+<!-- WELCOME VIDEO POPUP -->
+<div id="welcomeModal" style="position:fixed;inset:0;z-index:500;background:rgba(0,0,0,.95);display:flex;flex-direction:column;align-items:center;justify-content:space-between;backdrop-filter:blur(8px);opacity:0;transition:opacity .4s;pointer-events:none;padding:env(safe-area-inset-top) 0 env(safe-area-inset-bottom)">
+  <!-- Top bar -->
+  <div style="width:100%;padding:12px 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0">
+    <div>
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,#f0a500,#e05a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💪 STAY MOTIVATED!</div>
+      <div style="font-size:11px;color:#666;margin-top:1px">Your daily fitness boost</div>
+    </div>
+    <button onclick="closeWelcome(false)" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:34px;height:34px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">✕</button>
+  </div>
+  <!-- Video — fills most of screen, 9:16 Shorts format -->
+  <div style="flex:1;width:100%;max-width:420px;padding:0 12px;display:flex;align-items:center;justify-content:center;min-height:0">
+    <div style="width:100%;height:100%;max-height:calc(100vh - 140px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;box-shadow:0 0 60px rgba(240,165,0,.3);position:relative">
+      <iframe id="welcomeVid"
+        width="100%" height="100%"
+        src=""
+        frameborder="0"
+        allow="autoplay; encrypted-media; accelerometer; gyroscope; picture-in-picture"
+        allowfullscreen
+        style="display:block;width:100%;height:100%">
+      </iframe>
+    </div>
+  </div>
+  <!-- Bottom buttons -->
+  <div style="width:100%;padding:12px 16px 16px;display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0">
+    <button onclick="closeWelcome(false)" style="width:100%;max-width:380px;padding:14px;background:linear-gradient(90deg,#f0a500,#e05a00);border:none;border-radius:14px;color:#000;font-size:15px;font-weight:800;cursor:pointer;font-family:'DM Sans',sans-serif;letter-spacing:.5px">LET'S TRAIN! 🔥</button>
+    <button onclick="closeWelcome(true)" style="background:none;border:none;color:#444;font-size:11px;cursor:pointer;font-family:'DM Sans',sans-serif;text-decoration:underline">Don't show again</button>
+  </div>
+</div>
+
 <!-- VIDEO MODAL -->
 <div class="vid-modal-ov" id="vidModal">
   <button class="vid-close" onclick="closeVid()">✕</button>
@@ -349,12 +379,15 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 // ═══ PWA ICON (Custom image) ═══
 const ICON_URL='https://media.istockphoto.com/id/1035561592/vector/vector-design-element-for-the-fitness-center.jpg?s=612x612&w=0&k=20&c=k3yyyEcqeivby9iE7gZIk33PAjtDqNsdEdYiMjw7qsM=';
 (()=>{
+  // Apple touch icon
   let link=document.querySelector("link[rel='apple-touch-icon']");
   if(!link){link=document.createElement('link');link.rel='apple-touch-icon';document.head.appendChild(link);}
   link.href=ICON_URL;
+  // Favicon
   let fav=document.querySelector("link[rel='icon']");
   if(!fav){fav=document.createElement('link');fav.rel='icon';document.head.appendChild(fav);}
   fav.href=ICON_URL;
+  // Manifest with custom icon
   const m={name:'Fit Tracker',short_name:'FitTracker',start_url:'.',display:'standalone',background_color:'#0a0a0f',theme_color:'#f0a500',icons:[{src:ICON_URL,sizes:'512x512',type:'image/jpeg'},{src:ICON_URL,sizes:'192x192',type:'image/jpeg'}]};
   const b=new Blob([JSON.stringify(m)],{type:'application/json'});
   document.getElementById('pwa-manifest').href=URL.createObjectURL(b);
@@ -866,7 +899,25 @@ function openVid(ytId,name){
   document.getElementById('vidFrame').src=`https://www.youtube-nocookie.com/embed/${ytId}?autoplay=1&rel=0`;
   document.getElementById('vidModal').classList.add('show');
 }
-function closeVid(){document.getElementById('vidModal').classList.remove('show');document.getElementById('vidFrame').src='';}
+function closeWelcome(dontShow){
+  const m=document.getElementById('welcomeModal');
+  m.style.opacity='0';
+  setTimeout(()=>{m.style.pointerEvents='none';m.style.display='none';},400);
+  // Stop video
+  document.getElementById('welcomeVid').src='';
+  if(dontShow){try{localStorage.setItem('fitNoWelcome','1')}catch(e){}}
+}
+function showWelcome(){
+  try{if(localStorage.getItem('fitNoWelcome')==='1')return;}catch(e){}
+  const m=document.getElementById('welcomeModal');
+  // autoplay=1, no mute, loop=1, playlist needed for loop, playsinline for iOS
+  document.getElementById('welcomeVid').src=
+    'https://www.youtube-nocookie.com/embed/8FqiZzAFp_s?autoplay=1&loop=1&playlist=8FqiZzAFp_s&rel=0&playsinline=1&modestbranding=1&controls=1';
+  m.style.display='flex';m.style.pointerEvents='all';
+  setTimeout(()=>m.style.opacity='1',50);
+}
+
+
 
 // ═══ SWIPE TO CLOSE MODAL ═══
 let touchY=0;
@@ -884,7 +935,6 @@ function resetAll(){
 // ═══ INIT ═══
 window.addEventListener('load',()=>{
   loadState();initState();saveState();
-  // Header icon — use custom image
   const hc=document.getElementById('headerIcon');
   if(hc){
     hc.style.display='none';
@@ -895,6 +945,8 @@ window.addEventListener('load',()=>{
     hc.parentNode.insertBefore(img,hc);
   }
   renderToday();renderProfile();updTimerDisp();
+  // Show welcome popup after short delay
+  setTimeout(showWelcome, 800);
 });
 document.querySelectorAll('.nb')[1].addEventListener('click',renderSupps);
 </script>
