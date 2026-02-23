@@ -189,6 +189,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
 .toggle-track.on .toggle-thumb{transform:translateX(20px)}
 #settingsBody{overflow:hidden;transition:max-height .35s ease,opacity .3s ease;max-height:2000px;opacity:1}
 #settingsBody.collapsed{max-height:0;opacity:0;pointer-events:none}
+.unit-btn{background:none;border:none;padding:3px 8px;font-size:10px;font-weight:700;color:var(--mut);cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+.unit-btn.active{background:var(--acc);color:#000;border-radius:6px}
 ::-webkit-scrollbar{width:3px}
 ::-webkit-scrollbar-thumb{background:var(--bdr);border-radius:2px}
 @keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(240,165,0,.5)}50%{box-shadow:0 0 0 8px rgba(240,165,0,0)}}
@@ -305,11 +307,34 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div class="form-group"><label class="form-label">Your Name</label><input class="form-input" id="pName" type="text" placeholder="e.g. Ahmad" oninput="saveProfile()"></div>
     <div class="form-row">
       <div class="form-group"><label class="form-label">Age</label><input class="form-input" id="pAge" type="number" placeholder="25" oninput="saveProfile()"></div>
-      <div class="form-group"><label class="form-label">Gender</label><select class="form-select" id="pGender" onchange="saveProfile()"><option value="">Select</option><option value="male">Male 👨</option><option value="female">Female 👩</option></select></div>
+      <div class="form-group"><label class="form-label">Gender</label><select class="form-select" id="pGender" onchange="saveProfile()"><option value="">Select</option><option value="male">Male</option><option value="female">Female</option></select></div>
     </div>
-    <div class="form-row">
-      <div class="form-group"><label class="form-label">Height (cm)</label><input class="form-input" id="pHeight" type="number" placeholder="170" oninput="saveProfile()"></div>
-      <div class="form-group"><label class="form-label">Weight (kg)</label><input class="form-input" id="pWeight" type="number" placeholder="70" oninput="saveProfile()"></div>
+    <div class="form-group">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <label class="form-label" style="margin:0">Height</label>
+        <div style="display:flex;background:var(--bdr);border-radius:8px;padding:2px;gap:1px">
+          <button class="unit-btn active" id="hUnit_cm" onclick="setHeightUnit('cm')">cm</button>
+          <button class="unit-btn" id="hUnit_ft" onclick="setHeightUnit('ft')">ft / in</button>
+        </div>
+      </div>
+      <div id="heightCm_wrap"><input class="form-input" id="pHeight" type="number" placeholder="170" oninput="saveProfile()"></div>
+      <div id="heightFt_wrap" style="display:none;gap:6px;align-items:center">
+        <input class="form-input" id="pFt" type="number" placeholder="5" min="0" max="8" oninput="saveProfile()" style="flex:1">
+        <span style="font-size:13px;color:var(--mut);font-weight:700">ft</span>
+        <input class="form-input" id="pIn" type="number" placeholder="7" min="0" max="11" oninput="saveProfile()" style="flex:1">
+        <span style="font-size:13px;color:var(--mut);font-weight:700">in</span>
+      </div>
+    </div>
+    <div class="form-group">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px">
+        <label class="form-label" style="margin:0">Weight</label>
+        <div style="display:flex;background:var(--bdr);border-radius:8px;padding:2px;gap:1px">
+          <button class="unit-btn active" id="wUnit_kg" onclick="setWeightUnit('kg')">kg</button>
+          <button class="unit-btn" id="wUnit_lbs" onclick="setWeightUnit('lbs')">lbs</button>
+        </div>
+      </div>
+      <div id="weightKg_wrap"><input class="form-input" id="pWeight" type="number" placeholder="70" oninput="saveProfile()"></div>
+      <div id="weightLbs_wrap" style="display:none"><input class="form-input" id="pWeightLbs" type="number" placeholder="154" oninput="saveProfile()"></div>
     </div>
     <div class="form-group"><label class="form-label">Goal</label>
       <select class="form-select" id="pGoal" onchange="saveProfile()">
@@ -352,8 +377,8 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
       </div>
 
       <div class="setting-row">
-        <div class="setting-icon" style="background:rgba(59,130,246,.15)">🔔</div>
-        <div class="setting-inf"><div class="setting-nm">Rest Timer Alert</div><div class="setting-ds">Vibrate when rest timer ends</div></div>
+        <div class="setting-icon" style="background:rgba(59,130,246,.15)">📳</div>
+        <div class="setting-inf"><div class="setting-nm">Rest Timer Vibrate</div><div class="setting-ds">Vibrate when rest timer ends</div></div>
         <div class="toggle-wrap" onclick="toggleSetting('timerVibrate')"><div class="toggle-track" id="tog_timerVibrate"><div class="toggle-thumb"></div></div></div>
       </div>
 
@@ -361,6 +386,24 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
         <div class="setting-icon" style="background:rgba(168,85,247,.15)">💡</div>
         <div class="setting-inf"><div class="setting-nm">Keep Screen On</div><div class="setting-ds">Prevent sleep during workout</div></div>
         <div class="toggle-wrap" onclick="toggleSetting('keepScreen')"><div class="toggle-track" id="tog_keepScreen"><div class="toggle-thumb"></div></div></div>
+      </div>
+
+      <div class="setting-row">
+        <div class="setting-icon" style="background:rgba(34,197,94,.15)">🔔</div>
+        <div class="setting-inf">
+          <div class="setting-nm">Daily Motivation Reminder</div>
+          <div class="setting-ds">Get a push notification daily</div>
+        </div>
+        <div class="toggle-wrap" onclick="toggleNotification()"><div class="toggle-track" id="tog_dailyNotif"><div class="toggle-thumb"></div></div></div>
+      </div>
+
+      <div id="notifTimeRow" style="display:none;padding:8px 0 10px;border-bottom:1px solid var(--bdr)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+          <span style="font-size:12px;font-weight:600">Reminder Time</span>
+          <input type="time" id="notifTime" value="10:00" onchange="saveNotifTime(this.value)" style="background:rgba(255,255,255,.08);border:1px solid var(--bdr);border-radius:8px;padding:5px 9px;color:var(--txt);font-size:13px;font-family:'DM Sans',sans-serif;outline:none">
+        </div>
+        <div id="notifStatus" style="font-size:11px;color:var(--mut);background:rgba(255,255,255,.04);border-radius:8px;padding:7px 10px;line-height:1.5"></div>
+        <button onclick="testNotification()" style="margin-top:7px;width:100%;padding:7px;background:rgba(34,197,94,.12);border:1px solid rgba(34,197,94,.3);border-radius:10px;color:#4ade80;font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">🔔 Send Test Notification</button>
       </div>
 
       <div class="setting-row" style="border-bottom:none">
@@ -395,6 +438,7 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     </a>
     <div style="font-size:10px;color:var(--bdr);margin-top:6px">github.com/markus1525</div>
   </div>
+
 </div>
 
 <!-- NAV -->
@@ -450,9 +494,13 @@ body::before{content:'';position:fixed;inset:0;background:radial-gradient(ellips
     <div><div style="font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;background:linear-gradient(90deg,#f0a500,#e05a00);-webkit-background-clip:text;-webkit-text-fill-color:transparent">💪 STAY MOTIVATED!</div><div style="font-size:11px;color:#666;margin-top:1px">Your daily fitness boost</div></div>
     <button onclick="closeWelcome(false)" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:50%;width:34px;height:34px;color:white;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
   </div>
-  <div style="flex:1;width:100%;max-width:420px;padding:0 12px;display:flex;align-items:center;justify-content:center;min-height:0">
-    <div style="width:100%;height:100%;max-height:calc(100vh - 140px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;box-shadow:0 0 60px rgba(240,165,0,.3)">
-      <iframe id="welcomeVid" width="100%" height="100%" src="" frameborder="0" allow="autoplay;encrypted-media;accelerometer;gyroscope;picture-in-picture" allowfullscreen style="display:block;width:100%;height:100%"></iframe>
+  <div style="flex:1;width:100%;max-width:420px;padding:0 12px;display:flex;align-items:center;justify-content:center;min-height:0;position:relative">
+    <div style="width:100%;height:100%;max-height:calc(100vh - 140px);aspect-ratio:9/16;border-radius:18px;overflow:hidden;box-shadow:0 0 60px rgba(240,165,0,.3);position:relative">
+      <video id="welcomeVid"
+        style="width:100%;height:100%;object-fit:cover;display:block"
+        playsinline autoplay loop preload="auto">
+      </video>
+      <button id="soundBtn" onclick="unmuteWelcome()" style="display:none;position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.7);border:2px solid rgba(255,255,255,.4);border-radius:30px;padding:9px 18px;color:white;font-size:13px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;backdrop-filter:blur(6px);white-space:nowrap">🔇 Tap for Sound</button>
     </div>
   </div>
   <div style="width:100%;padding:12px 16px 16px;display:flex;flex-direction:column;align-items:center;gap:9px;flex-shrink:0">
@@ -895,14 +943,58 @@ function uploadPhoto(e){
   reader.onload=ev=>{S.profile.photo=ev.target.result;saveState();renderProfile();};
   reader.readAsDataURL(file);
 }
+// height/weight unit state
+let _hUnit='cm', _wUnit='kg';
+
+function setHeightUnit(u){
+  _hUnit=u;
+  const isCm=u==='cm';
+  document.getElementById('hUnit_cm').classList.toggle('active',isCm);
+  document.getElementById('hUnit_ft').classList.toggle('active',!isCm);
+  document.getElementById('heightCm_wrap').style.display=isCm?'':'none';
+  document.getElementById('heightFt_wrap').style.display=isCm?'none':'flex';
+  // convert existing stored cm value to ft/in or vice versa
+  const p=S.profile||{};
+  if(!isCm&&p.height){const cm=parseFloat(p.height);const totalIn=cm/2.54;const ft=Math.floor(totalIn/12);const inch=Math.round(totalIn%12);document.getElementById('pFt').value=ft;document.getElementById('pIn').value=inch;}
+  if(isCm&&p.height){document.getElementById('pHeight').value=p.height;}
+}
+
+function setWeightUnit(u){
+  _wUnit=u;
+  const isKg=u==='kg';
+  document.getElementById('wUnit_kg').classList.toggle('active',isKg);
+  document.getElementById('wUnit_lbs').classList.toggle('active',!isKg);
+  document.getElementById('weightKg_wrap').style.display=isKg?'':'none';
+  document.getElementById('weightLbs_wrap').style.display=isKg?'none':'';
+  const p=S.profile||{};
+  if(!isKg&&p.weight){document.getElementById('pWeightLbs').value=Math.round(parseFloat(p.weight)*2.20462);}
+  if(isKg&&p.weight){document.getElementById('pWeight').value=p.weight;}
+}
+
 function saveProfile(){
+  // Always store height in cm, weight in kg internally
+  let heightCm='', weightKg='';
+  if(_hUnit==='cm'){
+    heightCm=document.getElementById('pHeight').value;
+  } else {
+    const ft=parseFloat(document.getElementById('pFt').value)||0;
+    const inch=parseFloat(document.getElementById('pIn').value)||0;
+    if(ft||inch) heightCm=((ft*12+inch)*2.54).toFixed(1);
+  }
+  if(_wUnit==='kg'){
+    weightKg=document.getElementById('pWeight').value;
+  } else {
+    const lbs=parseFloat(document.getElementById('pWeightLbs').value)||0;
+    if(lbs) weightKg=(lbs/2.20462).toFixed(1);
+  }
   S.profile={...S.profile,
     name:document.getElementById('pName').value,
     age:document.getElementById('pAge').value,
     gender:document.getElementById('pGender').value,
-    height:document.getElementById('pHeight').value,
-    weight:document.getElementById('pWeight').value,
-    goal:document.getElementById('pGoal').value
+    height:heightCm,
+    weight:weightKg,
+    goal:document.getElementById('pGoal').value,
+    hUnit:_hUnit, wUnit:_wUnit
   };
   saveState();renderProfile();
 }
@@ -911,9 +1003,25 @@ function renderProfile(){
   document.getElementById('pName').value=p.name||'';
   document.getElementById('pAge').value=p.age||'';
   document.getElementById('pGender').value=p.gender||'';
-  document.getElementById('pHeight').value=p.height||'';
-  document.getElementById('pWeight').value=p.weight||'';
   if(p.goal)document.getElementById('pGoal').value=p.goal;
+  // restore unit preferences
+  _hUnit=p.hUnit||'cm'; _wUnit=p.wUnit||'kg';
+  // height
+  const isCm=_hUnit==='cm';
+  document.getElementById('hUnit_cm').classList.toggle('active',isCm);
+  document.getElementById('hUnit_ft').classList.toggle('active',!isCm);
+  document.getElementById('heightCm_wrap').style.display=isCm?'':'none';
+  document.getElementById('heightFt_wrap').style.display=isCm?'none':'flex';
+  if(isCm){document.getElementById('pHeight').value=p.height||'';}
+  else if(p.height){const ti=(parseFloat(p.height)/2.54);document.getElementById('pFt').value=Math.floor(ti/12);document.getElementById('pIn').value=Math.round(ti%12);}
+  // weight
+  const isKg=_wUnit==='kg';
+  document.getElementById('wUnit_kg').classList.toggle('active',isKg);
+  document.getElementById('wUnit_lbs').classList.toggle('active',!isKg);
+  document.getElementById('weightKg_wrap').style.display=isKg?'':'none';
+  document.getElementById('weightLbs_wrap').style.display=isKg?'none':'';
+  if(isKg){document.getElementById('pWeight').value=p.weight||'';}
+  else if(p.weight){document.getElementById('pWeightLbs').value=Math.round(parseFloat(p.weight)*2.20462);}
   const avatar=document.getElementById('profAvatar');
   const emojiEl=document.getElementById('profAvatarEmoji');
   if(p.photo){
@@ -989,6 +1097,12 @@ function renderSettingsState(){
   try{const raw=localStorage.getItem('fitV4')||'';const kb=(new Blob([raw]).size/1024).toFixed(1);const el=document.getElementById('storageUsed');if(el)el.textContent=kb+' KB';}catch(e){}
   if(cfg.defTimer){tOrig=cfg.defTimer;tSec=cfg.defTimer;updTimerDisp();}
   if(cfg.keepScreen&&navigator.wakeLock&&!_wakeLock){navigator.wakeLock.request('screen').then(wl=>{_wakeLock=wl}).catch(()=>{});}
+  // notification state
+  const notifOn=!!cfg.dailyNotif;
+  const tog=document.getElementById('tog_dailyNotif');if(tog)tog.classList.toggle('on',notifOn);
+  const row=document.getElementById('notifTimeRow');if(row)row.style.display=notifOn?'block':'none';
+  const nt=document.getElementById('notifTime');if(nt)nt.value=cfg.notifTime||'10:00';
+  if(notifOn)updateNotifStatus();
 }
 function exportData(){
   try{
@@ -1044,18 +1158,182 @@ function openVid(ytId,name){document.getElementById('vidTitle').textContent=name
 function closeVid(){document.getElementById('vidModal').classList.remove('show');document.getElementById('vidFrame').src='';}
 
 // ═══ WELCOME VIDEO ═══
+// 👇 PASTE YOUR DIRECT VIDEO URL HERE (mp4, webm, etc.)
+// Options: Cloudinary, Dropbox (?dl=1 link), Google Drive direct, your own server
+// Example: 'https://res.cloudinary.com/YOUR_CLOUD/video/upload/your_video.mp4'
+const WELCOME_VIDEO_URL = 'https://res.cloudinary.com/dfe3oqabh/video/upload/v1771838555/NOBODY_Believes_In_You_Gym_Motivation_-_Sam_Odenbach_720p_h264_ehu93l.mp4';
+// ☝️ Replace the URL above with your own motivational video direct link
+
+function unmuteWelcome(){
+  const vid=document.getElementById('welcomeVid');
+  const btn=document.getElementById('soundBtn');
+  vid.muted=false;vid.volume=1;
+  if(btn){btn.style.display='none';}
+  vid.play().catch(()=>{});
+}
+
 function closeWelcome(dontShow){
-  const m=document.getElementById('welcomeModal');m.style.opacity='0';
+  const m=document.getElementById('welcomeModal');
+  const vid=document.getElementById('welcomeVid');
+  m.style.opacity='0';
   setTimeout(()=>{m.style.pointerEvents='none';m.style.display='none';},400);
-  document.getElementById('welcomeVid').src='';
+  vid.pause();vid.src='';
   if(dontShow){try{localStorage.setItem('fitNoWelcome','1')}catch(e){}}
 }
+
 function showWelcome(){
   try{if(localStorage.getItem('fitNoWelcome')==='1')return;}catch(e){}
   const m=document.getElementById('welcomeModal');
-  document.getElementById('welcomeVid').src='https://www.youtube-nocookie.com/embed/8FqiZzAFp_s?autoplay=1&mute=0&loop=1&playlist=8FqiZzAFp_s&rel=0&playsinline=1&modestbranding=1&controls=1';
+  const vid=document.getElementById('welcomeVid');
+  const soundBtn=document.getElementById('soundBtn');
+
+  vid.src=WELCOME_VIDEO_URL;
+  vid.muted=false;
+  vid.loop=true;
+  vid.playsInline=true;
+
   m.style.display='flex';m.style.pointerEvents='all';
   setTimeout(()=>m.style.opacity='1',50);
+
+  // Attempt autoplay WITH sound first
+  const playPromise=vid.play();
+  if(playPromise!==undefined){
+    playPromise.then(()=>{
+      // Autoplay with sound succeeded 🎉
+      if(soundBtn)soundBtn.style.display='none';
+    }).catch(()=>{
+      // Browser blocked sound — try muted autoplay, show unmute button
+      vid.muted=true;
+      vid.play().catch(()=>{});
+      if(soundBtn){soundBtn.style.display='flex';}
+    });
+  }
+}
+
+// ═══ DAILY NOTIFICATIONS ═══
+const MOTIV_MSGS=[
+  "💪 Every rep counts. Show up today!",
+  "🔥 You didn't come this far to only come this far.",
+  "⚡ Small daily improvements lead to stunning results.",
+  "🏆 The only bad workout is the one that didn't happen.",
+  "💥 Pain is temporary. Quitting lasts forever.",
+  "🚀 Your future self is thanking you. Keep going!",
+  "🎯 Discipline beats motivation every single day.",
+  "🦁 Earn your body. No shortcuts.",
+  "⏱️ One hour of workout is 4% of your day. No excuses.",
+  "🌅 Rise. Grind. Repeat. You've got this!",
+  "🔑 Consistency is the key. Unlock your potential.",
+  "💎 Champions are made in the moments they want to quit."
+];
+
+function getRandomMotiv(){return MOTIV_MSGS[Math.floor(Math.random()*MOTIV_MSGS.length)];}
+
+async function toggleNotification(){
+  const cfg=getAppSettings();
+  const newVal=!cfg.dailyNotif;
+  if(newVal){
+    if(!('Notification' in window)){updateNotifStatus('❌ Your browser does not support notifications.');return;}
+    const perm=await Notification.requestPermission();
+    if(perm!=='granted'){
+      updateNotifStatus('❌ Permission denied. Please allow notifications in your browser settings.');
+      return;
+    }
+  }
+  saveAppSettings('dailyNotif',newVal);
+  const tog=document.getElementById('tog_dailyNotif');if(tog)tog.classList.toggle('on',newVal);
+  const row=document.getElementById('notifTimeRow');if(row)row.style.display=newVal?'block':'none';
+  if(newVal){scheduleNotification();updateNotifStatus();}
+  else{clearScheduledNotification();updateNotifStatus();}
+}
+
+function saveNotifTime(val){
+  saveAppSettings('notifTime',val);
+  scheduleNotification();
+  updateNotifStatus();
+}
+
+function scheduleNotification(){
+  // Clear any existing timer
+  clearScheduledNotification();
+  const cfg=getAppSettings();
+  if(!cfg.dailyNotif)return;
+  const [hh,mm]=(cfg.notifTime||'10:00').split(':').map(Number);
+  const now=new Date();
+  const target=new Date();
+  target.setHours(hh,mm,0,0);
+  if(target<=now) target.setDate(target.getDate()+1); // schedule for tomorrow if time passed
+  const msUntil=target-now;
+  const timerId=setTimeout(()=>{
+    fireNotification();
+    // Re-schedule for the next day
+    const daily=setInterval(fireNotification, 24*60*60*1000);
+    try{localStorage.setItem('fitNotifInterval','active');}catch(e){}
+    window._notifInterval=daily;
+  }, msUntil);
+  window._notifTimer=timerId;
+  try{localStorage.setItem('fitNotifScheduled',target.toISOString());}catch(e){}
+}
+
+function clearScheduledNotification(){
+  if(window._notifTimer){clearTimeout(window._notifTimer);window._notifTimer=null;}
+  if(window._notifInterval){clearInterval(window._notifInterval);window._notifInterval=null;}
+  try{localStorage.removeItem('fitNotifScheduled');}catch(e){}
+}
+
+function fireNotification(){
+  if(Notification.permission!=='granted')return;
+  const msg=getRandomMotiv();
+  try{
+    new Notification('FIT TRACKER 🔥',{
+      body:msg,
+      icon:'https://media.istockphoto.com/id/1035561592/vector/vector-design-element-for-the-fitness-center.jpg?s=612x612&w=0&k=20&c=k3yyyEcqeivby9iE7gZIk33PAjtDqNsdEdYiMjw7qsM=',
+      badge:'https://media.istockphoto.com/id/1035561592/vector/vector-design-element-for-the-fitness-center.jpg?s=612x612&w=0&k=20&c=k3yyyEcqeivby9iE7gZIk33PAjtDqNsdEdYiMjw7qsM=',
+      tag:'fittracker-daily',
+      requireInteraction:false
+    });
+  }catch(e){}
+}
+
+function testNotification(){
+  if(Notification.permission!=='granted'){
+    Notification.requestPermission().then(p=>{if(p==='granted')fireNotification();});
+  } else {fireNotification();}
+}
+
+function updateNotifStatus(msg){
+  const el=document.getElementById('notifStatus');if(!el)return;
+  if(msg){el.textContent=msg;return;}
+  const cfg=getAppSettings();
+  if(!cfg.dailyNotif){el.textContent='Notifications are off.';return;}
+  const perm=('Notification' in window)?Notification.permission:'unsupported';
+  if(perm!=='granted'){el.innerHTML='⚠️ Permission not granted. Tap the toggle to re-request.';return;}
+  const t=cfg.notifTime||'10:00';
+  const [hh,mm]=t.split(':').map(Number);
+  const ampm=hh>=12?'PM':'AM';
+  const h12=hh%12||12;
+  el.innerHTML=`✅ <strong>Active</strong> — fires daily at <strong>${h12}:${String(mm).padStart(2,'0')} ${ampm}</strong><br><span style="color:var(--mut);font-size:10px">⚠️ Notification works while the app tab is open. For true background delivery, install as a PWA (Add to Home Screen) and enable in your device notification settings.</span>`;
+}
+
+// Re-schedule on load if notifications were enabled
+async function initNotifications(){
+  const cfg=getAppSettings();
+  // Default ON on first launch (dailyNotif key not yet set)
+  if(cfg.dailyNotif===undefined){
+    saveAppSettings('dailyNotif',true);
+  }
+  const updatedCfg=getAppSettings();
+  if(!updatedCfg.dailyNotif)return;
+  // Auto-request permission on first open
+  if('Notification' in window){
+    if(Notification.permission==='default'){
+      try{
+        const perm=await Notification.requestPermission();
+        if(perm==='granted'){scheduleNotification();}
+      }catch(e){}
+    } else if(Notification.permission==='granted'){
+      scheduleNotification();
+    }
+  }
 }
 
 // ═══ SWIPE MODAL CLOSE ═══
@@ -1069,7 +1347,7 @@ function resetAll(){if(confirm('Reset ALL progress? Cannot be undone.')){try{loc
 // ═══ INIT ═══
 window.addEventListener('load',()=>{
   loadState();initState();saveState();
-  renderToday();renderProfile();updTimerDisp();
+  renderToday();renderProfile();updTimerDisp();initNotifications();
   setTimeout(showWelcome,800);
 });
 document.querySelectorAll('.nb')[1].addEventListener('click',renderSupps);
